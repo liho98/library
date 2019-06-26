@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+    <Header />
     <div id="nav">
       <router-link to="/">Home</router-link> |
       <router-link to="/about">About</router-link>
@@ -7,6 +8,16 @@
     <router-view />
   </div>
 </template>
+
+<script>
+import Header from "./components/layout/Header";
+export default {
+  name: "app",
+  components: {
+    Header
+  }
+};
+</script>
 
 <style lang="scss">
 #app {
