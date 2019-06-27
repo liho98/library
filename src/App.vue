@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <Header />
+    <HomeHeader />
     <div id="nav">
       <router-link to="/">Home</router-link> |
       <router-link to="/about">About</router-link>
@@ -10,16 +10,19 @@
 </template>
 
 <script>
-import Header from "./components/layout/Header";
+import HomeHeader from "./components/layout/Header";
 export default {
   name: "app",
   components: {
-    Header
+    HomeHeader
   }
 };
 </script>
 
 <style lang="scss">
+
+@import "./assets/css/bootstrap.min.css";
+
 #app {
   font-family: "Avenir", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
