@@ -13,9 +13,9 @@
               <img src="images/slide1.jpg" alt="slide1" />
               <div class="content">
                 <div class="title">
-                  <h3>welcome to bookstore</h3>
+                  <h3>welcome to library system</h3>
                   <h5>Discover the best books online with us</h5>
-                  <a href="#" class="btn">shop books</a>
+                  <a href="#" class="btn">view books</a>
                 </div>
               </div>
             </div>
@@ -25,9 +25,9 @@
               <img src="images/slide2.jpg" alt="slide1" />
               <div class="content">
                 <div class="title">
-                  <h3>welcome to bookstore</h3>
+                  <h3>welcome to Library System</h3>
                   <h5>Discover the best books online with us</h5>
-                  <a href="#" class="btn">shop books</a>
+                  <a href="#" class="btn">view books</a>
                 </div>
               </div>
             </div>
@@ -37,9 +37,9 @@
               <img src="images/slide3.jpg" alt="slide1" />
               <div class="content">
                 <div class="title">
-                  <h3>welcome to bookstore</h3>
+                  <h3>welcome to library system</h3>
                   <h5>Discover the best books online with us</h5>
-                  <a href="#" class="btn">shop books</a>
+                  <a href="#" class="btn">view books</a>
                 </div>
               </div>
             </div>
@@ -49,9 +49,9 @@
               <img src="images/slide4.jpg" alt="slide1" />
               <div class="content">
                 <div class="title">
-                  <h3>welcome to bookstore</h3>
+                  <h3>welcome to library system</h3>
                   <h5>Discover the best books online with us</h5>
-                  <a href="#" class="btn">shop books</a>
+                  <a href="#" class="btn">view books</a>
                 </div>
               </div>
             </div>
@@ -72,7 +72,7 @@
               <h3>how to be a bwase</h3>
               <h6>
                 <span class="price">$49</span> /
-                <a href="#">Buy Now</a>
+                <a href="#">Borrow Now</a>
               </h6>
               <div class="hover">
                 <a href="product-single.html">
@@ -89,7 +89,7 @@
               <h3>How to write a book...</h3>
               <h6>
                 <span class="price">$19</span> /
-                <a href="#">Buy Now</a>
+                <a href="#">Borrow Now</a>
               </h6>
               <span class="sale">Sale !</span>
               <div class="hover">
@@ -107,7 +107,7 @@
               <h3>7-day self publish...</h3>
               <h6>
                 <span class="price">$49</span> /
-                <a href="#">Buy Now</a>
+                <a href="#">Borrow Now</a>
               </h6>
               <div class="hover">
                 <a href="product-single.html">
@@ -124,7 +124,7 @@
               <h3>wendy doniger</h3>
               <h6>
                 <span class="price">$49</span> /
-                <a href="#">Buy Now</a>
+                <a href="#">Borrow Now</a>
               </h6>
               <div class="hover">
                 <a href="product-single.html">
@@ -143,7 +143,7 @@
         <figure style="background:url(./images/about-img.jpg)no-repeat;"></figure>
       </div>
       <div class="about-content">
-        <h2>About bookstore,</h2>
+        <h2>About Library System,</h2>
         <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's printer took a galley of type and Scrambled it to make a type and typesetting industry. Lorem Ipsum has been the book.</p>
         <p>It has survived not only fiveLorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's printer took a galley of type and</p>
         <div class="btn-sec">
@@ -167,7 +167,7 @@
               </h3>
               <h6>
                 <span class="price">$19</span> /
-                <a href="#">Buy Now</a>
+                <a href="#">Borrow Now</a>
               </h6>
             </div>
           </div>
@@ -179,7 +179,7 @@
               </h3>
               <h6>
                 <span class="price">$19</span> /
-                <a href="#">Buy Now</a>
+                <a href="#">Borrow Now</a>
               </h6>
             </div>
           </div>
@@ -191,7 +191,7 @@
               </h3>
               <h6>
                 <span class="price">$19</span> /
-                <a href="#">Buy Now</a>
+                <a href="#">Borrow Now</a>
               </h6>
             </div>
           </div>
@@ -203,7 +203,7 @@
               </h3>
               <h6>
                 <span class="price">$19</span> /
-                <a href="#">Buy Now</a>
+                <a href="#">Borrow Now</a>
               </h6>
             </div>
           </div>
@@ -215,7 +215,7 @@
               </h3>
               <h6>
                 <span class="price">$19</span> /
-                <a href="#">Buy Now</a>
+                <a href="#">Borrow Now</a>
               </h6>
             </div>
           </div>
@@ -227,7 +227,7 @@
               </h3>
               <h6>
                 <span class="price">$19</span> /
-                <a href="#">Buy Now</a>
+                <a href="#">Borrow Now</a>
               </h6>
             </div>
           </div>
@@ -239,7 +239,7 @@
               </h3>
               <h6>
                 <span class="price">$19</span> /
-                <a href="#">Buy Now</a>
+                <a href="#">Borrow Now</a>
               </h6>
             </div>
           </div>
@@ -251,7 +251,7 @@
               </h3>
               <h6>
                 <span class="price">$19</span> /
-                <a href="#">Buy Now</a>
+                <a href="#">Borrow Now</a>
               </h6>
             </div>
           </div>
@@ -263,7 +263,7 @@
               </h3>
               <h6>
                 <span class="price">$19</span> /
-                <a href="#">Buy Now</a>
+                <a href="#">Borrow Now</a>
               </h6>
             </div>
           </div>
@@ -275,7 +275,7 @@
               </h3>
               <h6>
                 <span class="price">$19</span> /
-                <a href="#">Buy Now</a>
+                <a href="#">Borrow Now</a>
               </h6>
             </div>
           </div>

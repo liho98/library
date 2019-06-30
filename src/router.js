@@ -15,12 +15,12 @@ const router = new Router({
     // redirect every paths that does not exist to the Login view.
     {
       path: "*",
-      redirect: '/login'
+      redirect: '/'
     },
-    {
-      path: "/",
-      redirect: '/login'
-    },
+    // {
+    //   path: "/",
+    //   redirect: '/login'
+    // },
     {
       path: "/login",
       name: "Login",
@@ -32,11 +32,11 @@ const router = new Router({
       component: Register
     },
     {
-      path: "/home",
+      path: "/",
       name: "Home",
       component: Home,
       meta: {
-        requiresAuth: true
+        requiresGuest: true
       }
     }
   ]
