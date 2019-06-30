@@ -12,6 +12,7 @@
     "core-js": "^2.6.5",
     "eslint": "^6.0.1",
     "eslint-plugin-vue": "^5.2.3",
+    "firebase": "^6.2.4",
     "scss": "^0.2.4",
     "vue": "^2.6.10",
     "vue-router": "^3.0.3"

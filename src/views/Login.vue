@@ -1,5 +1,5 @@
 <template>
-  <div id="login" style>
+  <div id="login">
     <div class="breadcrumb" style="margin-bottom: 20px">
       <div class="container">
         <a class="breadcrumb-item" href="index.html">Home</a>
@@ -14,10 +14,10 @@
       <input class="form-control" type="password" v-model="password" placeholder="Password" style="display: inline" />
       <br />
       <button class="btn" @click="login" style="margin-bottom: 20px">Login</button>
-      <!-- <p>
+      <p>
         You don't have an account ? You can
-        <router-link to="/sign-up">create one</router-link>
-      </p> -->
+        <router-link to="/register">create one</router-link>
+      </p>
     </div>
     <!-- <section class="static about-sec">
       <div class="container">
@@ -50,10 +50,28 @@
 </template>
 
 <script>
-export default {
-  name: "login",
-  components: {}
-};
+  export default {
+    name: 'login',
+    data() {
+      return {
+        email: '',
+        password: ''
+      }
+    },
+    methods: {
+      login: function() {
+        this.$router.replace('home');
+        // firebase.auth().signInWithEmailAndPassword(this.email, this.password).then(
+        //   (user) => {
+        //     this.$router.replace('home')
+        //   },
+        //   (err) => {
+        //     alert('Oops. ' + err.message)
+        //   }
+        // );
+      }
+    }
+  }
 </script>
 
 <style scoped>
