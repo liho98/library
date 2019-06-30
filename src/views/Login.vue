@@ -9,9 +9,21 @@
 
     <div class="login centre">
       <!-- <h3>Login</h3> -->
-      <input class="form-control" type="text" v-model="email" placeholder="Email" style="display: inline" />
+      <input
+        class="form-control"
+        type="text"
+        v-model="email"
+        placeholder="Email"
+        style="display: inline"
+      />
       <br />
-      <input class="form-control" type="password" v-model="password" placeholder="Password" style="display: inline" />
+      <input
+        class="form-control"
+        type="password"
+        v-model="password"
+        placeholder="Password"
+        style="display: inline"
+      />
       <br />
       <button class="btn" @click="login" style="margin-bottom: 20px">Login</button>
       <p>
@@ -50,28 +62,34 @@
 </template>
 
 <script>
-  export default {
-    name: 'login',
-    data() {
-      return {
-        email: '',
-        password: ''
-      }
-    },
-    methods: {
-      login: function() {
-        this.$router.replace('home');
-        // firebase.auth().signInWithEmailAndPassword(this.email, this.password).then(
-        //   (user) => {
-        //     this.$router.replace('home')
-        //   },
-        //   (err) => {
-        //     alert('Oops. ' + err.message)
-        //   }
-        // );
-      }
+import firebase from "firebase";
+
+export default {
+  name: "login",
+  data() {
+    return {
+      email: "",
+      password: ""
+    };
+  },
+  methods: {
+    login: function() {
+      // this.$router.replace('home');
+      firebase
+        .auth()
+        .signInWithEmailAndPassword(this.email, this.password)
+        .then(
+          user => {
+            alert("Login successfully!");
+            this.$router.go("/");
+          },
+          err => {
+            alert("Oops. " + err.message);
+          }
+        );
     }
   }
+};
 </script>
 
 <style scoped>

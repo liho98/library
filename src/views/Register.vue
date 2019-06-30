@@ -53,7 +53,7 @@ export default {
         .then(
           user => {
             alert("Your account has been created!");
-            this.$router.replace("/");
+            this.$router.go("/");
           },
           err => {
             alert("Oops. " + err.message);
