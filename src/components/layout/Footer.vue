@@ -66,7 +66,7 @@
             <div class="container">
                 <div class="row">
                     <div class="col-md-6">
-                        <h5>(C) 2017. All Rights Reserved. BookStore Wordpress Theme</h5>
+                        <h5>(C) 2019. All Rights Reserved. BookStore Wordpress Theme</h5>
                     </div>
                     <div class="col-md-6">
                         <div class="share align-middle">

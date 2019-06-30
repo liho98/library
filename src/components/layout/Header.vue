@@ -1,6 +1,6 @@
 <template>
     <header>
-        <div class="header-top">
+        <!-- <div class="header-top">
             <div class="container">
                 <div class="row">
                     <div class="col-md-3"><a href="#" class="web-url">www.bookstore.com</a></div>
@@ -11,11 +11,11 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> -->
         <div class="main-menu">
             <div class="container">
                 <nav class="navbar navbar-expand-lg navbar-light">
-                    <router-link to="/" class="navbar-brand"><img src="images/logo.png" alt="logo"></router-link>
+                    <router-link to="/" class="navbar-brand"><img src="images/logo.png" alt="logo" style="width: 50%"></router-link>
                     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
                     </button>
