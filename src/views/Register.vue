@@ -8,9 +8,21 @@
     </div>
 
     <div class="sign-up centre">
-      <input class="form-control"  type="text" v-model="email" placeholder="Email"  style="display: inline" />
+      <input
+        class="form-control"
+        type="text"
+        v-model="email"
+        placeholder="Email"
+        style="display: inline"
+      />
       <br />
-      <input class="form-control" type="password" v-model="password" placeholder="Password" style="display: inline"/>
+      <input
+        class="form-control"
+        type="password"
+        v-model="password"
+        placeholder="Password"
+        style="display: inline"
+      />
       <br />
       <button class="btn" @click="signUp" style="margin-bottom: 20px">Register</button>
 
@@ -23,8 +35,32 @@
 </template>
 
 <script>
+import firebase from "firebase";
+
 export default {
-  name: "register"
+  name: "register",
+  data() {
+    return {
+      email: "",
+      password: ""
+    };
+  },
+  methods: {
+    signUp: function() {
+      firebase
+        .auth()
+        .createUserWithEmailAndPassword(this.email, this.password)
+        .then(
+          user => {
+            alert("Your account has been created!");
+            this.$router.replace("/");
+          },
+          err => {
+            alert("Oops. " + err.message);
+          }
+        );
+    }
+  }
 };
 </script>
 
