@@ -1,12 +1,25 @@
 <template>
-  <div>
-    <div class="breadcrumb">
+  <div id="login" style>
+    <div class="breadcrumb" style="margin-bottom: 20px">
       <div class="container">
         <a class="breadcrumb-item" href="index.html">Home</a>
         <span class="breadcrumb-item active">Login</span>
       </div>
     </div>
-    <section class="static about-sec">
+
+    <div class="login centre">
+      <!-- <h3>Login</h3> -->
+      <input class="form-control" type="text" v-model="email" placeholder="Email" style="display: inline" />
+      <br />
+      <input class="form-control" type="password" v-model="password" placeholder="Password" style="display: inline" />
+      <br />
+      <button class="btn" @click="login" style="margin-bottom: 20px">Login</button>
+      <!-- <p>
+        You don't have an account ? You can
+        <router-link to="/sign-up">create one</router-link>
+      </p> -->
+    </div>
+    <!-- <section class="static about-sec">
       <div class="container">
         <h1>My Account / Login</h1>
         <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's printer took a galley of type and scrambled it to make a type specimen book. It has survived not only fiveLorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem</p>
@@ -32,7 +45,7 @@
           </form>
         </div>
       </div>
-    </section>
+    </section>-->
   </div>
 </template>
 
@@ -42,3 +55,34 @@ export default {
   components: {}
 };
 </script>
+
+<style scoped>
+/* "scoped" attribute limit the CSS to this component only */
+div.centre {
+  text-align: center;
+  width: 100%;
+  margin: auto;
+}
+
+.login {
+  margin-top: 40px;
+}
+input {
+  margin: 10px 0;
+  width: 20%;
+  padding: 15px;
+}
+button {
+  margin-top: 20px;
+  width: 10%;
+  cursor: pointer;
+}
+p {
+  margin-top: 40px;
+  font-size: 13px;
+}
+p a {
+  text-decoration: underline;
+  cursor: pointer;
+}
+</style>
