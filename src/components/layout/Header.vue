@@ -37,6 +37,9 @@
               <li class="navbar-item active">
                 <router-link to="/home" class="nav-link">Home</router-link>
               </li>
+              <li class="navbar-item" v-if="isLoggedIn">
+                <router-link to="/books" class="nav-link">Books</router-link>
+              </li>
               <li class="navbar-item">
                 <a href="shop.html" class="nav-link">Shop</a>
               </li>
@@ -132,7 +135,7 @@ export default {
         .signOut()
         .then(() => {
           alert("Logout successfully.");
-          this.$router.go({ path: this.$router.path });
+          this.$router.go({ path: "/" });
         });
     }
   }

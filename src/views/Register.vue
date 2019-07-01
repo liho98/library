@@ -8,23 +8,91 @@
     </div>
 
     <div class="sign-up centre">
+      <div class="alert alert-danger" v-show="errors.any()">
+        <div v-if="errors.has('role')">{{ errors.first('role') }}</div>
+        <div v-if="errors.has('name')">{{ errors.first('name') }}</div>
+        <div v-if="errors.has('id')">{{ errors.first('id') }}</div>
+        <div v-if="errors.has('email')">{{ errors.first('email') }}</div>
+        <div v-if="errors.has('password')">{{ errors.first('password') }}</div>
+        <div v-if="errors.has('password_confirmation')">{{ errors.first('password_confirmation') }}</div>
+      </div>
+
+      <!-- <div class="btn-group btn-group-toggle" style="margin-bottom: 20px">
+      </div>-->
+      <label class="radio-inline">
+        <input
+          name="role"
+          type="radio"
+          value="student"
+          checked
+          autocomplete="false"
+          v-model="role"
+          v-validate="'required'"
+        />
+        Student
+      </label>
+
+      <label class="radio-inline">
+        <input name="role" type="radio" value="librarian" v-model="role" />
+        Librarian
+      </label>
+      <br />
+
       <input
         class="form-control"
         type="text"
+        name="name"
+        v-model="name"
+        placeholder="Name"
+        style="display: inline"
+        v-validate="'required'"
+        required
+      />
+      <br />
+
+      <input
+        class="form-control"
+        type="text"
+        name="id"
+        v-model="id"
+        placeholder="Student ID"
+        style="display: inline"
+        v-validate="'required'"
+      />
+      <br />
+
+      <input
+        class="form-control"
+        type="text"
+        name="email"
         v-model="email"
         placeholder="Email"
+        style="display: inline"
+        v-validate="'required|email'"
+      />
+      <br />
+      <input
+        class="form-control"
+        type="password"
+        name="password"
+        v-model="password"
+        v-validate="'required'"
+        ref="password"
+        placeholder="Password"
         style="display: inline"
       />
       <br />
       <input
         class="form-control"
         type="password"
-        v-model="password"
-        placeholder="Password"
+        name="password_confirmation"
+        v-validate="'required|confirmed:password'"
+        placeholder="Confirm Password"
         style="display: inline"
+        data-vv-as="password"
       />
       <br />
-      <button class="btn" @click="signUp" style="margin-bottom: 20px">Register</button>
+      <input class="btn" type="submit" value="Register" @click="signUp" style="margin-bottom: 20px"></input>
 
       <p>
         or go back to
@@ -36,29 +104,54 @@
 
 <script>
 import firebase from "firebase";
+import db from "./../components/firestoreInit";
+import Vue from "vue";
+import VeeValidate from "vee-validate";
+
+Vue.use(VeeValidate);
 
 export default {
   name: "register",
   data() {
     return {
+      role: "",
+      name: "",
+      id: "",
       email: "",
-      password: ""
+      password: "",
+      uid: ""
     };
   },
   methods: {
+    addUser(uid, id, name, email, role) {
+      const createdAt = new Date();
+      db.collection(role.concat("", "s"))
+        .doc(uid)
+        .set({ name, id, email, createdAt })
+        .then(docRef => {
+          console.log("User added: ");
+          alert("Your account has been created!");
+          this.$router.go({ path: "/" });
+        })
+        .catch(error => {
+          console.error("Error adding user: ", error);
+        });
+    },
     signUp: function() {
-      firebase
-        .auth()
-        .createUserWithEmailAndPassword(this.email, this.password)
-        .then(
-          user => {
-            alert("Your account has been created!");
-            this.$router.go("/");
-          },
-          err => {
-            alert("Oops. " + err.message);
-          }
-        );
+      if(this.role && this.name && this.email && this.id && this.password){
+        firebase
+          .auth()
+          .createUserWithEmailAndPassword(this.email, this.password)
+          .then(
+            user => {
+              var uid = firebase.auth().currentUser.uid;
+              this.addUser(uid, this.id, this.name, this.email, this.role);
+            },
+            err => {
+              alert("Oops. " + err.message);
+            }
+          );
+      }
     }
   }
 };
@@ -74,11 +167,20 @@ div.centre {
 .sign-up {
   margin-top: 40px;
 }
+
 input {
   margin: 10px 0;
   width: 20%;
   padding: 15px;
 }
+input[type="radio"] {
+  width: 30px;
+}
+
+label.radio-inline {
+  margin: 0px 10px;
+}
+
 button {
   margin-top: 20px;
   width: 10%;

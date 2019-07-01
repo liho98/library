@@ -1,1 +1,2 @@
- // vue.config.js module.exports = { publicPath: 'library' }
+// vue.config.js
+module.exports = { publicPath: '/library/' }

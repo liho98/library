@@ -10,12 +10,14 @@
   "dependencies": {
     "babel-eslint": "^10.0.2",
     "core-js": "^2.6.5",
-    "eslint": "^6.0.1",
+    "eslint": "^5.16.0",
     "eslint-plugin-vue": "^5.2.3",
     "firebase": "^6.2.4",
     "scss": "^0.2.4",
+    "vee-validate": "^2.2.11",
     "vue": "^2.6.10",
-    "vue-router": "^3.0.3"
+    "vue-router": "^3.0.3",
+    "vuefire": "^2.0.0-alpha.24"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.8.0",

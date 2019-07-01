@@ -9,12 +9,24 @@
 
     <div class="login centre">
       <!-- <h3>Login</h3> -->
+      <!-- <label class="radio-inline">
+        <input name="role" type="radio" value="student" checked autocomplete="false" v-model="role" />
+        Student
+      </label>
+
+      <label class="radio-inline">
+        <input name="role" type="radio" value="librarian" v-model="role" />
+        Librarian
+      </label> -->
+      
+      <br />
       <input
         class="form-control"
         type="text"
         v-model="email"
         placeholder="Email"
         style="display: inline"
+        required
       />
       <br />
       <input
@@ -23,6 +35,7 @@
         v-model="password"
         placeholder="Password"
         style="display: inline"
+        required
       />
       <br />
       <button class="btn" @click="login" style="margin-bottom: 20px">Login</button>
@@ -69,7 +82,8 @@ export default {
   data() {
     return {
       email: "",
-      password: ""
+      password: "",
+      // role: ""
     };
   },
   methods: {
@@ -108,6 +122,14 @@ input {
   width: 20%;
   padding: 15px;
 }
+input[type="radio"] {
+  width: 30px;
+}
+
+label.radio-inline {
+  margin: 0px 10px;
+}
+
 button {
   margin-top: 20px;
   width: 10%;

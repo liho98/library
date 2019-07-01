@@ -14,6 +14,14 @@ const router = new Router({
   routes: [
     // redirect every paths that does not exist to the Login view.
     {
+      path: "/",
+      name: "Home",
+      component: Home,
+      meta: {
+        requiresGuest: true
+      }
+    },
+    {
       path: "*",
       redirect: '/'
     },
@@ -30,14 +38,6 @@ const router = new Router({
       path: '/register',
       name: 'Register',
       component: Register
-    },
-    {
-      path: "/",
-      name: "Home",
-      component: Home,
-      meta: {
-        requiresGuest: true
-      }
     }
   ]
 });
@@ -52,7 +52,7 @@ router.beforeEach((to, from, next) => {
   const requiresAuth = to.matched.some(record => record.meta.requiresAuth);
 
   if (requiresAuth && !currentUser) next('login');
-  else if (!requiresAuth && currentUser) next('home');
+  // else if (!requiresAuth && currentUser) next('home');
   else next();
 });
 
