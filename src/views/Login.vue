@@ -38,7 +38,7 @@
         required
       />
       <br />
-      <button class="btn" @click="login" style="margin-bottom: 20px">Login</button>
+      <button class="btn" @click="login" >Login</button>
       <p>
         You don't have an account ? You can
         <router-link to="/register">create one</router-link>

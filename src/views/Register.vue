@@ -23,7 +23,7 @@
         <input
           name="role"
           type="radio"
-          value="student"
+          value="students"
           checked
           autocomplete="false"
           v-model="role"
@@ -33,7 +33,7 @@
       </label>
 
       <label class="radio-inline">
-        <input name="role" type="radio" value="librarian" v-model="role" />
+        <input name="role" type="radio" value="librarians" v-model="role" />
         Librarian
       </label>
       <br />
@@ -92,7 +92,7 @@
         data-vv-as="password"
       />
       <br />
-      <input class="btn" type="submit" value="Register" @click="signUp" style="margin-bottom: 20px" />
+      <input class="btn" type="submit" value="Register" @click="signUp" />
 
       <p>
         or go back to
@@ -125,7 +125,7 @@ export default {
   methods: {
     addUser(uid, id, name, email, role) {
       const createdAt = new Date();
-      db.collection(role.concat("", "s"))
+      db.collection(role)
         .doc(uid)
         .set({ name, id, email, createdAt })
         .then(docRef => {
@@ -144,7 +144,15 @@ export default {
           .createUserWithEmailAndPassword(this.email, this.password)
           .then(
             user => {
-              var uid = firebase.auth().currentUser.uid;
+              var currentUser = firebase.auth().currentUser;
+              var uid = currentUser.uid;
+
+              // update user profile
+              currentUser.updateProfile({
+                displayName: this.name,
+                photoURL: this.role
+              })
+
               this.addUser(uid, this.id, this.name, this.email, this.role);
             },
             err => {

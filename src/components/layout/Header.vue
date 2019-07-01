@@ -2,18 +2,20 @@
   <header>
     <!-- <script defer type="application/javascript" src="js/dropdown.js"></script> -->
 
-    <!-- <div class="header-top">
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-3"><a href="#" class="web-url">www.bookstore.com</a></div>
-                    <div class="col-md-6">
-                        <h5>Free Shipping Over $99 + 3 Free Samples With Every Order</h5></div>
-                    <div class="col-md-3">
-                        <span class="ph-number">Call : 800 1234 5678</span>
-                    </div>
-                </div>
-            </div>
-    </div>-->
+    <div class="header-top">
+      <div class="container">
+        <div class="row">
+          <!-- <div class="col-md-3">
+            <a href="#" class="web-url">www.bookstore.com</a>
+          </div>
+          <div class="col-md-3">
+          </div>-->
+          <div class="col-md-12" style="display: block">
+            <span class="ph-number" v-if="isLoggedIn">Welcome, {{name}}</span>
+          </div>
+        </div>
+      </div>
+    </div>
     <div class="main-menu">
       <div class="container">
         <nav class="navbar navbar-expand-lg navbar-light">
@@ -33,15 +35,18 @@
           </button>
           <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav ml-auto">
-              <!-- <li class="navbar-item" v-if="isLoggedIn">
-                <span class="email black-text">{{currentUser}}</span>
-              </li>-->
 
-              <li class="navbar-item" v-if="isLoggedIn">
-                <router-link to="/home" class="nav-link">Home</router-link>
+              <!-- ---------------------------Student--------------------------------------- -->
+
+              <li class="navbar-item" v-if="role=='students'">
+                <router-link to="/view-book" class="nav-link">Book List</router-link>
+              </li>
+              <li class="navbar-item" v-if="role=='students'">
+                <router-link to="/view-book" class="nav-link">Borrowed Book</router-link>
               </li>
 
-              <li class="navbar-item dropdown" v-if="isLoggedIn">
+              <!-- ---------------------------Librarian------------------------------------- -->
+              <li class="navbar-item dropdown" v-if="role=='librarians'">
                 <a
                   class="nav-link dropdown-toggle"
                   href="#"
@@ -52,30 +57,70 @@
                   aria-expanded="false"
                 >Book</a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown" style="margin: 0px">
-                  <a class="dropdown-item" href="#">View Book</a>
-                  <div class="dropdown-divider"></div>
+                  <router-link to="/view-book" class="dropdown-item">View Book</router-link>
                   <router-link to="/add-book" class="dropdown-item">Add Book</router-link>
                   <a class="dropdown-item" href="#">Edit Book</a>
                   <a class="dropdown-item" href="#">Delete Book</a>
                 </div>
               </li>
 
-              <li class="navbar-item" v-if="isLoggedIn">
-                <a href="shop.html" class="nav-link">Shop</a>
-              </li>
-              <li class="navbar-item" v-if="isLoggedIn">
-                <a href="about.html" class="nav-link">About</a>
-              </li>
-              <li class="navbar-item" v-if="isLoggedIn">
-                <a href="faq.html" class="nav-link">FAQ</a>
+              <li class="navbar-item dropdown" v-if="role=='librarians'">
+                <a
+                  class="nav-link dropdown-toggle"
+                  href="#"
+                  id="navbarDropdown"
+                  role="button"
+                  data-toggle="dropdown"
+                  aria-haspopup="true"
+                  aria-expanded="false"
+                >Student</a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown" style="margin: 0px">
+                  <router-link to="/view-book" class="dropdown-item">View Student</router-link>
+                  <router-link to="/add-book" class="dropdown-item">Add Student</router-link>
+                  <a class="dropdown-item" href="#">Edit Student</a>
+                  <a class="dropdown-item" href="#">Delete Student</a>
+                </div>
               </li>
 
+              <li class="navbar-item dropdown" v-if="role=='librarians'">
+                <a
+                  class="nav-link dropdown-toggle"
+                  href="#"
+                  id="navbarDropdown"
+                  role="button"
+                  data-toggle="dropdown"
+                  aria-haspopup="true"
+                  aria-expanded="false"
+                >Librarian</a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown" style="margin: 0px">
+                  <router-link to="/view-book" class="dropdown-item">View Librarian</router-link>
+                  <router-link to="/add-book" class="dropdown-item">Add Librarian</router-link>
+                  <a class="dropdown-item" href="#">Edit Librarian</a>
+                  <a class="dropdown-item" href="#">Delete Librarian</a>
+                </div>
+              </li>
+
+              <li class="navbar-item" v-if="role=='librarians'">
+                <a href="about.html" class="nav-link">Checkout</a>
+              </li>
+              <li class="navbar-item" v-if="role=='librarians'">
+                <a href="about.html" class="nav-link">Return</a>
+              </li>
+
+              <!-- --------------------------Guest---------------------------------------- -->
+              <li class="navbar-item" v-if="!isLoggedIn">
+                <a href="about.html" class="nav-link">About</a>
+              </li>
+              <li class="navbar-item" v-if="!isLoggedIn">
+                <a href="faq.html" class="nav-link">FAQ</a>
+              </li>
               <li class="navbar-item" v-if="!isLoggedIn">
                 <router-link to="/login" class="nav-link">Login</router-link>
               </li>
               <li class="navbar-item" v-if="!isLoggedIn">
                 <router-link to="/register" class="nav-link">Register</router-link>
               </li>
+              <!-- ---------------------------Logged In User----------------------------------- -->
               <li class="navbar-item" v-if="isLoggedIn">
                 <a type="link" v-on:click="logout" class="nav-link" style="cursor: pointer">Logout</a>
               </li>
@@ -139,13 +184,16 @@ export default {
   data() {
     return {
       isLoggedIn: false,
-      currentUser: false
+      name: "",
+      role: ""
     };
   },
   created() {
     if (firebase.auth().currentUser) {
+      var currentUser = firebase.auth().currentUser;
       this.isLoggedIn = true;
-      this.currentUser = firebase.auth().currentUser.email;
+      this.name = currentUser.displayName;
+      this.role = currentUser.photoURL;
     }
   },
   methods: {

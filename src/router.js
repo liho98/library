@@ -6,6 +6,7 @@ import Home from "./views/Home.vue";
 import Login from "./views/Login.vue";
 import Register from "./views/Register.vue";
 import AddBook from "./views/books/AddBook";
+import ViewBook from "./views/books/ViewBook";
 
 Vue.use(Router);
 
@@ -23,7 +24,7 @@ const router = new Router({
       name: "Home",
       component: Home,
       meta: {
-        requiresAuth: true
+        requiresAuth: true,
       }
     },
     // {
@@ -51,7 +52,19 @@ const router = new Router({
       name: 'Add Book',
       component: AddBook,
       meta: {
-        requiresAuth: true
+        requiresAuth: true,
+        librarianAuth: true,
+        studentAuth: false
+      }
+    },
+    {
+      path: '/view-book',
+      name: 'View Book',
+      component: ViewBook,
+      meta: {
+        requiresAuth: true,
+        librarianAuth: true,
+        studentAuth: true
       }
     }
   ]
@@ -64,11 +77,58 @@ const router = new Router({
 
 router.beforeEach((to, from, next) => {
   const currentUser = firebase.auth().currentUser;
-  const requiresAuth = to.matched.some(record => record.meta.requiresAuth);
 
-  if (requiresAuth && !currentUser) next('login');
-  else if (!requiresAuth && currentUser) next('/');
-  else next();
+  // if not logged in
+  if (!currentUser) {
+    if (to.meta.requiresAuth || to.meta.librarianAuth || to.meta.studentAuth) {
+      next('login');
+    } else {
+      next();
+    }
+  } else {
+    // get user role
+    // I used photoURL attribute to store user role, because no other choice alr
+    const role = currentUser.photoURL;
+
+    console.log("User Logged In");
+    console.log("User Role: " + role);
+
+    // if user want to go to studentAuth page
+    if (to.meta.studentAuth) {
+      if (role === 'students') {
+        next();
+      } else {
+        next('/');
+      }
+    }
+    // if user want to go to librarianAuth
+    else if (to.meta.librarianAuth) {
+      if (role === 'librarians') {
+        next();
+      } else {
+        next('/');
+      }
+    } 
+    // for other page
+    else {
+      // cannot go to page for guest like login, register
+      if(to.meta.requiresGuest){
+        next('/');
+      } else {
+        next();
+      }
+    }
+  }
+
+  // if (to.meta.requiresAuth) {
+  //   if (!currentUser) next('login');
+  //   else next();
+  // }
+  // else next();
+  // const requiresAuth = to.matched.some(record => record.meta.requiresAuth);
+
+  // if (requiresAuth && !currentUser) next('login');
+  // else if (!requiresAuth && currentUser) next('/');
 });
 
 export default router;
