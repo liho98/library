@@ -1,10 +1,11 @@
-import firebase from 'firebase';
+import firebase from './components/firebaseInit';
 import Vue from "vue";
 import Router from "vue-router";
 
 import Home from "./views/Home.vue";
 import Login from "./views/Login.vue";
 import Register from "./views/Register.vue";
+import AddBook from "./views/books/AddBook";
 
 Vue.use(Router);
 
@@ -14,16 +15,16 @@ const router = new Router({
   routes: [
     // redirect every paths that does not exist to the Login view.
     {
+      path: "*",
+      redirect: '/login'
+    },
+    {
       path: "/",
       name: "Home",
       component: Home,
       meta: {
-        requiresGuest: true
+        requiresAuth: true
       }
-    },
-    {
-      path: "*",
-      redirect: '/'
     },
     // {
     //   path: "/",
@@ -32,12 +33,26 @@ const router = new Router({
     {
       path: "/login",
       name: "Login",
-      component: Login
+      component: Login,
+      meta: {
+        requiresGuest: true
+      }
     },
     {
       path: '/register',
       name: 'Register',
-      component: Register
+      component: Register,
+      meta: {
+        requiresGuest: true
+      }
+    },
+    {
+      path: '/add-book',
+      name: 'Add Book',
+      component: AddBook,
+      meta: {
+        requiresAuth: true
+      }
     }
   ]
 });
@@ -52,7 +67,7 @@ router.beforeEach((to, from, next) => {
   const requiresAuth = to.matched.some(record => record.meta.requiresAuth);
 
   if (requiresAuth && !currentUser) next('login');
-  // else if (!requiresAuth && currentUser) next('home');
+  else if (!requiresAuth && currentUser) next('/');
   else next();
 });
 

@@ -94,7 +94,7 @@ export default {
         .signInWithEmailAndPassword(this.email, this.password)
         .then(
           user => {
-            alert("Login successfully!");
+            // alert("Login successfully!");
             this.$router.go("/");
           },
           err => {

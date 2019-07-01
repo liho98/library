@@ -1,49 +1,32 @@
 <template>
-  <div id="register">
+  <div id="add-book">
     <div class="breadcrumb" style="margin-bottom: 20px">
       <div class="container">
-        <a class="breadcrumb-item" href="index.html">Home</a>
-        <span class="breadcrumb-item active">Register</span>
+        <router-link  class="breadcrumb-item" to="/">Home</router-link >
+        <a class="breadcrumb-item" href="index.html">Book</a>
+        <span class="breadcrumb-item active">Add Book</span>
       </div>
     </div>
 
-    <div class="sign-up centre">
+    <div class="add-book centre">
       <div class="alert alert-danger" v-show="errors.any()">
         <!-- <div v-if="errors.has('role')">{{ errors.first('role') }}</div> -->
-        <div v-if="errors.has('name')">{{ errors.first('name') }}</div>
         <div v-if="errors.has('id')">{{ errors.first('id') }}</div>
-        <div v-if="errors.has('email')">{{ errors.first('email') }}</div>
-        <div v-if="errors.has('password')">{{ errors.first('password') }}</div>
-        <div v-if="errors.has('password_confirmation')">{{ errors.first('password_confirmation') }}</div>
+        <div v-if="errors.has('title')">{{ errors.first('title') }}</div>
+        <div v-if="errors.has('author')">{{ errors.first('author') }}</div>
+        <div v-if="errors.has('publisher')">{{ errors.first('publisher') }}</div>
+        <div v-if="errors.has('year')">{{ errors.first('year') }}</div>
       </div>
 
       <!-- <div class="btn-group btn-group-toggle" style="margin-bottom: 20px">
       </div>-->
-      <label class="radio-inline">
-        <input
-          name="role"
-          type="radio"
-          value="student"
-          checked
-          autocomplete="false"
-          v-model="role"
-          v-validate="'required'"
-        />
-        Student
-      </label>
-
-      <label class="radio-inline">
-        <input name="role" type="radio" value="librarian" v-model="role" />
-        Librarian
-      </label>
-      <br />
 
       <input
         class="form-control"
         type="text"
-        name="name"
-        v-model="name"
-        placeholder="Name"
+        name="id"
+        v-model="id"
+        placeholder="Book ID"
         style="display: inline"
         v-validate="'required'"
         required
@@ -53,9 +36,9 @@
       <input
         class="form-control"
         type="text"
-        name="id"
-        v-model="id"
-        placeholder="Student ID"
+        name="title"
+        v-model="title"
+        placeholder="Book Title"
         style="display: inline"
         v-validate="'required'"
       />
@@ -64,54 +47,48 @@
       <input
         class="form-control"
         type="text"
-        name="email"
-        v-model="email"
-        placeholder="Email"
+        name="author"
+        v-model="author"
+        placeholder="Author"
         style="display: inline"
-        v-validate="'required|email'"
-      />
-      <br />
-      <input
-        class="form-control"
-        type="password"
-        name="password"
-        v-model="password"
         v-validate="'required'"
-        ref="password"
-        placeholder="Password"
+      />
+      <br />
+
+      <input
+        class="form-control"
+        type="text"
+        name="publisher"
+        v-model="publisher"
+        v-validate="'required'"
+        placeholder="Publisher"
         style="display: inline"
       />
       <br />
       <input
         class="form-control"
-        type="password"
-        name="password_confirmation"
-        v-validate="'required|confirmed:password'"
-        placeholder="Confirm Password"
+        type="number"
+        name="year"
+        v-validate="'required|digits:4'"
+        placeholder="Year"
         style="display: inline"
-        data-vv-as="password"
       />
       <br />
-      <input class="btn" type="submit" value="Register" @click="signUp" style="margin-bottom: 20px" />
-
-      <p>
-        or go back to
-        <router-link to="/login">login</router-link>
-      </p>
+      <input class="btn" type="submit" value="Add Book" @click="signUp" style="margin-bottom: 20px" />
     </div>
   </div>
 </template>
 
 <script>
 import firebase from "firebase";
-import db from "./../components/firestoreInit";
+import db from "./../../components/firestoreInit";
 import Vue from "vue";
 import VeeValidate from "vee-validate";
 
 Vue.use(VeeValidate);
 
 export default {
-  name: "register",
+  name: "add-book",
   data() {
     return {
       role: "",
