@@ -92,7 +92,7 @@
         data-vv-as="password"
       />
       <br />
-      <input class="btn" type="submit" value="Register" @click="signUp" style="margin-bottom: 20px"></input>
+      <input class="btn" type="submit" value="Register" @click="signUp" style="margin-bottom: 20px" />
 
       <p>
         or go back to
