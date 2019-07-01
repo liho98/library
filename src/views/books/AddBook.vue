@@ -2,7 +2,7 @@
   <div id="add-book">
     <div class="breadcrumb" style="margin-bottom: 20px">
       <div class="container">
-        <router-link  class="breadcrumb-item" to="/">Home</router-link >
+        <router-link class="breadcrumb-item" to="/">Home</router-link>
         <a class="breadcrumb-item" href="index.html">Book</a>
         <span class="breadcrumb-item active">Add Book</span>
       </div>
@@ -69,12 +69,13 @@
         class="form-control"
         type="number"
         name="year"
+        v-model="year"
         v-validate="'required|digits:4'"
         placeholder="Year"
         style="display: inline"
       />
       <br />
-      <input class="btn" type="submit" value="Add Book" @click="signUp" style="margin-bottom: 20px" />
+      <input class="btn" type="submit" value="Add Book" @click="addBook" style="margin-bottom: 20px" />
     </div>
   </div>
 </template>
@@ -91,43 +92,34 @@ export default {
   name: "add-book",
   data() {
     return {
-      role: "",
-      name: "",
       id: "",
-      email: "",
-      password: "",
-      uid: ""
+      title: "",
+      author: "",
+      publisher: "",
+      year: ""
     };
   },
   methods: {
-    addUser(uid, id, name, email, role) {
-      const createdAt = new Date();
-      db.collection(role.concat("", "s"))
-        .doc(uid)
-        .set({ name, id, email, createdAt })
-        .then(docRef => {
-          console.log("User added: ");
-          alert("Your account has been created!");
-          this.$router.go({ path: "/" });
-        })
-        .catch(error => {
-          console.error("Error adding user: ", error);
-        });
-    },
-    signUp: function() {
-      if(this.role && this.name && this.email && this.id && this.password){
-        firebase
-          .auth()
-          .createUserWithEmailAndPassword(this.email, this.password)
-          .then(
-            user => {
-              var uid = firebase.auth().currentUser.uid;
-              this.addUser(uid, this.id, this.name, this.email, this.role);
-            },
-            err => {
-              alert("Oops. " + err.message);
-            }
-          );
+    addBook() {
+      if (this.id && this.title && this.author && this.publisher && this.year) {
+        const createdAt = new Date();
+        db.collection("books")
+          .add({
+            id: this.id,
+            title: this.title,
+            author: this.author,
+            publisher: this.publisher,
+            year: this.year,
+            createdAt
+          })
+          .then(docRef => {
+            console.log("Book added");
+            alert("Book added!");
+            this.$router.go({ path: this.path });
+          })
+          .catch(error => {
+            console.error("Error adding book: ", error);
+          });
       }
     }
   }
