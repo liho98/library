@@ -2,7 +2,7 @@
   <div id="login">
     <div class="breadcrumb" style="margin-bottom: 20px">
       <div class="container">
-        <a class="breadcrumb-item" href="index.html">Home</a>
+        <!-- <a class="breadcrumb-item" href="index.html">Home</a> -->
         <span class="breadcrumb-item active">Login</span>
       </div>
     </div>
@@ -27,6 +27,7 @@
         placeholder="Email"
         style="display: inline"
         required
+        v-on:keyup.enter="login"
       />
       <br />
       <input
@@ -36,9 +37,11 @@
         placeholder="Password"
         style="display: inline"
         required
+        v-on:keyup.enter="login"
       />
       <br />
-      <button class="btn" @click="login" >Login</button>
+      <input type="submit"  class="btn" @click="login" value="Login"/>
+      <!-- <button type="submit" class="btn" @click="login" >Login</button> -->
       <p>
         You don't have an account ? You can
         <router-link to="/register">create one</router-link>

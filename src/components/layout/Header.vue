@@ -35,7 +35,6 @@
           </button>
           <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav ml-auto">
-
               <!-- ---------------------------Student--------------------------------------- -->
 
               <li class="navbar-item" v-if="role=='students'">
@@ -109,10 +108,10 @@
 
               <!-- --------------------------Guest---------------------------------------- -->
               <li class="navbar-item" v-if="!isLoggedIn">
-                <a href="about.html" class="nav-link">About</a>
+                <router-link to="/about" class="nav-link">About</router-link>
               </li>
               <li class="navbar-item" v-if="!isLoggedIn">
-                <a href="faq.html" class="nav-link">FAQ</a>
+                <router-link to="/faq" class="nav-link">FAQ</router-link>
               </li>
               <li class="navbar-item" v-if="!isLoggedIn">
                 <router-link to="/login" class="nav-link">Login</router-link>

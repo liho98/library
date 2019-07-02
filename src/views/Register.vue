@@ -2,7 +2,7 @@
   <div id="register">
     <div class="breadcrumb" style="margin-bottom: 20px">
       <div class="container">
-        <a class="breadcrumb-item" href="index.html">Home</a>
+        <!-- <a class="breadcrumb-item" href="index.html">Home</a> -->
         <span class="breadcrumb-item active">Register</span>
       </div>
     </div>

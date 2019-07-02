@@ -8,6 +8,10 @@ import Register from "./views/Register.vue";
 import AddBook from "./views/books/AddBook";
 import ViewBook from "./views/books/ViewBook";
 
+import About from "./views/About.vue";
+import FAQ from "./views/FAQ.vue";
+
+
 Vue.use(Router);
 
 const router = new Router({
@@ -23,10 +27,27 @@ const router = new Router({
       path: "/",
       name: "Home",
       component: Home,
-      meta: {
-        requiresAuth: true,
-      }
+      // meta: {
+      //   requiresAuth: true
+      // }
     },
+    {
+      path: "/about",
+      name: "About",
+      component: About,
+      // meta: {
+      //   requiresGuest: true,
+      // }
+    },
+    {
+      path: "/faq",
+      name: "FAQ",
+      component: FAQ,
+      // meta: {
+      //   requiresGuest: true,
+      // }
+    },
+
     // {
     //   path: "/",
     //   redirect: '/login'
