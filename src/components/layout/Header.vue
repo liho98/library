@@ -58,8 +58,8 @@
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown" style="margin: 0px">
                   <router-link to="/view-book" class="dropdown-item">View Book</router-link>
                   <router-link to="/add-book" class="dropdown-item">Add Book</router-link>
-                  <a class="dropdown-item" href="#">Edit Book</a>
-                  <a class="dropdown-item" href="#">Delete Book</a>
+                  <router-link to="/" class="dropdown-item">Edit Book</router-link>
+                  <router-link to="/" class="dropdown-item">Delete Book</router-link>
                 </div>
               </li>
 
@@ -74,10 +74,10 @@
                   aria-expanded="false"
                 >Student</a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown" style="margin: 0px">
-                  <router-link to="/view-book" class="dropdown-item">View Student</router-link>
-                  <router-link to="/add-book" class="dropdown-item">Add Student</router-link>
-                  <a class="dropdown-item" href="#">Edit Student</a>
-                  <a class="dropdown-item" href="#">Delete Student</a>
+                  <router-link to="/" class="dropdown-item">View Student</router-link>
+                  <router-link to="/" class="dropdown-item">Add Student</router-link>
+                  <router-link to="/" class="dropdown-item">Edit Student</router-link>
+                  <router-link to="/" class="dropdown-item">Delete Student</router-link>
                 </div>
               </li>
 
@@ -92,10 +92,10 @@
                   aria-expanded="false"
                 >Librarian</a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown" style="margin: 0px">
-                  <router-link to="/view-book" class="dropdown-item">View Librarian</router-link>
-                  <router-link to="/add-book" class="dropdown-item">Add Librarian</router-link>
-                  <a class="dropdown-item" href="#">Edit Librarian</a>
-                  <a class="dropdown-item" href="#">Delete Librarian</a>
+                  <router-link to="/" class="dropdown-item">View Librarian</router-link>
+                  <router-link to="/" class="dropdown-item">Add Librarian</router-link>
+                  <router-link to="/" class="dropdown-item">Edit Librarian</router-link>
+                  <router-link to="/" class="dropdown-item">Delete Librarian</router-link>
                 </div>
               </li>
 
