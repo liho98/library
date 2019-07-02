@@ -38,16 +38,16 @@
               <!-- ---------------------------Student--------------------------------------- -->
 
               <li class="navbar-item" v-if="role=='students'">
-                <router-link to="/view-book" class="nav-link">Book List</router-link>
+                <router-link to="/view-book" class="nav-link active">Book List</router-link>
               </li>
               <li class="navbar-item" v-if="role=='students'">
-                <router-link to="/view-book" class="nav-link">Borrowed Book</router-link>
+                <router-link to="/view-book" class="nav-link active">Borrowed Book</router-link>
               </li>
 
               <!-- ---------------------------Librarian------------------------------------- -->
               <li class="navbar-item dropdown" v-if="role=='librarians'">
                 <a
-                  class="nav-link dropdown-toggle"
+                  class="nav-link dropdown-toggle active"
                   href="#"
                   id="navbarDropdown"
                   role="button"
@@ -65,7 +65,7 @@
 
               <li class="navbar-item dropdown" v-if="role=='librarians'">
                 <a
-                  class="nav-link dropdown-toggle"
+                  class="nav-link dropdown-toggle active"
                   href="#"
                   id="navbarDropdown"
                   role="button"
@@ -83,7 +83,7 @@
 
               <li class="navbar-item dropdown" v-if="role=='librarians'">
                 <a
-                  class="nav-link dropdown-toggle"
+                  class="nav-link dropdown-toggle active"
                   href="#"
                   id="navbarDropdown"
                   role="button"
@@ -100,28 +100,28 @@
               </li>
 
               <li class="navbar-item" v-if="role=='librarians'">
-                <a href="about.html" class="nav-link">Checkout</a>
+                <a href="about.html" class="nav-link active">Checkout</a>
               </li>
               <li class="navbar-item" v-if="role=='librarians'">
-                <a href="about.html" class="nav-link">Return</a>
+                <a href="about.html" class="nav-link active">Return</a>
               </li>
 
               <!-- --------------------------Guest---------------------------------------- -->
               <li class="navbar-item" v-if="!isLoggedIn">
-                <router-link to="/about" class="nav-link">About</router-link>
+                <router-link to="/about" class="nav-link active">About</router-link>
               </li>
               <li class="navbar-item" v-if="!isLoggedIn">
-                <router-link to="/faq" class="nav-link">FAQ</router-link>
+                <router-link to="/faq" class="nav-link active">FAQ</router-link>
               </li>
               <li class="navbar-item" v-if="!isLoggedIn">
-                <router-link to="/login" class="nav-link">Login</router-link>
+                <router-link to="/login" class="nav-link active">Login</router-link>
               </li>
               <li class="navbar-item" v-if="!isLoggedIn">
-                <router-link to="/register" class="nav-link">Register</router-link>
+                <router-link to="/register" class="nav-link active">Register</router-link>
               </li>
               <!-- ---------------------------Logged In User----------------------------------- -->
               <li class="navbar-item" v-if="isLoggedIn">
-                <a type="link" v-on:click="logout" class="nav-link" style="cursor: pointer">Logout</a>
+                <a type="link" v-on:click="logout" class="nav-link active" style="cursor: pointer">Logout</a>
               </li>
 
               <!-- 

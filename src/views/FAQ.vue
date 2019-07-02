@@ -2,7 +2,7 @@
   <div class="about">
     <div class="breadcrumb" style="margin-bottom: 20px">
       <div class="container">
-        <span class="breadcrumb-item active">About</span>
+        <span class="breadcrumb-item active">FAQ</span>
       </div>
     </div>
     <div class="centre">
