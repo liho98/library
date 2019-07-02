@@ -107,8 +107,8 @@ header .header-top {
       text-decoration: none;
       border: 0; }
   header .header-top .ph-number {
-    float: right; 
     font-size: 10pt;
+    margin: 0px 10px;
   }
   header .header-top .row {
     align-items: center; }

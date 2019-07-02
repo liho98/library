@@ -4,15 +4,31 @@
 
     <div class="header-top">
       <div class="container">
-        <div class="row">
+        <div class="d-flex">
           <!-- <div class="col-md-3">
             <a href="#" class="web-url">www.bookstore.com</a>
           </div>
           <div class="col-md-3">
           </div>-->
-          <div class="col-md-12" style="display: block">
-            <span class="ph-number" v-if="isLoggedIn">Welcome, {{name}}</span>
+          <div v-if="isLoggedIn" class="ml-auto" style="display: inline;">
+            <span class="ph-number">Welcome, {{name}}</span>
+            <button
+              type="button"
+              class="btn btn-default"
+              style="padding: .15rem .35rem; text-transform: none"
+              v-on:click="logout"
+            >Logout</button>
           </div>
+
+          <!-- ---------------------------Logged In User----------------------------------- -->
+          <!-- <li class="navbar-item" v-if="isLoggedIn">
+            <a
+              type="link"
+              v-on:click="logout"
+              class="nav-link active"
+              style="cursor: pointer"
+            >Logout</a>
+          </li>-->
         </div>
       </div>
     </div>
@@ -118,10 +134,6 @@
               </li>
               <li class="navbar-item" v-if="!isLoggedIn">
                 <router-link to="/register" class="nav-link active">Register</router-link>
-              </li>
-              <!-- ---------------------------Logged In User----------------------------------- -->
-              <li class="navbar-item" v-if="isLoggedIn">
-                <a type="link" v-on:click="logout" class="nav-link active" style="cursor: pointer">Logout</a>
               </li>
 
               <!-- 
