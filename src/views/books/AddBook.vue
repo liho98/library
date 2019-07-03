@@ -17,7 +17,6 @@
         <div v-if="errors.has('publisher')">{{ errors.first('publisher') }}</div>
         <div v-if="errors.has('year')">{{ errors.first('year') }}</div>
         <div v-if="errors.has('quantity')">{{ errors.first('quantity') }}</div>
-
       </div>
 
       <!-- <div class="btn-group btn-group-toggle" style="margin-bottom: 20px">
@@ -87,7 +86,13 @@
         style="display: inline"
       />
       <br />
-      <input class="btn" type="submit" value="Add Book" @click="addBook" style="margin-bottom: 20px" />
+      <input
+        class="btn"
+        type="submit"
+        value="Add Book"
+        @click="addBook"
+        style="margin-bottom: 20px"
+      />
     </div>
   </div>
 </template>
@@ -113,8 +118,15 @@ export default {
   },
   methods: {
     addBook() {
-      if (this.id && this.title && this.author && this.publisher && this.year && this.quantity) {
-        const createdAt = new Date();
+      const createdAt = new Date();
+      if (
+        this.id &&
+        this.title &&
+        this.author &&
+        this.publisher &&
+        this.year &&
+        this.quantity
+      ) {
         db.collection("books")
           .add({
             book_id: this.id,
@@ -126,6 +138,16 @@ export default {
             created_at: createdAt
           })
           .then(docRef => {
+            // add copies based on book quantity
+            for (var i = 0; i < this.quantity; i++) {
+              db.collection("books")
+                .doc(docRef.id)
+                .collection("copies")
+                .add({
+                  status: "available",
+                  created_at: createdAt
+                });
+            }
             console.log("Book added");
             alert("Book added!");
             this.$router.go({ path: this.path });
@@ -161,8 +183,8 @@ input[type="radio"] {
 
 .no-spinner::-webkit-outer-spin-button,
 .no-spinner::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
+  -webkit-appearance: none;
+  margin: 0;
 }
 
 label.radio-inline {
