@@ -16,6 +16,8 @@
         <div v-if="errors.has('author')">{{ errors.first('author') }}</div>
         <div v-if="errors.has('publisher')">{{ errors.first('publisher') }}</div>
         <div v-if="errors.has('year')">{{ errors.first('year') }}</div>
+        <div v-if="errors.has('quantity')">{{ errors.first('quantity') }}</div>
+
       </div>
 
       <!-- <div class="btn-group btn-group-toggle" style="margin-bottom: 20px">
@@ -66,12 +68,22 @@
       />
       <br />
       <input
-        class="form-control"
+        class="form-control no-spinner"
         type="number"
         name="year"
         v-model="year"
         v-validate="'required|digits:4'"
         placeholder="Year"
+        style="display: inline"
+      />
+      <br />
+      <input
+        class="form-control"
+        type="number"
+        name="quantity"
+        v-model="quantity"
+        v-validate="'required|integer'"
+        placeholder="Quantity"
         style="display: inline"
       />
       <br />
@@ -96,12 +108,13 @@ export default {
       title: "",
       author: "",
       publisher: "",
-      year: ""
+      year: "",
+      quantity: 1
     };
   },
   methods: {
     addBook() {
-      if (this.id && this.title && this.author && this.publisher && this.year) {
+      if (this.id && this.title && this.author && this.publisher && this.year && this.quantity) {
         const createdAt = new Date();
         db.collection("books")
           .add({
@@ -110,6 +123,8 @@ export default {
             author: this.author,
             publisher: this.publisher,
             year: this.year,
+            quantity: this.quantity,
+            status: "available",
             createdAt
           })
           .then(docRef => {
@@ -144,6 +159,12 @@ input {
 }
 input[type="radio"] {
   width: 30px;
+}
+
+.no-spinner::-webkit-outer-spin-button,
+.no-spinner::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
 }
 
 label.radio-inline {
