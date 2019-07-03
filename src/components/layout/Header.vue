@@ -57,7 +57,10 @@
                 <router-link to="/view-book" class="nav-link active">Book List</router-link>
               </li>
               <li class="navbar-item" v-if="role=='students'">
-                <router-link to="/view-book" class="nav-link active">Borrowed Book</router-link>
+                <router-link to="/" class="nav-link active">Borrowed Book</router-link>
+              </li>
+              <li class="navbar-item" v-if="role=='students'">
+                <router-link to="/" class="nav-link active">Your History</router-link>
               </li>
 
               <!-- ---------------------------Librarian------------------------------------- -->
@@ -116,10 +119,10 @@
               </li>
 
               <li class="navbar-item" v-if="role=='librarians'">
-                <a href="about.html" class="nav-link active">Checkout</a>
+                <router-link to="/checkout" class="nav-link active">Checkout</router-link>
               </li>
               <li class="navbar-item" v-if="role=='librarians'">
-                <a href="about.html" class="nav-link active">Return</a>
+                <router-link to="/return" class="nav-link active">Return</router-link>
               </li>
 
               <!-- --------------------------Guest---------------------------------------- -->

@@ -3,13 +3,20 @@ import Vue from "vue";
 import Router from "vue-router";
 
 import Home from "./views/Home.vue";
+import About from "./views/About.vue";
+import FAQ from "./views/FAQ.vue";
+
+// Login, Register
 import Login from "./views/Login.vue";
 import Register from "./views/Register.vue";
+
+// Book
 import AddBook from "./views/books/AddBook";
 import ViewBook from "./views/books/ViewBook";
 
-import About from "./views/About.vue";
-import FAQ from "./views/FAQ.vue";
+// Checkout, Return
+import Checkout from "./views/checkout-return/Checkout";
+import Return from "./views/checkout-return/Return";
 
 
 Vue.use(Router);
@@ -25,7 +32,7 @@ const router = new Router({
     },
     {
       path: "/",
-      name: "Home",
+      name: "home",
       component: Home,
       // meta: {
       //   requiresAuth: true
@@ -33,7 +40,7 @@ const router = new Router({
     },
     {
       path: "/about",
-      name: "About",
+      name: "about",
       component: About,
       // meta: {
       //   requiresGuest: true,
@@ -41,7 +48,7 @@ const router = new Router({
     },
     {
       path: "/faq",
-      name: "FAQ",
+      name: "faq",
       component: FAQ,
       // meta: {
       //   requiresGuest: true,
@@ -54,7 +61,7 @@ const router = new Router({
     // },
     {
       path: "/login",
-      name: "Login",
+      name: "login",
       component: Login,
       meta: {
         requiresGuest: true
@@ -62,7 +69,7 @@ const router = new Router({
     },
     {
       path: '/register',
-      name: 'Register',
+      name: 'register',
       component: Register,
       meta: {
         requiresGuest: true
@@ -70,7 +77,7 @@ const router = new Router({
     },
     {
       path: '/add-book',
-      name: 'Add Book',
+      name: 'add-book',
       component: AddBook,
       meta: {
         requiresAuth: true,
@@ -78,16 +85,46 @@ const router = new Router({
         studentAuth: false
       }
     },
+    // {
+    //   path: '/edit-book/:book_id',
+    //   name: 'edit-book',
+    //   component: EditBook,
+    //   meta: {
+    //     requiresAuth: true,
+    //     librarianAuth: true,
+    //     studentAuth: false
+    //   }
+    // },
     {
-      path: '/view-book',
-      name: 'View Book',
+      path: '/view-book/:book_id',
+      name: 'view-Book',
       component: ViewBook,
       meta: {
         requiresAuth: true,
         librarianAuth: true,
-        studentAuth: true
+        studentAuth: false
       }
-    }
+    },
+    {
+      path: '/checkout',
+      name: 'checkout',
+      component: Checkout,
+      meta: {
+        requiresAuth: true,
+        librarianAuth: true,
+        studentAuth: false
+      }
+    },
+    {
+      path: '/return',
+      name: 'return',
+      component: Return,
+      meta: {
+        requiresAuth: true,
+        librarianAuth: true,
+        studentAuth: false
+      }
+    },
   ]
 });
 
@@ -129,11 +166,11 @@ router.beforeEach((to, from, next) => {
       } else {
         next('/');
       }
-    } 
+    }
     // for other page
     else {
       // cannot go to page for guest like login, register
-      if(to.meta.requiresGuest){
+      if (to.meta.requiresGuest) {
         next('/');
       } else {
         next();
