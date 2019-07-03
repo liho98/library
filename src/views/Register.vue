@@ -123,22 +123,37 @@ export default {
     };
   },
   methods: {
-    addUser(uid, student_id, name, email, role) {
+    addUser(uid, id, name, email, role) {
       const createdAt = new Date();
-      db.collection(role)
-        .doc(uid)
-        .set({ name, student_id, email, created_at: createdAt })
-        .then(docRef => {
-          console.log("User added: ");
-          alert("Your account has been created!");
-          this.$router.go({ path: "/" });
-        })
-        .catch(error => {
-          console.error("Error adding user: ", error);
-        });
+
+      if (role === "students") {
+        db.collection("students")
+          .doc(uid)
+          .set({ name, student_id: id, email, created_at: createdAt })
+          .then(docRef => {
+            console.log("User added: ");
+            alert("Your account has been created!");
+            this.$router.go({ path: "/" });
+          })
+          .catch(error => {
+            console.error("Error adding user: ", error);
+          });
+      } else {
+        db.collection("librarians")
+          .doc(uid)
+          .set({ name, librarian_id: id, email, created_at: createdAt })
+          .then(docRef => {
+            console.log("User added: ");
+            alert("Your account has been created!");
+            this.$router.go({ path: "/" });
+          })
+          .catch(error => {
+            console.error("Error adding user: ", error);
+          });
+      }
     },
     signUp: function() {
-      if(this.role && this.name && this.email && this.id && this.password){
+      if (this.role && this.name && this.email && this.id && this.password) {
         firebase
           .auth()
           .createUserWithEmailAndPassword(this.email, this.password)
@@ -151,7 +166,7 @@ export default {
               currentUser.updateProfile({
                 displayName: this.name,
                 photoURL: this.role
-              })
+              });
 
               this.addUser(uid, this.id, this.name, this.email, this.role);
             },
