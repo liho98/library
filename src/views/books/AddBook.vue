@@ -93,7 +93,6 @@
 </template>
 
 <script>
-import firebase from "firebase";
 import db from "./../../components/firestoreInit";
 import Vue from "vue";
 import VeeValidate from "vee-validate";
@@ -124,7 +123,6 @@ export default {
             publisher: this.publisher,
             year: this.year,
             quantity: this.quantity,
-            status: "available",
             createdAt
           })
           .then(docRef => {
