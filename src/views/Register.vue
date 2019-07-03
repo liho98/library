@@ -123,11 +123,11 @@ export default {
     };
   },
   methods: {
-    addUser(uid, id, name, email, role) {
+    addUser(uid, student_id, name, email, role) {
       const createdAt = new Date();
       db.collection(role)
         .doc(uid)
-        .set({ name, id, email, createdAt })
+        .set({ name, student_id, email, createdAt })
         .then(docRef => {
           console.log("User added: ");
           alert("Your account has been created!");

@@ -92,10 +92,13 @@
 <script>
 import Multiselect from "vue-multiselect";
 import db from "../../components/firestoreInit";
+import Vue from "vue";
+import { firestorePlugin } from "vuefire";
 
 // how to know the specific book got stock or not?
 // get number of record in checkout collections?
 //
+Vue.use(firestorePlugin);
 
 export default {
   name: "checkout",
@@ -109,41 +112,51 @@ export default {
       due_date: null
     };
   },
+  // vuefire library
+  firestore: {
+    // get books that are available from firebase
+    books: db.collection("books").where("quantity", ">", 0),
+    // get all students from firebase
+    students: db.collection("students")
+  },
+
   created() {
-    db.collection("books")
-      .get()
-      .then(querySnapshot => {
-        querySnapshot.forEach(doc => {
-          const data = {
-            id: doc.id, // firebase document id
-            book_id: doc.data().id,
-            title: doc.data().title,
-            author: doc.data().author,
-            publisher: doc.data().publisher,
-            year: doc.data().year,
-            quantity: doc.data().quantity
-          };
-          this.books.push(data); // books will now equal to data
-        });
-      });
-
-    db.collection("students")
-      .get()
-      .then(querySnapshot => {
-        querySnapshot.forEach(doc => {
-          const data = {
-            id: doc.id, // firebase document id
-            student_id: doc.data().id,
-            name: doc.data().name,
-            email: doc.data().email
-          };
-          this.students.push(data); // books will now equal to data
-        });
-      });
-
     // calculate due date
     const due_date = new Date();
     this.due_date = new Date(due_date.setDate(due_date.getDate() + 14));
+
+    //// OLD METHOD
+
+    // db.collection("books")
+    //   .get()
+    //   .then(querySnapshot => {
+    //     querySnapshot.forEach(doc => {
+    //       const data = {
+    //         id: doc.id, // firebase document id
+    //         book_id: doc.data().id,
+    //         title: doc.data().title,
+    //         author: doc.data().author,
+    //         publisher: doc.data().publisher,
+    //         year: doc.data().year,
+    //         quantity: doc.data().quantity
+    //       };
+    //       this.books.push(data) // books will now equal to data
+    //     })
+    //   })
+
+    // db.collection("students")
+    //   .get()
+    //   .then(querySnapshot => {
+    //     querySnapshot.forEach(doc => {
+    //       const data = {
+    //         id: doc.id, // firebase document id
+    //         student_id: doc.data().id,
+    //         name: doc.data().name,
+    //         email: doc.data().email
+    //       };
+    //       this.students.push(data) // books will now equal to data
+    //     });
+    //   });
   },
   methods: {
     titleYearQuantity({ title, year, quantity }) {
@@ -153,11 +166,34 @@ export default {
       return `${name}, ${student_id}`;
     },
     checkout() {
-      // decrease book quantity
-      
+      // loop throught every selected book to checkout
+      Object.keys(this.books_checkout).forEach(key => {
+        // decrease book quantity
+        const new_quantity = this.books_checkout[key].quantity - 1;
+        db.collection("books")
+          .doc(this.books_checkout[key].id)
+          .update({ quantity: new_quantity });
 
-      // add new checkout record
-
+        const createdAt = new Date();
+        // add new checkout record
+        db.collection("checkout")
+          .add({
+            // use document id instead of book id or student id for easy query later
+            book_did: this.books_checkout[key].id,
+            borrowed_date: createdAt,
+            due_date: this.due_date,
+            student_did: this.student_checkout.id,
+            status: 'borrowed'
+          })
+          .then(docRef => {
+            console.log("Check out book successfully");
+            alert("Check out book successfully");
+            this.$router.go({ path: this.path });
+          })
+          .catch(error => {
+            console.error("Error checking out book: ", error);
+          });
+      });
     }
   }
 };

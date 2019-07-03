@@ -117,7 +117,7 @@ export default {
         const createdAt = new Date();
         db.collection("books")
           .add({
-            id: this.id,
+            book_id: this.id,
             title: this.title,
             author: this.author,
             publisher: this.publisher,
