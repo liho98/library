@@ -127,7 +127,7 @@ export default {
       const createdAt = new Date();
       db.collection(role)
         .doc(uid)
-        .set({ name, student_id, email, createdAt })
+        .set({ name, student_id, email, created_at: createdAt })
         .then(docRef => {
           console.log("User added: ");
           alert("Your account has been created!");

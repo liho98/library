@@ -123,7 +123,7 @@ export default {
             publisher: this.publisher,
             year: this.year,
             quantity: this.quantity,
-            createdAt
+            created_at: createdAt
           })
           .then(docRef => {
             console.log("Book added");
