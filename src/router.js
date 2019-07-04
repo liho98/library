@@ -148,8 +148,8 @@ router.beforeEach((to, from, next) => {
     // I used photoURL attribute to store user role, because no other choice alr
     const role = currentUser.photoURL;
 
-    console.log("User Logged In");
-    console.log("User Role: " + role);
+    // console.log("User Logged In");
+    // console.log("User Role: " + role);
 
     // if user want to go to studentAuth page
     if (to.meta.studentAuth) {

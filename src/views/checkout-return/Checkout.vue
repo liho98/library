@@ -23,7 +23,6 @@
         id="books"
         v-model="books_checkout"
         :options="books"
-        :multiple="true"
         :close-on-select="true"
         :clear-on-select="false"
         :preserve-search="true"
@@ -31,20 +30,36 @@
         placeholder="Type here to search"
         label="title"
         track-by="title"
-        :custom-label="titleYearQuantity"
-      >
-        <!-- 
+        :custom-label="titleAuthor"
+        @input="onSelect()"
+      />
+      <!-- 
         :preserve-search="true"
         :preselect-first="true"
+        :multiple="true"
 
-        -->
-        <template slot="selection" slot-scope="{ values, search, isOpen }">
+      -->
+      <!-- <template slot="selection" slot-scope="{ values, search, isOpen }">
           <span
             class="multiselect__single"
             v-if="values.length &amp;&amp; !isOpen"
           >{{ values.length }} book(s) selected</span>
-        </template>
-      </multiselect>
+      </template>-->
+
+      <br />
+      <label for="copies">Select book copies:</label>
+      <multiselect
+        id="copies"
+        v-model="copies_checkout"
+        :options="copies"
+        :close-on-select="true"
+        :clear-on-select="false"
+        :preserve-search="true"
+        :preselect-first="true"
+        placeholder="Type here to search"
+        label="id"
+        track-by="id"
+      />
 
       <br />
       <label for="student">Select student:</label>
@@ -107,8 +122,10 @@ export default {
     return {
       books: [],
       students: [],
+      copies: [],
       student_checkout: null,
-      books_checkout: null,
+      books_checkout: [],
+      copies_checkout: [],
       due_date: null
     };
   },
@@ -159,19 +176,17 @@ export default {
     //   });
   },
   methods: {
-    titleYearQuantity({ title, year, quantity }) {
-      return `${title}, ${year} (Left: ${quantity})`;
+    titleAuthor({ title, author }) {
+      return `${title} by ${author}`;
     },
     nameStudentID({ name, student_id }) {
       return `${name}, ${student_id}`;
     },
     checkout() {
-      // loop throught every selected book to checkout
-      Object.keys(this.books_checkout).forEach(key => {
-        // decrease book quantity
-        const new_quantity = this.books_checkout[key].quantity - 1;
+// decrease book quantity
+        const new_quantity = this.books_checkout.quantity - 1;
         db.collection("books")
-          .doc(this.books_checkout[key].id)
+          .doc(this.books_checkout.id)
           .update({ quantity: new_quantity });
 
         const createdAt = new Date();
@@ -179,11 +194,12 @@ export default {
         db.collection("checkout")
           .add({
             // use document id instead of book id or student id for easy query later
-            book_did: this.books_checkout[key].id,
+            book_did: this.books_checkout.id,
+            copies_did: this.copies_checkout.id,
             borrowed_date: createdAt,
             due_date: this.due_date,
             student_did: this.student_checkout.id,
-            status: 'borrowed'
+            status: "borrowed"
           })
           .then(docRef => {
             console.log("Check out book successfully");
@@ -193,7 +209,30 @@ export default {
           .catch(error => {
             console.error("Error checking out book: ", error);
           });
-      });
+      // this.books_checkout = [this.books_checkout]
+
+      // // loop throught every selected book to checkout
+      // Object.keys(this.books_checkout).forEach(key => {
+        
+      // });
+    },
+    onSelect() {
+      this.copies = []
+      // find copies based on book did
+      // this.copies.push(books.docRef(this.books_checkout.id).collection('copies'))
+      db.collection("books")
+        .doc(this.books_checkout.id)
+        .collection("copies")
+        .get()
+        .then(querySnapshot => {
+          querySnapshot.forEach(doc => {
+            const data = {
+              id: doc.id, // firebase document id
+              status: doc.data().status
+            };
+            this.copies.push(data); // books will now equal to data
+          });
+        });
     }
   }
 };

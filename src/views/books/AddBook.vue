@@ -134,7 +134,7 @@ export default {
             author: this.author,
             publisher: this.publisher,
             year: this.year,
-            quantity: this.quantity,
+            quantity: Number(this.quantity),
             created_at: createdAt
           })
           .then(docRef => {
