@@ -183,41 +183,46 @@ export default {
       return `${name}, ${student_id}`;
     },
     checkout() {
-// decrease book quantity
-        const new_quantity = this.books_checkout.quantity - 1;
-        db.collection("books")
-          .doc(this.books_checkout.id)
-          .update({ quantity: new_quantity });
+      // decrease book quantity
+      const new_quantity = this.books_checkout.quantity - 1;
+      db.collection("books")
+        .doc(this.books_checkout.id)
+        .update({ quantity: new_quantity });
 
-        const createdAt = new Date();
-        // add new checkout record
-        db.collection("checkout")
-          .add({
-            // use document id instead of book id or student id for easy query later
-            book_did: this.books_checkout.id,
-            copies_did: this.copies_checkout.id,
-            borrowed_date: createdAt,
-            due_date: this.due_date,
-            student_did: this.student_checkout.id,
-            status: "borrowed"
-          })
-          .then(docRef => {
-            console.log("Check out book successfully");
-            alert("Check out book successfully");
-            this.$router.go({ path: this.path });
-          })
-          .catch(error => {
-            console.error("Error checking out book: ", error);
-          });
+      const createdAt = new Date();
+      // add new checkout record
+      db.collection("checkout")
+        .add({
+          // use document id instead of book id or student id for easy query later
+          book_did: this.books_checkout.id,
+          copies_did: this.copies_checkout.id,
+          borrowed_date: createdAt,
+          due_date: this.due_date,
+          student_did: this.student_checkout.id
+        })
+        .then(docRef => {
+          // update copies to borrowed and add checkout id to refer
+          db.collection("books")
+            .doc(this.books_checkout.id)
+            .collection("copies")
+            .doc(this.copies_checkout.id)
+            .update({ status: "borrowed", checkout_did: docRef.id });
+          console.log("Check out book successfully");
+          alert("Check out book successfully");
+          this.$router.go({ path: this.path });
+        })
+        .catch(error => {
+          console.error("Error checking out book: ", error);
+        });
       // this.books_checkout = [this.books_checkout]
 
       // // loop throught every selected book to checkout
       // Object.keys(this.books_checkout).forEach(key => {
-        
+
       // });
     },
     onSelect() {
-      this.copies = []
+      this.copies = [];
       // find copies based on book did
       // this.copies.push(books.docRef(this.books_checkout.id).collection('copies'))
       db.collection("books")
@@ -226,11 +231,13 @@ export default {
         .get()
         .then(querySnapshot => {
           querySnapshot.forEach(doc => {
-            const data = {
-              id: doc.id, // firebase document id
-              status: doc.data().status
-            };
-            this.copies.push(data); // books will now equal to data
+            if (doc.data().status != "borrowed") {
+              const data = {
+                id: doc.id, // firebase document id
+                status: doc.data().status
+              };
+              this.copies.push(data); // books will now equal to data
+            }
           });
         });
     }
