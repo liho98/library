@@ -77,8 +77,8 @@
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown" style="margin: 0px">
                   <router-link to="/view-book" class="dropdown-item">View Book</router-link>
                   <router-link to="/add-book" class="dropdown-item">Add Book</router-link>
-                  <router-link to="/" class="dropdown-item">Edit Book</router-link>
-                  <router-link to="/" class="dropdown-item">Delete Book</router-link>
+                  <router-link to="/edit-book" class="dropdown-item">Edit Book</router-link>
+                  <router-link to="/search-book" class="dropdown-item">Search Book</router-link>
                 </div>
               </li>
 
