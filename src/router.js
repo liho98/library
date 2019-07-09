@@ -13,6 +13,8 @@ import Register from "./views/Register.vue";
 // Book
 import AddBook from "./views/books/AddBook";
 import ViewBook from "./views/books/ViewBook";
+import SearchBook from "./views/books/SearchBook"
+import EditBook from "./views/books/EditBook"
 
 // Checkout, Return
 import Checkout from "./views/checkout-return/Checkout";
@@ -85,19 +87,29 @@ const router = new Router({
         studentAuth: false
       }
     },
-    // {
-    //   path: '/edit-book/:book_id',
-    //   name: 'edit-book',
-    //   component: EditBook,
-    //   meta: {
-    //     requiresAuth: true,
-    //     librarianAuth: true,
-    //     studentAuth: false
-    //   }
-    // },
+    {
+      path: '/edit-book/:book_id',
+      name: 'edit-book',
+     component: EditBook,
+      meta: {
+        requiresAuth: true,
+        librarianAuth: true,
+        studentAuth: false
+      }
+    },
+    {
+      path: '/search-book/:book_id',
+      name: 'search-book',
+     component: SearchBook,
+      meta: {
+        requiresAuth: true,
+        librarianAuth: true,
+        studentAuth: false
+      }
+    },
     {
       path: '/view-book/:book_id',
-      name: 'view-Book',
+      name: 'view-book',
       component: ViewBook,
       meta: {
         requiresAuth: true,
