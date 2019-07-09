@@ -88,7 +88,7 @@ const router = new Router({
       }
     },
     {
-      path: '/edit-book/:book_id',
+      path: '/edit-book',
       name: 'edit-book',
      component: EditBook,
       meta: {
@@ -98,7 +98,7 @@ const router = new Router({
       }
     },
     {
-      path: '/search-book/:book_id',
+      path: '/search-book',
       name: 'search-book',
      component: SearchBook,
       meta: {
