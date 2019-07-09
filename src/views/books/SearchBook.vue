@@ -8,28 +8,28 @@
       </div>
     </div>
 
-
     <div class="search-book centre">
 
       <input
         class="form-control"
         type="text"
         name="keyword"
-        v-model="id"
+        v-model="keyword"
         placeholder="Keyword"
         style="display: inline"
         v-validate="'required'"
         required
       />
-      <br />
-
+      <br/>
       <input
         class="btn"
         type="submit"
+        @click="searchBook"
         value="Search"
-        style="margin-bottom: 20px"
       />
     </div>
+
+    
   </div>
 </template>
 
@@ -37,11 +37,28 @@
 import db from "./../../components/firestoreInit";
 import Vue from "vue";
 import VeeValidate from "vee-validate";
-
+import { firestorePlugin } from "vuefire";
+Vue.use(firestorePlugin);
 Vue.use(VeeValidate);
 
 export default {
-  name: "search-book"
+  name: "search-book",
+  data() {
+    return {
+      books: []
+    };
+  },
+  // vuefire library
+  firestore: {
+    // get books that are available from firebase
+    books: db.collection("books").orderBy("book_id")
+  },
+  methods: {
+    searchBook() {
+      alert("PRINT")
+      console.log(this.books)
+    }
+  }
 };
 </script>
 
