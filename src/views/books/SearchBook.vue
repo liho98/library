@@ -8,7 +8,7 @@
       </div>
     </div>
 
-    <b-container fluid>
+    <b-container>
     <!-- User Interface controls -->
     <b-row>
       <b-col md="6" class="my-1">
