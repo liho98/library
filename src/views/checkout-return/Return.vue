@@ -59,6 +59,7 @@
         placeholder="Type here to search"
         label="id"
         track-by="id"
+        @input="onSelectCopies()"
       />
 
       <br />
@@ -73,6 +74,21 @@
         id="due-date"
         aria-describedby="helpId"
         placeholder="Due date"
+        disabled
+      />
+
+      <br />
+      <label for="student">Return date:</label>
+
+      <input
+        :value="return_date && return_date.toISOString().split('T')[0]"
+        @input="return_date = $event.target.valueAsDate"
+        type="date"
+        class="form-control"
+        name="return-date"
+        id="return-date"
+        aria-describedby="helpId"
+        placeholder="Return date"
         disabled
       />
 
@@ -110,7 +126,9 @@ export default {
       copies: [],
       books_return: [],
       copies_return: [],
-      due_date: null
+      due_date: null,
+      checkout: [],
+      return_date: null
     };
   },
   // vuefire library
@@ -122,9 +140,11 @@ export default {
   },
 
   created() {
+    this.return_date = new Date();
+
     // calculate due date
-    const due_date = new Date();
-    this.due_date = new Date(due_date.setDate(due_date.getDate() + 14));
+    // const due_date = new Date();
+    // this.due_date = new Date(due_date.setDate(due_date.getDate()));
 
     //// OLD METHOD
 
@@ -201,7 +221,7 @@ export default {
 
       // update checkout record
       db.collection("checkout")
-        .doc(this.copies.checkout_did)
+        .doc(this.copies_return.checkout_did)
         .update({ status: "returned", returned_did: docRef.id });
 
       // // loop throught every selected book to checkout
@@ -227,6 +247,38 @@ export default {
               this.copies.push(data); // books will now equal to data
             }
           });
+        });
+    },
+    onSelectCopies() {
+      var due_date = null;
+      // get due date
+      db.collection("checkout")
+        .doc(this.copies_return.checkout_did)
+        .get()
+        .then(querySnapshot => {
+            // TODO : Hi
+          const data = {
+            id: querySnapshot.id, // firebase document id
+            due_date: querySnapshot.data().due_date.toDate()
+          };
+          this.checkout.push(data); // books will now equal to data
+
+          console.log(Object.keys(this.checkout)[0]);
+
+          this.due_date = this.checkout[0].due_date;
+          if (this.return_date > this.checkout.due_date) {
+            // pay fine
+            console.log(
+              this.return_date + " > " + this.due_date + ": Pay fine"
+            );
+          } else {
+            console.log(
+              this.return_date + " > " + this.due_date + ": No need to pay fine"
+            );
+          }
+
+          //   due_date = querySnapshot.data().due_date.toDate();
+          //   console.log(this.due_date);
         });
     }
   }
