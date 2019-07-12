@@ -10,7 +10,7 @@
 
     <div style="margin-left: 10%; margin-right: 10%">
       <hr/>
-      <h1>Step 1. Select book for updating</h1>
+      <h2>Step 1. Select book for updating</h2>
       <hr/>
     </div>
 
@@ -93,81 +93,88 @@
     
     <div style="margin-left: 10%; margin-right: 10%">
       <hr/>
-      <h1>Step 2. Enter new detail</h1>
+      <h2>Step 2. Enter new detail</h2>
       <hr/>
     </div>
     
-    <form id="updateBookForm">
-      <div class="edit-book centre">
-        <div class="alert alert-danger" v-show="errors.any()">
-          <!-- <div v-if="errors.has('role')">{{ errors.first('role') }}</div> -->
-          <div v-if="errors.has('title')">{{ errors.first('title') }}</div>
-          <div v-if="errors.has('author')">{{ errors.first('author') }}</div>
-          <div v-if="errors.has('publisher')">{{ errors.first('publisher') }}</div>
-          <div v-if="errors.has('year')">{{ errors.first('year') }}</div>
-        </div>
+    <v-container align-center>
+      <v-form ref="form" v-model="valid">
+        <v-layout row>
+          <v-flex xs2 text-xs-right>
+            Title
+          </v-flex>
+          <v-flex xs8>
+            <v-text-field
+              type="text"
+              v-model="title"
+              :rules="[v => (v && v.length) >= 1 || 'Required']"
+              required
+            >
+            </v-text-field>
+          </v-flex>
+        </v-layout>
+        <v-layout row>
+          <v-flex xs2 text-xs-right>
+            Author
+          </v-flex>
+          <v-flex xs8>
+            <v-text-field
+              type="text"
+              v-model="author"
+              :rules="[v => (v && v.length) >= 1 || 'Required']"
+              required
+            >
+            </v-text-field>
+          </v-flex>
+        </v-layout>
+        <v-layout row>
+          <v-flex xs2 text-xs-right>
+            Publisher
+          </v-flex>
+          <v-flex xs8>
+            <v-text-field
+              type="text"
+              v-model="publisher"
+              :rules="[v => (v && v.length) >= 1 || 'Required']"
+              required
+            >
+            </v-text-field>
+          </v-flex>
+        </v-layout>
+        <v-layout row>
+          <v-flex xs2 text-xs-right>
+            Year
+          </v-flex>
+          <v-flex xs8>
+            <v-text-field
+              type="number"
+              v-model="year"
+              required
+            >
+            </v-text-field>
+          </v-flex>
+        </v-layout>
+        <v-layout row>
+          <v-flex xs12 text-xs-center>
+            <v-btn
+              centered
+              
+                color="primary"
+                :disabled="!valid"
+                @click="updateBook"
+            >
+            submit
+            </v-btn>
+            <v-btn 
+              @click="clear"
+            >
+            clear
+            </v-btn>
+          </v-flex>
+        </v-layout>
         
-        <input
-          class="form-control"
-          id="updateBookTitle"
-          type="text"
-          name="title"
-          v-model="title"
-          placeholder="Book Title"
-          style="display: inline"
-          v-validate="'required'"
-        />
-        <br/>
-        <input
-          class="form-control"
-          id="updateBookAuthor"
-          type="text"
-          name="author"
-          v-model="author"
-          placeholder="Author"
-          style="display: inline"
-          v-validate="'required'"
-        />
-        <br/>
-        <input
-          class="form-control"
-          id="updateBookPublisher"
-          type="text"
-          name="publisher"
-          v-model="publisher"
-          v-validate="'required'"
-          placeholder="Publisher"
-          style="display: inline"
-        />
-        <br/>
-        <input
-          class="form-control no-spinner"
-          id="updateBookYear"
-          type="number"
-          name="year"
-          v-model="year"
-          v-validate="'required|digits:4'"
-          placeholder="Year"
-          style="display: inline"
-        />
-        <br/>
-        <input
-          class="btn"
-          type="button"
-          value="Update Book"
-          @click="updateBook"
-          style="margin-bottom: 20px"
-        />
-        &nbsp;
-        <input
-          class="btn"
-          type="button"
-          value="Reset"
-          onClick="this.form.reset()"
-          style="margin-bottom: 20px"
-        />
-      </div>
-    </form>
+      </v-form>
+    </v-container>
   </div>
 </template>
 
@@ -204,6 +211,7 @@ Vue.use(DropdownPlugin)
 Vue.use(TablePlugin)
 
 import Vuetify from 'vuetify'
+import 'vuetify/dist/vuetify.min.css'
 Vue.use(Vuetify)
 
 export default {
@@ -232,7 +240,8 @@ export default {
       title: "",
       author: "",
       publisher: "",
-      year: ""
+      year: "",
+      valid: true
     }
   },
   firestore () {
@@ -283,11 +292,12 @@ export default {
           year: this.year
         }
       )
-      this.title = ""
-      this.author = ""
-      this.publisher = ""
-      this.year = ""
+      this.$refs.form.reset();
+    },
+    clear() {
+      this.$refs.form.reset();
     }
+
   }
 };
 </script>
@@ -351,3 +361,5 @@ th, td {
 
 tr:hover {background-color:#f5f5f5;}
 </style>
+
+
