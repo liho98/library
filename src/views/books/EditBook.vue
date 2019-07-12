@@ -97,75 +97,77 @@
       <hr/>
     </div>
     
-    <div class="edit-book centre">
-      <div class="alert alert-danger" v-show="errors.any()">
-        <!-- <div v-if="errors.has('role')">{{ errors.first('role') }}</div> -->
-        <div v-if="errors.has('title')">{{ errors.first('title') }}</div>
-        <div v-if="errors.has('author')">{{ errors.first('author') }}</div>
-        <div v-if="errors.has('publisher')">{{ errors.first('publisher') }}</div>
-        <div v-if="errors.has('year')">{{ errors.first('year') }}</div>
+    <form id="updateBookForm">
+      <div class="edit-book centre">
+        <div class="alert alert-danger" v-show="errors.any()">
+          <!-- <div v-if="errors.has('role')">{{ errors.first('role') }}</div> -->
+          <div v-if="errors.has('title')">{{ errors.first('title') }}</div>
+          <div v-if="errors.has('author')">{{ errors.first('author') }}</div>
+          <div v-if="errors.has('publisher')">{{ errors.first('publisher') }}</div>
+          <div v-if="errors.has('year')">{{ errors.first('year') }}</div>
+        </div>
+        
+        <input
+          class="form-control"
+          id="updateBookTitle"
+          type="text"
+          name="title"
+          v-model="title"
+          placeholder="Book Title"
+          style="display: inline"
+          v-validate="'required'"
+        />
+        <br/>
+        <input
+          class="form-control"
+          id="updateBookAuthor"
+          type="text"
+          name="author"
+          v-model="author"
+          placeholder="Author"
+          style="display: inline"
+          v-validate="'required'"
+        />
+        <br/>
+        <input
+          class="form-control"
+          id="updateBookPublisher"
+          type="text"
+          name="publisher"
+          v-model="publisher"
+          v-validate="'required'"
+          placeholder="Publisher"
+          style="display: inline"
+        />
+        <br/>
+        <input
+          class="form-control no-spinner"
+          id="updateBookYear"
+          type="number"
+          name="year"
+          v-model="year"
+          v-validate="'required|digits:4'"
+          placeholder="Year"
+          style="display: inline"
+        />
+        <br/>
+        <input
+          class="btn"
+          type="button"
+          value="Update Book"
+          @click="updateBook"
+          style="margin-bottom: 20px"
+        />
+        &nbsp;
+        <input
+          class="btn"
+          type="button"
+          value="Reset"
+          onClick="this.form.reset()"
+          style="margin-bottom: 20px"
+        />
       </div>
-      
-      <input
-        class="form-control"
-        id="updateBookTitle"
-        type="text"
-        name="title"
-        v-model="title"
-        placeholder="Book Title"
-        style="display: inline"
-        v-validate="'required'"
-      />
-      <br/>
-      <input
-        class="form-control"
-        id="updateBookAuthor"
-        type="text"
-        name="author"
-        v-model="author"
-        placeholder="Author"
-        style="display: inline"
-        v-validate="'required'"
-      />
-      <br/>
-      <input
-        class="form-control"
-        id="updateBookPublisher"
-        type="text"
-        name="publisher"
-        v-model="publisher"
-        v-validate="'required'"
-        placeholder="Publisher"
-        style="display: inline"
-      />
-      <br/>
-      <input
-        class="form-control no-spinner"
-        id="updateBookYear"
-        type="number"
-        name="year"
-        v-model="year"
-        v-validate="'required|digits:4'"
-        placeholder="Year"
-        style="display: inline"
-      />
-      <br/>
-      <input
-        class="btn"
-        type="submit"
-        value="Update Book"
-        @click="updateBook"
-        style="margin-bottom: 20px"
-      />
-      &nbsp;
-      <input
-        class="btn"
-        type="button"
-        value="Reset"
-        onClick="this.form.reset()"
-        style="margin-bottom: 20px"
-      />
-    </div>
+    </form>
   </div>
 </template>
 
@@ -273,7 +275,7 @@ export default {
       document.getElementById("updateBookYear").value = this.selected[0].year
     },
     updateBook() {
-      db.collection("books").doc(this.selected[0].book_id).update(
+      db.collection("books").doc(this.selected[0].id).update(
         {
           title: this.title,
           author: this.author,
@@ -281,6 +283,10 @@ export default {
           year: this.year
         }
       )
+      this.title = ""
+      this.author = ""
+      this.publisher = ""
+      this.year = ""
     }
   }
 };
