@@ -1,13 +1,13 @@
 <template>
   <div class="checkout">
     <div class="breadcrumb" style="margin-bottom: 20px">
-      <div class="container">
+      <div class="container" style="padding: 10px 20px;">
         <router-link class="breadcrumb-item" to="/">Home</router-link>
         <span class="breadcrumb-item active">Checkout</span>
       </div>
     </div>
     <div class="centre">
-      <label for="books">Select book(s):</label>
+      <label for="books">Select book:</label>
       <!-- <multiselect
         id="books"
         v-model="books"
@@ -132,7 +132,8 @@ export default {
   // vuefire library
   firestore: {
     // get books that are available from firebase
-    books: db.collection("books").where("quantity", ">", 0),
+    books: db.collection("books").where("current_quantity", ">", 0),
+
     // get all students from firebase
     students: db.collection("students")
   },
@@ -214,6 +215,12 @@ export default {
         .catch(error => {
           console.error("Error checking out book: ", error);
         });
+
+// update isAvailable
+
+
+
+
       // this.books_checkout = [this.books_checkout]
 
       // // loop throught every selected book to checkout
@@ -222,6 +229,7 @@ export default {
       // });
     },
     onSelect() {
+      this.copies_checkout = [];
       this.copies = [];
       // find copies based on book did
       // this.copies.push(books.docRef(this.books_checkout.id).collection('copies'))

@@ -1,7 +1,7 @@
 <template>
   <div class="about">
     <div class="breadcrumb" style="margin-bottom: 20px">
-      <div class="container">
+      <div class="container" style="padding: 10px 20px;">
         <span class="breadcrumb-item active">About</span>
       </div>
     </div>

@@ -1,7 +1,7 @@
 <template>
   <div id="add-book">
     <div class="breadcrumb" style="margin-bottom: 20px">
-      <div class="container">
+      <div class="container" style="padding: 10px 20px;">
         <router-link class="breadcrumb-item" to="/">Home</router-link>
         <!-- <a class="breadcrumb-item" href="index.html">Book</a> -->
         <span class="breadcrumb-item active">Add Book</span>
@@ -135,7 +135,8 @@ export default {
             publisher: this.publisher,
             year: this.year,
             quantity: Number(this.quantity),
-            created_at: createdAt
+            created_at: createdAt,
+            current_quantity: Number(this.quantity)
           })
           .then(docRef => {
             // add copies based on book quantity

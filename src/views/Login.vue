@@ -1,7 +1,7 @@
 <template>
   <div id="login">
     <div class="breadcrumb" style="margin-bottom: 20px">
-      <div class="container">
+      <div class="container" style="padding: 10px 20px;">
         <!-- <a class="breadcrumb-item" href="index.html">Home</a> -->
         <span class="breadcrumb-item active">Login</span>
       </div>

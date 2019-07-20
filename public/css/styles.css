@@ -95,7 +95,7 @@ img {
 header .header-top {
   /* background: #fcba68; */
   /* color: #fff; */
-  padding: 10px 0 0px; }
+  padding: 0px; }
   header .header-top .web-url {
     font-size: 12px;
     border-bottom: 1px solid;
@@ -113,7 +113,7 @@ header .header-top {
   header .header-top .row {
     align-items: center; }
 header .main-menu {
-  padding: 10px 0px 40px; }
+  padding: 0px; }
   header .main-menu .navbar {
     padding: 0; }
   header .main-menu .navbar-brand {
@@ -525,7 +525,7 @@ header .cart {
 
   .container {
     width: 100%;
-    padding: 0 20px;
+    padding: 0 20px; 
     max-width: 100%; }
 
   .recent-book-sec .row {
@@ -561,7 +561,7 @@ header .cart {
     font-size: 12px; }
 
   header .main-menu {
-    padding: 20px 0; }
+    padding: 0; }
 
   header .main-menu .navbar-light .navbar-nav .navbar-item {
     padding: 0;

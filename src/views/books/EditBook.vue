@@ -1,7 +1,7 @@
 <template>
   <div id="edit-book">
     <div class="breadcrumb" style="margin-bottom: 20px">
-      <div class="container">
+      <div class="container" style="padding: 10px 20px;">
         <router-link class="breadcrumb-item" to="/">Home</router-link>
         <!-- <a class="breadcrumb-item" href="index.html">Book</a> -->
         <span class="breadcrumb-item active">Search Book</span>

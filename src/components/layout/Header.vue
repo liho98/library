@@ -3,14 +3,14 @@
     <!-- <script defer type="application/javascript" src="js/dropdown.js"></script> -->
 
     <div class="header-top">
-      <div class="container">
-        <div class="d-flex">
+      <div class="container" style="padding-top: 10px; padding-bottom: 0px">
+        <div class="d-flex align-items-end flex-column">
           <!-- <div class="col-md-3">
             <a href="#" class="web-url">www.bookstore.com</a>
           </div>
           <div class="col-md-3">
           </div>-->
-          <div v-if="isLoggedIn" class="ml-auto" style="display: inline;">
+          <div v-if="isLoggedIn" class="p-2" style="display: inline;">
             <span class="ph-number">Welcome, {{name}}</span>
             <button
               type="button"
@@ -32,8 +32,8 @@
         </div>
       </div>
     </div>
-    <div class="main-menu">
-      <div class="container">
+    <div class="main-menu" style="padding-top: 0px;">
+      <div class="container" >
         <nav class="navbar navbar-expand-lg navbar-light">
           <router-link to="/" class="navbar-brand" style="margin-right: 0px">
             <img src="images/logo.png" alt="logo" style="width: 150px" />
@@ -94,7 +94,6 @@
                 >Student</a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown" style="margin: 0px">
                   <router-link to="/" class="dropdown-item">View Student</router-link>
-                  <router-link to="/" class="dropdown-item">Add Student</router-link>
                   <router-link to="/" class="dropdown-item">Edit Student</router-link>
                   <router-link to="/" class="dropdown-item">Delete Student</router-link>
                 </div>
@@ -112,7 +111,6 @@
                 >Librarian</a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown" style="margin: 0px">
                   <router-link to="/" class="dropdown-item">View Librarian</router-link>
-                  <router-link to="/" class="dropdown-item">Add Librarian</router-link>
                   <router-link to="/" class="dropdown-item">Edit Librarian</router-link>
                   <router-link to="/" class="dropdown-item">Delete Librarian</router-link>
                 </div>

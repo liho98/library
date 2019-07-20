@@ -1,7 +1,7 @@
 <template>
   <div class="return">
     <div class="breadcrumb" style="margin-bottom: 20px">
-      <div class="container">
+      <div class="container" style="padding: 10px 20px;">
         <router-link class="breadcrumb-item" to="/">Home</router-link>
         <span class="breadcrumb-item active">Return</span>
       </div>
@@ -230,6 +230,9 @@ export default {
       // });
     },
     onSelect() {
+      // reset the copies multiselect
+      this.copies_return = [];
+
       this.copies = [];
       // find copies based on book did
       // this.copies.push(books.docRef(this.books_checkout.id).collection('copies'))
@@ -256,7 +259,7 @@ export default {
         .doc(this.copies_return.checkout_did)
         .get()
         .then(querySnapshot => {
-            // TODO : Hi
+          // TODO : Hi
           const data = {
             id: querySnapshot.id, // firebase document id
             due_date: querySnapshot.data().due_date.toDate()
