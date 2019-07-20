@@ -1,7 +1,8 @@
 <template>
   <div class="checkout">
     <div class="breadcrumb" style="margin-bottom: 20px">
-      <div class="container" style="padding: 10px 20px;">
+      <div class="container" style="padding: 10px 20px;"
+      >
         <router-link class="breadcrumb-item" to="/">Home</router-link>
         <span class="breadcrumb-item active">Checkout</span>
       </div>
@@ -188,7 +189,7 @@ export default {
       const new_quantity = this.books_checkout.quantity - 1;
       db.collection("books")
         .doc(this.books_checkout.id)
-        .update({ quantity: new_quantity });
+        .update({ current_quantity: new_quantity });
 
       const createdAt = new Date();
       // add new checkout record
@@ -217,9 +218,6 @@ export default {
         });
 
 // update isAvailable
-
-
-
 
       // this.books_checkout = [this.books_checkout]
 
