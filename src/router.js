@@ -19,7 +19,7 @@ import EditBook from "./views/books/EditBook"
 // Checkout, Return
 import Checkout from "./views/checkout-return/Checkout";
 import Return from "./views/checkout-return/Return";
-
+import CheckoutReturnHistory from "./views/checkout-return/CheckoutReturnHistory";
 
 Vue.use(Router);
 
@@ -137,6 +137,16 @@ const router = new Router({
         studentAuth: false
       }
     },
+    {
+      path: '/checkout-return-history',
+      name: 'checkout-return-history',
+      component: CheckoutReturnHistory,
+      meta: {
+        requiresAuth: true,
+        librarianAuth: false,
+        studentAuth: true
+      }
+    },
   ]
 });
 
@@ -156,6 +166,9 @@ router.beforeEach((to, from, next) => {
       next();
     }
   } else {
+
+    localStorage.userId = currentUser.uid
+
     // get user role
     // I used photoURL attribute to store user role, because no other choice alr
     const role = currentUser.photoURL;

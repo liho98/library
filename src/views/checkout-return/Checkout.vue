@@ -94,6 +94,7 @@
 
       <br />
       <div class="text-center">
+
         <input class="btn" type="submit" value="Checkout" @click="checkout" />
       </div>
 
@@ -110,6 +111,10 @@ import Multiselect from "vue-multiselect";
 import db from "../../components/firestoreInit";
 import Vue from "vue";
 import { firestorePlugin } from "vuefire";
+
+import Vuetify from 'vuetify'
+import 'vuetify/dist/vuetify.min.css'
+Vue.use(Vuetify)
 
 // how to know the specific book got stock or not?
 // get number of record in checkout collections?
@@ -208,7 +213,7 @@ export default {
             .doc(this.books_checkout.id)
             .collection("copies")
             .doc(this.copies_checkout.id)
-            .update({ status: "borrowed", checkout_did: docRef.id });
+            .update({ status: "borrowed", checkout_did: docRef.id, student_did: this.student_checkout.id });
           console.log("Check out book successfully");
           alert("Check out book successfully");
           this.$router.go({ path: this.path });

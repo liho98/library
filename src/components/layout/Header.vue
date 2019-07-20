@@ -60,7 +60,7 @@
                 <router-link to="/" class="nav-link active">Borrowed Book</router-link>
               </li>
               <li class="navbar-item" v-if="role=='students'">
-                <router-link to="/" class="nav-link active">Your History</router-link>
+                <router-link to="/checkout-return-history" class="nav-link active">Your History</router-link>
               </li>
 
               <!-- ---------------------------Librarian------------------------------------- -->

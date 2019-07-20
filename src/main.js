@@ -1,7 +1,12 @@
 import Vue from "vue";
+import './plugins/vuetify'
 import firebase from './components/firebaseInit';
 import App from "./App.vue";
 import router from "./router";
+
+import VTooltip from 'v-tooltip'
+
+Vue.use(VTooltip)
 
 Vue.config.productionTip = false;
 

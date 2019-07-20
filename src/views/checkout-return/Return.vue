@@ -92,6 +92,39 @@
         disabled
       />
 
+      <div id="div-fine" style="display: none;">
+        <br />
+
+        <label for="student">Days of late return:</label>
+
+        <input
+          v-model="days_late"
+          type="number"
+          class="form-control"
+          name="days_late"
+          id="days_late"
+          aria-describedby="helpId"
+          placeholder="Days late"
+          disabled
+          style="width: 100%"
+        />
+
+        <br />
+
+        <label for="student">Late return fine (RM): &nbsp; <span v-tooltip="msg" ><i class="far fa-question-circle" style="color: #008CBA"></i></span></label>
+        <input
+          v-model="fine"
+          type="number"
+          class="form-control"
+          name="fine"
+          id="fine"
+          aria-describedby="helpId"
+          placeholder="Fine"
+          disabled
+          style="width: 100%"
+        />
+      </div>
+
       <br />
       <div class="text-center">
         <input class="btn" type="submit" value="Return" @click="returnBook" />
@@ -111,6 +144,12 @@ import db from "../../components/firestoreInit";
 import Vue from "vue";
 import { firestorePlugin } from "vuefire";
 
+import Tooltip from 'vue-directive-tooltip';
+import 'vue-directive-tooltip/dist/vueDirectiveTooltip.css';
+
+Vue.use(Tooltip);
+            
+
 // how to know the specific book got stock or not?
 // get number of record in return collections?
 //
@@ -128,7 +167,10 @@ export default {
       copies_return: [],
       due_date: null,
       checkout: [],
-      return_date: null
+      return_date: null,
+      fine: 0,
+      days_late: 0,
+      msg: "Total fine = Days of late return x RM 0.50"
     };
   },
   // vuefire library
@@ -201,8 +243,11 @@ export default {
           // use document id instead of book id or student id for easy query later
           book_did: this.books_return.id,
           copies_did: this.copies_return.id,
-          returned_date: createdAt,
-          checkout_did: this.copies_return.checkout_did
+          return_date: createdAt,
+          checkout_did: this.copies_return.checkout_did,
+          student_did: this.copies_return.student_did,
+          days_late: this.days_late,
+          fine: this.fine
         })
         .then(docRef => {
           // update copies to borrowed and add checkout id to refer
@@ -245,7 +290,8 @@ export default {
             if (doc.data().status === "borrowed") {
               const data = {
                 id: doc.id, // firebase document id
-                checkout_did: doc.data().checkout_did
+                checkout_did: doc.data().checkout_did,
+                student_did: doc.data().student_did
               };
               this.copies.push(data); // books will now equal to data
             }
@@ -264,17 +310,38 @@ export default {
             id: querySnapshot.id, // firebase document id
             due_date: querySnapshot.data().due_date.toDate()
           };
+          this.checkout = [];
           this.checkout.push(data); // books will now equal to data
 
-          console.log(Object.keys(this.checkout)[0]);
+          // console.log(Object.keys(this.checkout)[0]);
 
           this.due_date = this.checkout[0].due_date;
-          if (this.return_date > this.checkout.due_date) {
+
+          var divFine = document.getElementById("div-fine");
+          if (this.return_date > this.due_date) {
             // pay fine
-            console.log(
-              this.return_date + " > " + this.due_date + ": Pay fine"
+            if (divFine.style.display === "none") {
+              divFine.style.display = "block";
+            } else {
+              divFine.style.display = "none";
+            }
+
+            // get days late
+            const diffTime = Math.abs(
+              this.return_date.getTime() - this.due_date.getTime()
             );
+            this.days_late = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) - 1;
+            this.fine = this.days_late * 0.5;
+            this.fine = this.fine.toFixed(2)
+
+            // console.log(
+            //   this.return_date + " > " + this.due_date + ": Pay fine"
+            // );
           } else {
+            if (divFine.style.display === "block") {
+              divFine.style.display = "none";
+            }
+
             console.log(
               this.return_date + " > " + this.due_date + ": No need to pay fine"
             );
