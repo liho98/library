@@ -63,8 +63,45 @@
                 <router-link to="/checkout-return-history" class="nav-link active">Your History</router-link>
               </li>
 
-              <!-- ---------------------------Librarian------------------------------------- -->
-              <li class="navbar-item dropdown" v-if="role=='librarians'">
+              <!-- ---------------------------Admins------------------------------------- -->
+              <li class="navbar-item dropdown" v-if="role=='admins'">
+                <a
+                  class="nav-link dropdown-toggle active"
+                  href="#"
+                  id="navbarDropdown"
+                  role="button"
+                  data-toggle="dropdown"
+                  aria-haspopup="true"
+                  aria-expanded="false"
+                >Student</a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown" style="margin: 0px">
+                  <router-link to="/" class="dropdown-item">View Student</router-link>
+                  <router-link to="/" class="dropdown-item">Edit Student</router-link>
+                  <router-link to="/" class="dropdown-item">Delete Student</router-link>
+                </div>
+              </li>
+
+
+
+              <li class="navbar-item dropdown" v-if="role=='admins'">
+                <a
+                  class="nav-link dropdown-toggle active"
+                  href="#"
+                  id="navbarDropdown"
+                  role="button"
+                  data-toggle="dropdown"
+                  aria-haspopup="true"
+                  aria-expanded="false"
+                >Librarian</a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown" style="margin: 0px">
+                  <router-link to="/" class="dropdown-item">View Librarian</router-link>
+                  <router-link to="/" class="dropdown-item">Edit Librarian</router-link>
+                  <router-link to="/" class="dropdown-item">Delete Librarian</router-link>
+                </div>
+              </li>
+              
+              <!-- ---------------------------Librarians------------------------------------- -->
+              <li class="navbar-item dropdown" v-if="role=='librarians' || role=='admins'">
                 <a
                   class="nav-link dropdown-toggle active"
                   href="#"
@@ -82,44 +119,12 @@
                 </div>
               </li>
 
-              <li class="navbar-item dropdown" v-if="role=='librarians'">
-                <a
-                  class="nav-link dropdown-toggle active"
-                  href="#"
-                  id="navbarDropdown"
-                  role="button"
-                  data-toggle="dropdown"
-                  aria-haspopup="true"
-                  aria-expanded="false"
-                >Student</a>
-                <div class="dropdown-menu" aria-labelledby="navbarDropdown" style="margin: 0px">
-                  <router-link to="/" class="dropdown-item">View Student</router-link>
-                  <router-link to="/" class="dropdown-item">Edit Student</router-link>
-                  <router-link to="/" class="dropdown-item">Delete Student</router-link>
-                </div>
-              </li>
 
-              <li class="navbar-item dropdown" v-if="role=='librarians'">
-                <a
-                  class="nav-link dropdown-toggle active"
-                  href="#"
-                  id="navbarDropdown"
-                  role="button"
-                  data-toggle="dropdown"
-                  aria-haspopup="true"
-                  aria-expanded="false"
-                >Librarian</a>
-                <div class="dropdown-menu" aria-labelledby="navbarDropdown" style="margin: 0px">
-                  <router-link to="/" class="dropdown-item">View Librarian</router-link>
-                  <router-link to="/" class="dropdown-item">Edit Librarian</router-link>
-                  <router-link to="/" class="dropdown-item">Delete Librarian</router-link>
-                </div>
-              </li>
 
-              <li class="navbar-item" v-if="role=='librarians'">
+              <li class="navbar-item" v-if="role=='librarians' || role=='admins'">
                 <router-link to="/checkout" class="nav-link active">Checkout</router-link>
               </li>
-              <li class="navbar-item" v-if="role=='librarians'">
+              <li class="navbar-item" v-if="role=='librarians' || role=='admins'">
                 <router-link to="/return" class="nav-link active">Return</router-link>
               </li>
 

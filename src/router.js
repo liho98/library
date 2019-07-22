@@ -84,27 +84,30 @@ const router = new Router({
       meta: {
         requiresAuth: true,
         librarianAuth: true,
-        studentAuth: false
+        studentAuth: false,
+        adminAuth: true
       }
     },
     {
       path: '/edit-book',
       name: 'edit-book',
-     component: EditBook,
+      component: EditBook,
       meta: {
         requiresAuth: true,
         librarianAuth: true,
-        studentAuth: false
+        studentAuth: false,
+        adminAuth: true
       }
     },
     {
       path: '/search-book',
       name: 'search-book',
-     component: SearchBook,
+      component: SearchBook,
       meta: {
         requiresAuth: true,
         librarianAuth: true,
-        studentAuth: false
+        studentAuth: false,
+        adminAuth: true
       }
     },
     {
@@ -114,7 +117,8 @@ const router = new Router({
       meta: {
         requiresAuth: true,
         librarianAuth: true,
-        studentAuth: false
+        studentAuth: false,
+        adminAuth: true
       }
     },
     {
@@ -124,7 +128,8 @@ const router = new Router({
       meta: {
         requiresAuth: true,
         librarianAuth: true,
-        studentAuth: false
+        studentAuth: false,
+        adminAuth: true
       }
     },
     {
@@ -134,7 +139,8 @@ const router = new Router({
       meta: {
         requiresAuth: true,
         librarianAuth: true,
-        studentAuth: false
+        studentAuth: false,
+        adminAuth: true
       }
     },
     {
@@ -144,7 +150,8 @@ const router = new Router({
       meta: {
         requiresAuth: true,
         librarianAuth: false,
-        studentAuth: true
+        studentAuth: true,
+        adminAuth: false
       }
     },
   ]
@@ -160,7 +167,7 @@ router.beforeEach((to, from, next) => {
 
   // if not logged in
   if (!currentUser) {
-    if (to.meta.requiresAuth || to.meta.librarianAuth || to.meta.studentAuth) {
+    if (to.meta.requiresAuth || to.meta.librarianAuth || to.meta.studentAuth || to.meta.adminAuth) {
       next('login');
     } else {
       next();
@@ -187,6 +194,14 @@ router.beforeEach((to, from, next) => {
     // if user want to go to librarianAuth
     else if (to.meta.librarianAuth) {
       if (role === 'librarians') {
+        next();
+      } else {
+        next('/');
+      }
+    }
+    // if user want to go to adminAuth
+    else if (to.meta.adminAuth) {
+      if (role === 'admins') {
         next();
       } else {
         next('/');

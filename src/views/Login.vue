@@ -46,6 +46,8 @@
         You don't have an account ? You can
         <router-link to="/register">create one</router-link>
       </p>
+
+      <p><b>Admin:<br/>Email: a@a.aa<br/>Password: aaaaaa</b></p>
     </div>
     <!-- <section class="static about-sec">
       <div class="container">
