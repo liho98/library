@@ -36,9 +36,9 @@ const router = new Router({
       path: "/",
       name: "home",
       component: Home,
-      // meta: {
-      //   requiresAuth: true
-      // }
+      meta: {
+        noAuth: true
+      }
     },
     {
       path: "/about",
@@ -194,39 +194,67 @@ router.beforeEach((to, from, next) => {
     // console.log("User Logged In");
     // console.log("User Role: " + role);
 
-    // if user want to go to studentAuth page
-    if (to.meta.studentAuth) {
-      if (role === 'students') {
+
+    if (role === 'students') {
+      if (to.meta.studentAuth || to.meta.noAuth) {
+        next();
+      } else {
+        next('/');
+      }
+    } else if (role === 'librarians') {
+      if (to.meta.librarianAuth  || to.meta.noAuth) {
+        next();
+      } else {
+        next('/');
+      }
+    } else if (role === 'admins') {
+      if (to.meta.adminAuth || to.meta.noAuth) {
+        next();
+      } else {
+        next('/');
+      }
+    } else {
+      if (to.meta.requiresGuest || to.meta.noAuth) {
         next();
       } else {
         next('/');
       }
     }
-    // if user want to go to librarianAuth
-    else if (to.meta.librarianAuth) {
-      if (role === 'librarians') {
-        next();
-      } else {
-        next('/');
-      }
-    }
-    // if user want to go to adminAuth
-    else if (to.meta.adminAuth) {
-      if (role === 'admins') {
-        next();
-      } else {
-        next('/');
-      }
-    }
-    // for other page
-    else {
-      // cannot go to page for guest like login, register
-      if (to.meta.requiresGuest) {
-        next('/');
-      } else {
-        next();
-      }
-    }
+
+
+    // // if user want to go to studentAuth page
+    // if (to.meta.studentAuth) {
+    //   if (role === 'students') {
+    //     next();
+    //   } else {
+    //     next('/');
+    //   }
+    // }
+    // // if user want to go to librarianAuth
+    // else if (to.meta.librarianAuth) {
+    //   if (role === 'librarians') {
+    //     next();
+    //   } else {
+    //     next('/');
+    //   }
+    // }
+    // // if user want to go to adminAuth
+    // else if (to.meta.adminAuth) {
+    //   if (role === 'admins') {
+    //     next();
+    //   } else {
+    //     next('/');
+    //   }
+    // }
+    // // for other page
+    // else {
+    //   // cannot go to page for guest like login, register
+    //   if (to.meta.requiresGuest) {
+    //     next('/');
+    //   } else {
+    //     next();
+    //   }
+    // }
   }
 
   // if (to.meta.requiresAuth) {
