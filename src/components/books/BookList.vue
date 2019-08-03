@@ -1,7 +1,9 @@
 <template>
-  <div id="book-list">
-    <div v-bind:key="book.id" v-for="book in books">
-      <app-book-list-item :book="book"></app-book-list-item>
+  <div id="book-list" class="container">
+    <div class="row">
+      <!-- <div v-bind:key="book.id" v-for="book in books"> -->
+        <app-book-list-item v-bind:key="book.id" v-for="book in books" :book="book"></app-book-list-item>
+      <!-- </div> -->
     </div>
   </div>
 </template>

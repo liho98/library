@@ -85,6 +85,10 @@
         placeholder="Quantity"
         style="display: inline"
       />
+      
+      <br/>
+      <app-file-uploader @uploaded="onImgUploaded" @downloadURL="getDownloadURL"></app-file-uploader>
+
       <br />
       <input
         class="btn"
@@ -101,11 +105,15 @@
 import db from "./../../components/firestoreInit";
 import Vue from "vue";
 import VeeValidate from "vee-validate";
+import FileUploader from "./../../components/FileUploader";
 
 Vue.use(VeeValidate);
 
 export default {
   name: "add-book",
+  components: {
+    'app-file-uploader': FileUploader
+  },
   data() {
     return {
       id: "",
@@ -113,7 +121,9 @@ export default {
       author: "",
       publisher: "",
       year: "",
-      quantity: 1
+      quantity: 1,
+      fileName: "",
+      downloadURL: ""
     };
   },
   methods: {
@@ -136,7 +146,9 @@ export default {
             year: this.year,
             quantity: Number(this.quantity),
             created_at: createdAt,
-            current_quantity: Number(this.quantity)
+            current_quantity: Number(this.quantity),
+            cover_image: this.fileName,
+            download_url: this.downloadURL
           })
           .then(docRef => {
             // add copies based on book quantity
@@ -157,6 +169,12 @@ export default {
             console.error("Error adding book: ", error);
           });
       }
+    },
+    onImgUploaded(value) {
+      this.fileName = value
+    },
+    getDownloadURL(value){
+      this.downloadURL = value
     }
   }
 };

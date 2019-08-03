@@ -54,7 +54,7 @@
               <!-- ---------------------------Student--------------------------------------- -->
 
               <li class="navbar-item" v-if="role=='students'">
-                <router-link to="/view-book" class="nav-link active">Book List</router-link>
+                <router-link to="/view-book-list" class="nav-link active">Book List</router-link>
               </li>
               <li class="navbar-item" v-if="role=='students'">
                 <router-link to="/checkout-return-history" class="nav-link active">Your Borrowed Book</router-link>
@@ -109,7 +109,7 @@
                   aria-expanded="false"
                 >Book</a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown" style="margin: 0px">
-                  <router-link to="/view-book" class="dropdown-item">View Book</router-link>
+                  <router-link to="/view-book-list" class="dropdown-item">View Book</router-link>
                   <router-link to="/add-book" class="dropdown-item">Add Book</router-link>
                   <router-link to="/edit-book" class="dropdown-item">Edit Book</router-link>
                   <router-link to="/search-book" class="dropdown-item">Search Book</router-link>

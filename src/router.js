@@ -12,6 +12,7 @@ import Register from "./views/Register.vue";
 
 // Book
 import AddBook from "./views/books/AddBook";
+import ViewBookList from "./views/books/ViewBookList";
 import ViewBook from "./views/books/ViewBook";
 import SearchBook from "./views/books/SearchBook"
 import EditBook from "./views/books/EditBook"
@@ -78,7 +79,18 @@ const router = new Router({
       }
     },
     {
-      path: '/view-book',
+      path: '/view-book-list',
+      name: 'view-book-list',
+      component: ViewBookList,
+      meta: {
+        requiresAuth: true,
+        librarianAuth: true,
+        studentAuth: true,
+        adminAuth: true
+      }
+    },
+    {
+      path: '/view-book/:book_id',
       name: 'view-book',
       component: ViewBook,
       meta: {
@@ -114,17 +126,6 @@ const router = new Router({
       path: '/search-book',
       name: 'search-book',
       component: SearchBook,
-      meta: {
-        requiresAuth: true,
-        librarianAuth: true,
-        studentAuth: false,
-        adminAuth: true
-      }
-    },
-    {
-      path: '/view-book/:book_id',
-      name: 'view-book',
-      component: ViewBook,
       meta: {
         requiresAuth: true,
         librarianAuth: true,
