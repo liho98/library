@@ -78,6 +78,17 @@ const router = new Router({
       }
     },
     {
+      path: '/view-book',
+      name: 'view-book',
+      component: ViewBook,
+      meta: {
+        requiresAuth: true,
+        librarianAuth: true,
+        studentAuth: true,
+        adminAuth: true
+      }
+    },
+    {
       path: '/add-book',
       name: 'add-book',
       component: AddBook,

@@ -194,7 +194,6 @@ import firebase from "firebase";
 // }
 // console.log('currentUser is: ' + currentUser);
 export default {
-  name: "header",
   data() {
     return {
       isLoggedIn: false,

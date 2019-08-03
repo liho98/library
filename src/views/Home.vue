@@ -77,7 +77,7 @@
               <div class="hover">
                 <a href="product-single.html">
                   <span>
-                    <i class="fa fa-long-arrow-right" aria-hidden="true"></i>
+                    <i class="fas fa-long-arrow-alt-right" aria-hidden="true"></i>
                   </span>
                 </a>
               </div>
@@ -95,7 +95,7 @@
               <div class="hover">
                 <a href="product-single.html">
                   <span>
-                    <i class="fa fa-long-arrow-right" aria-hidden="true"></i>
+                    <i class="fas fa-long-arrow-alt-right" aria-hidden="true"></i>
                   </span>
                 </a>
               </div>
@@ -112,7 +112,7 @@
               <div class="hover">
                 <a href="product-single.html">
                   <span>
-                    <i class="fa fa-long-arrow-right" aria-hidden="true"></i>
+                    <i class="fas fa-long-arrow-alt-right" aria-hidden="true"></i>
                   </span>
                 </a>
               </div>
@@ -129,7 +129,7 @@
               <div class="hover">
                 <a href="product-single.html">
                   <span>
-                    <i class="fa fa-long-arrow-right" aria-hidden="true"></i>
+                    <i class="fas fa-long-arrow-alt-right" aria-hidden="true"></i>
                   </span>
                 </a>
               </div>
