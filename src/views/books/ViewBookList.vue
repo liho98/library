@@ -1,5 +1,5 @@
 <template>
-  <div id="view-book">
+  <div id="view-book-list">
     <div class="breadcrumb" style="margin-bottom: 20px">
       <div class="container" style="padding: 10px 20px;">
         <router-link class="breadcrumb-item" to="/">Home</router-link>

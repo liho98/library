@@ -79,14 +79,24 @@
       <input
         class="form-control"
         type="number"
+        value
         name="quantity"
         v-model="quantity"
         v-validate="'required|integer'"
         placeholder="Quantity"
         style="display: inline"
       />
-      
-      <br/>
+
+      <br />
+      <textarea
+        class="form-control"
+        rows="5"
+        id="comment"
+        placeholder="Book Description (Optional)"
+        v-model="description"
+      ></textarea>
+
+      <br />
       <app-file-uploader @uploaded="onImgUploaded" @downloadURL="getDownloadURL"></app-file-uploader>
 
       <br />
@@ -112,7 +122,7 @@ Vue.use(VeeValidate);
 export default {
   name: "add-book",
   components: {
-    'app-file-uploader': FileUploader
+    "app-file-uploader": FileUploader
   },
   data() {
     return {
@@ -121,9 +131,10 @@ export default {
       author: "",
       publisher: "",
       year: "",
-      quantity: 1,
+      quantity: undefined,
       fileName: "",
-      downloadURL: ""
+      downloadURL: "",
+      description: ""
     };
   },
   methods: {
@@ -148,7 +159,8 @@ export default {
             created_at: createdAt,
             current_quantity: Number(this.quantity),
             cover_image: this.fileName,
-            download_url: this.downloadURL
+            download_url: this.downloadURL,
+            description: this.description
           })
           .then(docRef => {
             // add copies based on book quantity
@@ -171,10 +183,10 @@ export default {
       }
     },
     onImgUploaded(value) {
-      this.fileName = value
+      this.fileName = value;
     },
-    getDownloadURL(value){
-      this.downloadURL = value
+    getDownloadURL(value) {
+      this.downloadURL = value;
     }
   }
 };
@@ -193,9 +205,17 @@ div.centre {
 
 input {
   margin: 10px 0;
-  width: 20%;
+  width: 30%;
   padding: 15px;
 }
+
+textarea {
+  margin: 10px 0;
+  width: 30%;
+  padding: 15px;
+  display: inline;
+}
+
 input[type="radio"] {
   width: 30px;
 }
@@ -212,7 +232,7 @@ label.radio-inline {
 
 button {
   margin-top: 20px;
-  width: 10%;
+  width: 30%;
   cursor: pointer;
 }
 p {

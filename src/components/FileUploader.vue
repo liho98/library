@@ -1,7 +1,7 @@
 <template>
-  <div>
-    <v-btn @click.native="selectFile" v-if="!uploadEnd && !uploading">
-      Upload a cover image
+  <div wid>
+    <v-btn @click.native="selectFile" v-if="!uploadEnd && !uploading" style="width: 30%; text-transform: none; min-height: 50px;">
+      Upload Book Cover Image (Optional)
       <v-icon right aria-hidden="true">add_a_photo</v-icon>
     </v-btn>
     <input
