@@ -50,21 +50,34 @@
             </tbody>
           </table>
 
-          <h4 style="padding-bottom: 15px; padding-top: 15px">Copies ( {{this.current_quantity}} available )</h4>
+          <h4
+            style="padding-bottom: 15px; padding-top: 15px"
+          >Copies ( {{this.current_quantity}} available )</h4>
 
           <table class="table table-hover table-bordered">
-              <thead>
-                <tr class="d-flex">
-                  <th class="col-1 text-center">No.</th>
-                  <th class="col-6 text-left">Copies ID</th>
-                  <th class="col-5 text-left">Status</th>
-                </tr>
-              </thead>
+            <thead>
+              <tr class="d-flex">
+                <th class="col-1 text-center">No.</th>
+                <th class="col-6 text-left">Copies ID</th>
+                <th class="col-5 text-left">Status</th>
+              </tr>
+            </thead>
             <tbody>
               <tr class="d-flex" v-bind:key="copy.id" v-for="(copy, index) in copies">
                 <th class="col-1 text-center">{{index+1}}</th>
                 <td class="col-6 text-left">{{copy.id}}</td>
-                <td class="col-5 text-left" style="text-transform: capitalize;">{{copy.status}}</td>
+                <td
+                  v-if="copy.status === 'available' || copy.status === 'returned'"
+                  class="col-5 text-left"
+                  style="text-transform: capitalize;"
+                ><i class="fas fa-check-circle" style="color: #02ac1e">&nbsp;</i> {{copy.status}}</td>
+
+                <td
+                  v-else
+                  class="col-5 text-left"
+                  style="text-transform: capitalize;"
+                >{{copy.status}}</td>
+
               </tr>
             </tbody>
           </table>
