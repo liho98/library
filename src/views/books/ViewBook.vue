@@ -10,7 +10,8 @@
     <div class="container" style="padding-top: 0px">
       <div class="row" style="padding-bottom: 15px">
         <div class="col-md-12" style="width:100%; height:100%">
-          <h1 style="display: inline">{{this.title}} </h1><h3 style="display: inline"> by {{this.author}}</h3>
+          <h1 style="display: inline">{{this.title}}&nbsp;&nbsp;</h1>
+          <h3 style="display: inline">by {{this.author}}</h3>
         </div>
       </div>
 
@@ -49,8 +50,24 @@
             </tbody>
           </table>
 
-            <h3>Copies</h3>
+          <h4 style="padding-bottom: 15px; padding-top: 15px">Copies ( {{this.current_quantity}} available )</h4>
 
+          <table class="table table-hover table-bordered">
+              <thead>
+                <tr class="d-flex">
+                  <th class="col-1 text-center">No.</th>
+                  <th class="col-6 text-left">Copies ID</th>
+                  <th class="col-5 text-left">Status</th>
+                </tr>
+              </thead>
+            <tbody>
+              <tr class="d-flex" v-bind:key="copy.id" v-for="(copy, index) in copies">
+                <th class="col-1 text-center">{{index+1}}</th>
+                <td class="col-6 text-left">{{copy.id}}</td>
+                <td class="col-5 text-left" style="text-transform: capitalize;">{{copy.status}}</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
     </div>
@@ -72,7 +89,8 @@ export default {
       year: null,
       quantity: null,
       current_quantity: null,
-      description: ""
+      description: "",
+      copies: []
     };
   },
   props: ["book"],
@@ -95,7 +113,7 @@ export default {
           vm.publisher = doc.data().publisher;
           vm.download_url = doc.data().download_url;
           vm.year = doc.data().year;
-          vm.quantity = doc.data().year;
+          vm.quantity = doc.data().quantity;
           vm.current_quantity = doc.data().current_quantity;
           vm.description = doc.data().description;
 
@@ -104,6 +122,7 @@ export default {
             const imgLink = require("../../assets/no-image.png");
             vm.download_url = imgLink;
           }
+          vm.getCopies(vm, to.params.book_id);
         });
       });
   },
@@ -111,6 +130,22 @@ export default {
     $route: "fetchData"
   },
   methods: {
+    getCopies(vm, book_id) {
+      db.collection("books")
+        .doc(book_id)
+        .collection("copies")
+        .get()
+        .then(querySnapshot => {
+          querySnapshot.forEach(doc => {
+            const data = {
+              id: doc.id, // firebase document id
+              status: doc.data().status
+            };
+            console.log(data);
+            vm.copies.push(data); // books will now equal to data
+          });
+        });
+    },
     fetchData() {
       db.collection("books")
         .doc(this.$route.params.book_id)
@@ -122,7 +157,7 @@ export default {
           this.publisher = doc.data().publisher;
           this.download_url = doc.data().download_url;
           this.year = doc.data().year;
-          this.quantity = doc.data().year;
+          this.quantity = doc.data().quantity;
           this.current_quantity = doc.data().current_quantity;
           this.description = doc.data().description;
 
@@ -131,6 +166,20 @@ export default {
             const imgLink = require("../../assets/no-image.png");
             this.download_url = imgLink;
           }
+        });
+
+      db.collection("books")
+        .doc(this.$route.params.book_id)
+        .collection("copies")
+        .get()
+        .then(querySnapshot => {
+          querySnapshot.forEach(doc => {
+            const data = {
+              id: doc.id, // firebase document id
+              status: doc.data().status
+            };
+            this.copies.push(data); // books will now equal to data
+          });
         });
     }
   }

@@ -21,6 +21,8 @@
 
       <!-- <div class="btn-group btn-group-toggle" style="margin-bottom: 20px">
       </div>-->
+      * All fields required unless specified
+      <br />
 
       <input
         class="form-control"
