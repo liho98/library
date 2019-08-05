@@ -8,7 +8,7 @@
       </div>
     </div>
 
-    <div class="add-book centre">
+    <div class="container centre">
       <div class="alert alert-danger" v-show="errors.any()">
         <!-- <div v-if="errors.has('role')">{{ errors.first('role') }}</div> -->
         <div v-if="errors.has('id')">{{ errors.first('id') }}</div>
@@ -23,92 +23,110 @@
       </div>-->
       * All fields required unless specified
       <br />
+      <div class="form-row justify-content-center">
+        <div class="col-md-4">
+          <input
+            class="form-control"
+            type="text"
+            name="id"
+            v-model="id"
+            placeholder="Book ID"
+            style="display: inline"
+            v-validate="'required'"
+            required
+          />
+        </div>
+      </div>
+      <div class="form-row justify-content-center">
+        <div class="col-md-4">
+          <input
+            class="form-control"
+            type="text"
+            name="title"
+            v-model="title"
+            placeholder="Book Title"
+            style="display: inline"
+            v-validate="'required'"
+          />
+        </div>
+      </div>
 
-      <input
-        class="form-control"
-        type="text"
-        name="id"
-        v-model="id"
-        placeholder="Book ID"
-        style="display: inline"
-        v-validate="'required'"
-        required
-      />
-      <br />
+      <div class="form-row justify-content-center">
+        <div class="col-md-4">
+          <input
+            class="form-control"
+            type="text"
+            name="author"
+            v-model="author"
+            placeholder="Author"
+            style="display: inline"
+            v-validate="'required'"
+          />
+        </div>
+      </div>
+      <div class="form-row justify-content-center">
+        <div class="col-md-4">
+          <input
+            class="form-control"
+            type="text"
+            name="publisher"
+            v-model="publisher"
+            v-validate="'required'"
+            placeholder="Publisher"
+            style="display: inline"
+          />
+        </div>
+      </div>
+      <div class="form-row justify-content-center">
+        <div class="col-md-4">
+          <input
+            class="form-control no-spinner"
+            type="number"
+            name="year"
+            v-model="year"
+            v-validate="'required|digits:4'"
+            placeholder="Year"
+            style="display: inline"
+          />
+        </div>
+      </div>
+      <div class="form-row justify-content-center">
+        <div class="col-md-4">
+          <input
+            class="form-control"
+            type="number"
+            value
+            name="quantity"
+            v-model="quantity"
+            v-validate="'required|integer'"
+            placeholder="Quantity"
+            style="display: inline"
+          />
+        </div>
+      </div>
+      <div class="form-row justify-content-center">
+        <div class="col-md-4">
+          <textarea
+            class="form-control"
+            rows="5"
+            id="comment"
+            placeholder="Book Description (Optional)"
+            v-model="description"
+          ></textarea>
+        </div>
+      </div>
+      <div class="form-row justify-content-center">
+        <div class="col-md-4">
+          <app-file-uploader @uploaded="onImgUploaded" @downloadURL="getDownloadURL"></app-file-uploader>
+        </div>
+      </div>
 
-      <input
-        class="form-control"
-        type="text"
-        name="title"
-        v-model="title"
-        placeholder="Book Title"
-        style="display: inline"
-        v-validate="'required'"
-      />
-      <br />
-
-      <input
-        class="form-control"
-        type="text"
-        name="author"
-        v-model="author"
-        placeholder="Author"
-        style="display: inline"
-        v-validate="'required'"
-      />
-      <br />
-
-      <input
-        class="form-control"
-        type="text"
-        name="publisher"
-        v-model="publisher"
-        v-validate="'required'"
-        placeholder="Publisher"
-        style="display: inline"
-      />
-      <br />
-      <input
-        class="form-control no-spinner"
-        type="number"
-        name="year"
-        v-model="year"
-        v-validate="'required|digits:4'"
-        placeholder="Year"
-        style="display: inline"
-      />
-      <br />
-      <input
-        class="form-control"
-        type="number"
-        value
-        name="quantity"
-        v-model="quantity"
-        v-validate="'required|integer'"
-        placeholder="Quantity"
-        style="display: inline"
-      />
-
-      <br />
-      <textarea
-        class="form-control"
-        rows="5"
-        id="comment"
-        placeholder="Book Description (Optional)"
-        v-model="description"
-      ></textarea>
-
-      <br />
-      <app-file-uploader @uploaded="onImgUploaded" @downloadURL="getDownloadURL"></app-file-uploader>
-
-      <br />
-      <input
-        class="btn"
-        type="submit"
-        value="Add Book"
+      <v-btn
+        color="primary"
+        large
         @click="addBook"
-        style="margin-bottom: 20px"
-      />
+        style="margin-bottom: 20px; background-color: #ff9700; text-transform: none;"
+      >Add Book</v-btn>
     </div>
   </div>
 </template>
@@ -207,19 +225,17 @@ div.centre {
 
 input {
   margin: 10px 0;
-  width: 30%;
   padding: 15px;
+}
+
+input[type="number"] {
+  width: 100%;
 }
 
 textarea {
   margin: 10px 0;
-  width: 30%;
   padding: 15px;
   display: inline;
-}
-
-input[type="radio"] {
-  width: 30px;
 }
 
 .no-spinner::-webkit-outer-spin-button,
@@ -234,7 +250,6 @@ label.radio-inline {
 
 button {
   margin-top: 20px;
-  width: 30%;
   cursor: pointer;
 }
 p {
