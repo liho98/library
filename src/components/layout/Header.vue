@@ -12,13 +12,18 @@
           </div>-->
           <div v-if="isLoggedIn" class="p-2" style="display: inline;">
             <span class="ph-number">Welcome, {{name}}</span>
-            <v-btn small color="primary" style="padding: .15rem .35rem; text-transform: none; background: #ff9700">Logout</v-btn>
+            <v-btn
+              small
+              color="primary"
+              v-on:click="logout"
+              style="padding: .15rem .35rem; text-transform: none; background: #ff9700"
+            >Logout</v-btn>
             <!-- <button
               type="button"
               class="btn btn-default"
               style="padding: .15rem .35rem; text-transform: none"
               v-on:click="logout"
-            >Logout</button> -->
+            >Logout</button>-->
           </div>
 
           <!-- ---------------------------Logged In User----------------------------------- -->
