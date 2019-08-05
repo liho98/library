@@ -10,7 +10,7 @@
     <div class="container" style="padding-top: 0px">
       <div class="row" style="padding-bottom: 15px">
         <div class="col-md-12" style="width:100%; height:100%">
-          <h1 style="display: inline">{{this.title}}&nbsp;&nbsp;</h1>
+          <h1 style="display: inline">{{this.title}}&nbsp;</h1>
           <h3 style="display: inline">by {{this.author}}</h3>
         </div>
       </div>
@@ -50,34 +50,75 @@
             </tbody>
           </table>
 
-          <h4
-            style="padding-bottom: 15px; padding-top: 15px"
-          >Copies ( {{this.current_quantity}} available )</h4>
+          <h4 style="padding-bottom: 15px; padding-top: 15px">Copies</h4>
 
           <table class="table table-hover table-bordered">
             <thead>
               <tr class="d-flex">
                 <th class="col-1 text-center">No.</th>
-                <th class="col-6 text-left">Copies ID</th>
-                <th class="col-5 text-left">Status</th>
+                <th class="col-5 text-center">Copies ID</th>
+                <th class="col-3 text-center">Status</th>
+                <th class="col-3 text-center">Action</th>
               </tr>
             </thead>
             <tbody>
               <tr class="d-flex" v-bind:key="copy.id" v-for="(copy, index) in copies">
                 <th class="col-1 text-center">{{index+1}}</th>
-                <td class="col-6 text-left">{{copy.id}}</td>
+                <td class="col-5 text-center">{{copy.id}}</td>
                 <td
                   v-if="copy.status === 'available' || copy.status === 'returned'"
-                  class="col-5 text-left"
+                  class="col-3 text-center"
                   style="text-transform: capitalize;"
-                ><i class="fas fa-check-circle" style="color: #02ac1e">&nbsp;</i> {{copy.status}}</td>
-
+                >
+                  <i class="fas fa-check-circle" style="color: #02ac1e">&nbsp;</i>
+                  {{copy.status}}
+                </td>
                 <td
                   v-else
-                  class="col-5 text-left"
+                  class="col-3 text-center"
                   style="text-transform: capitalize;"
                 >{{copy.status}}</td>
 
+                <td class="col-3 text-center" style="padding: 0px">
+                  <v-dialog
+                    v-model="dialog"
+                    width="500"
+                    v-if="copy.status === 'available' || copy.status === 'returned'"
+                  >
+                    <template v-slot:activator="{ on }">
+                      <v-btn
+                        small
+                        color="primary"
+                        style="background-color: #2A73C5; text-transform: none;"
+                        v-on="on"
+                      >Reserve</v-btn>
+                    </template>
+                    <v-card>
+                      <v-card-title class="headline grey lighten-2" primary-title>Reserve Book?</v-card-title>
+                      <v-card-text>
+                        Are you sure you want to reserve
+                        <b>{{title}}</b>?
+                        <br />You are require to collect the book at library counter
+                        <b>within 3 days</b> of reserving it.
+                      </v-card-text>
+                      <v-divider></v-divider>
+                      <v-card-actions>
+                        <v-spacer></v-spacer>
+                        <v-btn
+                          flat
+                          text
+                          style="text-transform: none;"
+                          @click="dialog = false"
+                        >Cancel</v-btn>
+                        <v-btn
+                          color="primary"
+                          style="background-color: #2A73C5; text-transform: none;"
+                          @click="reserveCopy(copy.id); dialog = false"
+                        >Reserve</v-btn>
+                      </v-card-actions>
+                    </v-card>
+                  </v-dialog>
+                </td>
               </tr>
             </tbody>
           </table>
@@ -103,7 +144,9 @@ export default {
       quantity: null,
       current_quantity: null,
       description: "",
-      copies: []
+      copies: [],
+      dialog: false,
+      due_date: null
     };
   },
   props: ["book"],
@@ -159,12 +202,48 @@ export default {
           });
         });
     },
+    reserveCopy(copy_id) {
+      const created_at = new Date();
+      console.log(created_at)
+      this.due_date = new Date(created_at.setDate(created_at.getDate() + 3));
+      console.log(this.due_date)
+
+      // add new checkout record
+      db.collection("reserve")
+        .add({
+          // use document id instead of book id or student id for easy query later
+          book_did: this.$route.params.book_id,
+          copies_did: copy_id,
+          reserve_at: new Date(),
+          due_date: this.due_date,
+          student_did: localStorage.userId
+        })
+        .then(docRef => {
+          // update copies to borrowed and add checkout id to refer
+          db.collection("books")
+            .doc(this.$route.params.book_id)
+            .collection("copies")
+            .doc(copy_id)
+            .update({
+              status: "reserved",
+              reserve_did: docRef.id,
+              student_did: localStorage.userId,
+              due_date: this.due_date
+            });
+          console.log("Reserve book successfully");
+          alert("Reserve book successfully");
+          this.$router.go({ path: this.path });
+        })
+        .catch(error => {
+          console.error("Error reserving out book: ", error);
+        });
+    },
     fetchData() {
       db.collection("books")
         .doc(this.$route.params.book_id)
         .get()
         .then(doc => {
-          this.id = doc.id;
+          this.id = this.$route.params.book_id;
           this.title = doc.data().title;
           this.author = doc.data().author;
           this.publisher = doc.data().publisher;

@@ -255,7 +255,7 @@ export default {
             .doc(this.books_return.id)
             .collection("copies")
             .doc(this.copies_return.id)
-            .update({ status: "returned", returned_did: docRef.id });
+            .update({ status: "available", returned_did: docRef.id });
           console.log("Return book successfully");
           alert("Return book successfully");
           this.$router.go({ path: this.path });
