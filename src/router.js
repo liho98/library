@@ -20,6 +20,8 @@ import EditBook from "./views/books/EditBook"
 // Checkout, Return
 import Checkout from "./views/checkout-return/Checkout";
 import Return from "./views/checkout-return/Return";
+import Reserved from "./views/checkout-return/Reserved";
+
 import CheckoutReturnHistory from "./views/checkout-return/CheckoutReturnHistory";
 
 Vue.use(Router);
@@ -158,7 +160,7 @@ const router = new Router({
     {
       path: '/reserved',
       name: 'reserved',
-      component: Return,
+      component: Reserved,
       meta: {
         requiresAuth: true,
         librarianAuth: true,

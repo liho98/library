@@ -12,12 +12,13 @@
           </div>-->
           <div v-if="isLoggedIn" class="p-2" style="display: inline;">
             <span class="ph-number">Welcome, {{name}}</span>
-            <button
+            <v-btn small color="primary" style="padding: .15rem .35rem; text-transform: none; background: #ff9700">Logout</v-btn>
+            <!-- <button
               type="button"
               class="btn btn-default"
               style="padding: .15rem .35rem; text-transform: none"
               v-on:click="logout"
-            >Logout</button>
+            >Logout</button> -->
           </div>
 
           <!-- ---------------------------Logged In User----------------------------------- -->
@@ -33,7 +34,7 @@
       </div>
     </div>
     <div class="main-menu" style="padding-top: 0px;">
-      <div class="container" >
+      <div class="container">
         <nav class="navbar navbar-expand-lg navbar-light">
           <router-link to="/" class="navbar-brand" style="margin-right: 0px">
             <img src="images/logo.png" alt="logo" style="width: 150px" />
@@ -57,7 +58,10 @@
                 <router-link to="/view-book-list" class="nav-link active">Book List</router-link>
               </li>
               <li class="navbar-item" v-if="role=='students'">
-                <router-link to="/checkout-return-history" class="nav-link active">Your Borrowed Book</router-link>
+                <router-link
+                  to="/checkout-return-history"
+                  class="nav-link active"
+                >Your Borrowed Book</router-link>
               </li>
 
               <!-- ---------------------------Admins------------------------------------- -->
@@ -78,8 +82,6 @@
                 </div>
               </li>
 
-
-
               <li class="navbar-item dropdown" v-if="role=='admins'">
                 <a
                   class="nav-link dropdown-toggle active"
@@ -96,7 +98,7 @@
                   <router-link to="/" class="dropdown-item">Delete Librarian</router-link>
                 </div>
               </li>
-              
+
               <!-- ---------------------------Librarians------------------------------------- -->
               <li class="navbar-item dropdown" v-if="role=='librarians' || role=='admins'">
                 <a

@@ -1,221 +1,335 @@
 <template>
   <div class="checkout">
+    <!-- <app-progress-circular :value="loading"></app-progress-circular> -->
     <div class="breadcrumb" style="margin-bottom: 20px">
-      <div class="container" style="padding: 10px 20px;"
-      >
+      <div class="container" style="padding: 10px 20px;">
         <router-link class="breadcrumb-item" to="/">Home</router-link>
         <span class="breadcrumb-item active">Reserved</span>
       </div>
     </div>
     <div class="centre">
+      <v-data-table :headers="headers" :items="reserve" :loading="loading" class="elevation-1">
+        <!-- v-bind:pagination.sync="pagination" -->
 
-
-      <label for="books">Select book:</label>
-      <!-- <multiselect
-        id="books"
-        v-model="books"
-        :options="books"
-        :clear-on-select="false"
-        :multiple="true"
-        placeholder="Select books"
-        label="title"
-        track-by="title"
-      ></multiselect>-->
-
-      <multiselect
-        id="books"
-        v-model="books_checkout"
-        :options="books"
-        :close-on-select="true"
-        :clear-on-select="false"
-        :preserve-search="true"
-        :preselect-first="true"
-        placeholder="Type here to search"
-        label="title"
-        track-by="title"
-        :custom-label="titleAuthor"
-        @input="onSelect()"
-      />
-      <!-- 
-        :preserve-search="true"
-        :preselect-first="true"
-        :multiple="true"
-
-      -->
-      <!-- <template slot="selection" slot-scope="{ values, search, isOpen }">
-          <span
-            class="multiselect__single"
-            v-if="values.length &amp;&amp; !isOpen"
-          >{{ values.length }} book(s) selected</span>
-      </template>-->
-
-      <br />
-      <label for="copies">Select book copies:</label>
-      <multiselect
-        id="copies"
-        v-model="copies_checkout"
-        :options="copies"
-        :close-on-select="true"
-        :clear-on-select="false"
-        :preserve-search="true"
-        :preselect-first="true"
-        placeholder="Type here to search"
-        label="id"
-        track-by="id"
-      />
-
-      <br />
-      <label for="student">Select student:</label>
-      <multiselect
-        id="student"
-        v-model="student_checkout"
-        :options="students"
-        :clear-on-select="false"
-        placeholder="Type here to search"
-        label="name"
-        track-by="name"
-        :preserve-search="true"
-        :preselect-first="true"
-        :custom-label="nameStudentID"
-      ></multiselect>
-
-      <br />
-      <label for="student">Due date:</label>
-
-      <input
-        :value="due_date && due_date.toISOString().split('T')[0]"
-        @input="myDate = $event.target.valueAsDate"
-        type="date"
-        class="form-control"
-        name="due-date"
-        id="due-date"
-        aria-describedby="helpId"
-        placeholder="Due date"
-        disabled
-      />
-
-      <br />
-      <div class="text-center">
-
-        <input class="btn" type="submit" value="Checkout" @click="checkout" />
-      </div>
-
-      <!--         :custom-label="nameWithLang"          :preselect-first="true"         :preserve-search="true"-->
-      <!-- <pre class="language-json"><code>{{ borrower  }}</code></pre>
-
-      <pre class="language-json"><code>{{ books  }}</code></pre>-->
+        <v-progress-linear v-show="progressBar" color="blue" indeterminate></v-progress-linear>
+        <template v-slot:items="props">
+          <!-- :style="{backgroundColor: (typeof props.item.days_late == 'string' ? '#ff9966' : 'transparent' ) }" -->
+          <tr>
+            <td>{{ props.item.title }}</td>
+            <td class="text-xs-left">{{ props.item.copies_did }}</td>
+            <td class="text-xs-left">{{ props.item.student }}</td>
+            <td class="text-xs-left">{{ props.item.due_date }}</td>
+            <td class="text-xs-center">
+              <v-dialog v-model="dialog" width="500">
+                <template v-slot:activator="{ on }">
+                  <v-btn
+                    small
+                    color="primary"
+                    style="background-color: #2A73C5; text-transform: none;"
+                    v-on="on"
+                  >Checkout</v-btn>
+                </template>
+                <v-card>
+                  <v-card-title
+                    class="headline grey lighten-2"
+                    primary-title
+                  >Checkout reserved book?</v-card-title>
+                  <v-card-text>
+                    Are you sure you want to checkout
+                    <b>{{props.item.title}}</b>?
+                  </v-card-text>
+                  <v-divider></v-divider>
+                  <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn flat text style="text-transform: none;" @click="dialog = false">Cancel</v-btn>
+                    <v-btn
+                      color="primary"
+                      style="background-color: #2A73C5; text-transform: none;"
+                      @click="checkoutCopy(props.item.book_did, props.item.copies_did, props.item.current_quantity, props.item.student_did, props.item.id); dialog = false"
+                    >Reserve</v-btn>
+                  </v-card-actions>
+                </v-card>
+              </v-dialog>
+            </td>
+          </tr>
+        </template>
+      </v-data-table>
     </div>
   </div>
 </template>
 
 <script>
-import Multiselect from "vue-multiselect";
 import db from "../../components/firestoreInit";
 import Vue from "vue";
-import { firestorePlugin } from "vuefire";
-
-import Vuetify from 'vuetify'
-import 'vuetify/dist/vuetify.min.css'
-Vue.use(Vuetify)
-
-// how to know the specific book got stock or not?
-// get number of record in checkout collections?
-//
-Vue.use(firestorePlugin);
+// import ProgressCircular from "../../components/ProgressCircular";
 
 export default {
   name: "reserved",
-  components: { Multiselect },
+  //   components: {
+  //     "app-progress-circular": ProgressCircular
+  //   },
   data() {
     return {
       books: [],
-      students: [],
-      copies: [],
-      student_checkout: null,
-      books_checkout: [],
-      copies_checkout: [],
-      due_date: null
+      reserve: [],
+      checkout: [],
+      due_date: null,
+      loading: true,
+      progressBar: true,
+      dialog: false,
+      checkout_did: "",
+
+      headers: [
+        {
+          text: "Book Title",
+          value: "book_title",
+          align: "left",
+          sortable: false
+        },
+        { text: "Copy ID", value: "copy_id", align: "left", sortable: false },
+        {
+          text: "Student",
+          value: "student",
+          align: "left",
+          sortable: false
+        },
+        { text: "Due Date", vlue: "due_date", align: "left", sortable: false },
+        { text: "Action ", value: "action", align: "center", sortable: false }
+        // {
+        //   text: "",
+        //   value: "days_late",
+        //   align: "left"
+        // }
+      ]
+      //   pagination: { sortBy: "due_date", descending: true, rowsPerPage: -1 }
     };
   },
   // vuefire library
   firestore: {
     // get books that are available from firebase
-    books: db.collection("books").where("current_quantity", ">", 0),
-
-    // get all students from firebase
-    students: db.collection("students")
   },
 
   created() {
-    // calculate due date
-    const due_date = new Date();
-    this.due_date = new Date(due_date.setDate(due_date.getDate() + 14));
+    // db.collection("checkout")
+    //   .where("student_did", "==", String(localStorage.userId))
+    //   .get()
+    //   .then(querySnapshot => {
+    //     querySnapshot.forEach(doc => {
+    //       const data = {
+    //         id: doc.id, // firebase document id
+    //         book_did: doc.data().book_did,
+    //         borrowed_date: doc.data().borrowed_date.toDate(),
+    //         borrowed_date_str: doc
+    //           .data()
+    //           .borrowed_date.toDate()
+    //           .toLocaleString("en-GB", { timeZone: "UTC", hour12: true }),
+    //         copies_did: doc.data().copies_did,
+    //         due_date: doc.data().due_date.toDate(),
+    //         due_date_str: doc
+    //           .data()
+    //           .due_date.toDate()
+    //           .toLocaleString("en-GB", { timeZone: "UTC", hour12: true }),
+    //         book_title: null, // very important
+    //         returned_date: null, // very important
+    //         days_late: null // very important
+    //       };
+    //       // // get days late
+    //       // const diffTime = Math.abs(
+    //       //   this.return_date.getTime() - this.due_date.getTime()
+    //       // );
+    //       // this.days_late = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) - 1;
+    //       // this.fine = this.days_late * 0.5;
+    //       // this.fine = this.fine.toFixed(2);
+    //       this.checkout.push(data); // books will now equal to data
+    //     });
+    //     Object.keys(this.checkout).forEach(key => {
+    //       db.collection("return")
+    //         .where("checkout_did", "==", this.checkout[key].id)
+    //         .get()
+    //         .then(snapshot => {
+    //           snapshot.forEach(doc => {
+    //             this.checkout[
+    //               key
+    //             ].returned_date = doc.data().return_date.toDate();
+    //             this.checkout[key].returned_date_str = doc
+    //               .data()
+    //               .return_date.toDate()
+    //               .toLocaleString("en-GB", { timeZone: "UTC", hour12: true });
+    //             if (doc.data().days_late != 0) {
+    //               this.checkout[key].days_late =
+    //                 doc.data().days_late.toString() + " days late";
+    //             } else {
+    //               const diffTime = Math.abs(
+    //                 this.checkout[key].returned_date.getTime() -
+    //                   this.checkout[key].borrowed_date.getTime()
+    //               );
+    //               this.checkout[key].days_late =
+    //                 Math.ceil(diffTime / (1000 * 60 * 60 * 24)) -
+    //                 1 +
+    //                 " days borrowed";
+    //             }
+    //           });
+    //         });
+    //       if (this.checkout[key].returned_date == null) {
+    //         let today = new Date();
+    //         const diffTime = Math.abs(
+    //           this.checkout[key].due_date.getTime() - today.getTime()
+    //         );
+    //         this.checkout[key].days_late =
+    //           Math.ceil(diffTime / (1000 * 60 * 60 * 24)) -
+    //           1 +
+    //           " days remaining";
+    //       }
+    //     });
+    //     Object.keys(this.checkout).forEach(key => {
+    //       db.collection("books")
+    //         .doc(this.checkout[key].book_did)
+    //         .get()
+    //         .then(snapshot => {
+    //           this.checkout[key].book_title = snapshot.data().title;
+    //         });
+    //     });
+    //   });
+  },
+  //   methods: {
+  //     fetchData() {
+  //       db.collection("books")
+  //         .get()
+  //         .then(querySnapshot => {
+  //           querySnapshot.forEach(doc => {
+  //             const data = {
+  //               id: doc.id, // firebase document id
+  //               book_id: doc.data().id,
+  //               title: doc.data().title,
+  //               author: doc.data().author,
+  //               publisher: doc.data().publisher,
+  //               year: doc.data().year,
+  //               quantity: doc.data().quantity,
+  //               current_quantity: doc.data().current_quantity
+  //             };
+  //             this.books.push(data); // books will now equal to data
+  //           });
+  //         }).then({
 
-    //// OLD METHOD
+  //         });
+
+  //   db.collection("checkout")
+  //     // .where("student_did", "==", String(localStorage.userId))
+  //     .get()
+  //     .then(querySnapshot => {
+  //       querySnapshot.forEach(doc => {
+  //         const data = {
+  //           id: doc.id, // firebase document id
+  //           book_did: doc.data().book_did,
+  //           borrowed_date: doc.data().borrowed_date,
+  //           copies_did: doc.data().copies_did,
+  //           due_date: doc.data().due_date
+  //         };
+  //         this.checkout.push(data); // books will now equal to data
+  //       });
+  //     });
+  // }
+  //   },
+  beforeRouteEnter(to, from, next) {
+    next(vm => {
+      vm.getReserve(vm);
+    });
 
     // db.collection("books")
     //   .get()
     //   .then(querySnapshot => {
     //     querySnapshot.forEach(doc => {
-    //       const data = {
-    //         id: doc.id, // firebase document id
-    //         book_id: doc.data().id,
-    //         title: doc.data().title,
-    //         author: doc.data().author,
-    //         publisher: doc.data().publisher,
-    //         year: doc.data().year,
-    //         quantity: doc.data().quantity
-    //       };
-    //       this.books.push(data) // books will now equal to data
-    //     })
-    //   })
-
-    // db.collection("students")
+    //       next(vm => {
+    //         const data = {
+    //           id: doc.id, // firebase document id
+    //           book_id: doc.data().id,
+    //           title: doc.data().title,
+    //           author: doc.data().author,
+    //           publisher: doc.data().publisher,
+    //           year: doc.data().year,
+    //           quantity: doc.data().quantity,
+    //           current_quantity: doc.data().current_quantity
+    //         };
+    //         vm.books.push(data); // books will now equal to data
+    //       });
+    //     });
+    //   });
+    // next.checkout = db.collection("checkout");
+    // console.log("beforeRouteEnter: " + String(checkout));
+    // db.collection("checkout")
+    //   // .where("student_did", "==", String(localStorage.userId))
     //   .get()
     //   .then(querySnapshot => {
     //     querySnapshot.forEach(doc => {
-    //       const data = {
-    //         id: doc.id, // firebase document id
-    //         student_id: doc.data().id,
-    //         name: doc.data().name,
-    //         email: doc.data().email
-    //       };
-    //       this.students.push(data) // books will now equal to data
+    //       next(vm => {
+    //         const data = {
+    //           id: doc.id, // firebase document id
+    //           book_did: doc.data().book_did,
+    //           borrowed_date: doc.data().borrowed_date,
+    //           copies_did: doc.data().copies_did,
+    //           due_date: doc.data().due_date
+    //         };
+    //         console.log("beforeRouteEnter: " + String(data));
+
+    //         vm.checkout.push(data); // books will now equal to data
+    //       });
     //     });
     //   });
+
+    // this.books = db.collection("books");
+    // this.checkout = db
+    //   .collection("checkout")
+    //   .where("student_did", "==", String(localStorage.userId));
+    // db.collection("return").where(
+    //   "student_did",
+    //   "==",
+    //   String(localStorage.userId)
+    // );
   },
   methods: {
-    titleAuthor({ title, author }) {
-      return `${title} by ${author}`;
-    },
-    nameStudentID({ name, student_id }) {
-      return `${name}, ${student_id}`;
-    },
-    checkout() {
+    checkoutCopy(book_id, copy_id, quantity, student_id, reserve_id) {
       // decrease book quantity
-      const new_quantity = this.books_checkout.quantity - 1;
+      const new_quantity = quantity - 1;
       db.collection("books")
-        .doc(this.books_checkout.id)
+        .doc(book_id)
         .update({ current_quantity: new_quantity });
 
-      const createdAt = new Date();
+      const created_at = new Date();
+      const due_date = new Date(created_at.setDate(created_at.getDate() + 14));
       // add new checkout record
       db.collection("checkout")
         .add({
           // use document id instead of book id or student id for easy query later
-          book_did: this.books_checkout.id,
-          copies_did: this.copies_checkout.id,
-          borrowed_date: createdAt,
-          due_date: this.due_date,
-          student_did: this.student_checkout.id
+          book_did: book_id,
+          copies_did: copy_id,
+          borrowed_date: new Date(),
+          due_date: due_date,
+          student_did: student_id
         })
         .then(docRef => {
           // update copies to borrowed and add checkout id to refer
+          this.checkout_did = docRef.id;
           db.collection("books")
-            .doc(this.books_checkout.id)
+            .doc(book_id)
             .collection("copies")
-            .doc(this.copies_checkout.id)
-            .update({ status: "borrowed", checkout_did: docRef.id, student_did: this.student_checkout.id });
+            .doc(copy_id)
+            .update({
+              status: "borrowed",
+              checkout_did: docRef.id,
+              student_did: student_id
+            });
+        })
+        .then(test => {
+          // update reserve record
+          console.log("checkout id2: " + this.checkout_did);
+          console.log("reserve id2: " + reserve_id);
+
+          db.collection("reserve")
+            .doc(reserve_id)
+            .update({
+              status: "collected",
+              checkout_did: this.checkout_did
+            });
           console.log("Check out book successfully");
           alert("Check out book successfully");
           this.$router.go({ path: this.path });
@@ -224,7 +338,7 @@ export default {
           console.error("Error checking out book: ", error);
         });
 
-// update isAvailable
+      // update isAvailable
 
       // this.books_checkout = [this.books_checkout]
 
@@ -233,27 +347,105 @@ export default {
 
       // });
     },
-    onSelect() {
-      this.copies_checkout = [];
-      this.copies = [];
-      // find copies based on book did
-      // this.copies.push(books.docRef(this.books_checkout.id).collection('copies'))
-      db.collection("books")
-        .doc(this.books_checkout.id)
-        .collection("copies")
+    getReserve(vm) {
+      db.collection("reserve")
+        .where("status", "==", "ready")
         .get()
         .then(querySnapshot => {
           querySnapshot.forEach(doc => {
-            if (doc.data().status == "available" ) {
+            const data = {
+              id: doc.id, // firebase document id
+              book_did: doc.data().book_did,
+              copies_did: doc.data().copies_did,
+              due_date: doc
+                .data()
+                .due_date.toDate()
+                .toLocaleString("en-GB", { timeZone: "UTC", hour12: true }),
+              student_did: doc.data().student_did,
+              title: "",
+              student: "",
+              current_quantity: 0
+            };
+            vm.reserve.push(data); // books will now equal to data
+          });
+          vm.getBook(vm);
+        });
+    },
+    getBook(vm) {
+      Object.keys(vm.reserve).forEach(key => {
+        db.collection("books")
+          .doc(vm.reserve[key].book_did)
+          .get()
+          .then(doc => {
+            vm.reserve[key].title = doc.data().title;
+            vm.reserve[key].current_quantity = doc.data().current_quantity;
+          });
+        vm.getStudent(vm);
+      });
+    },
+    getStudent(vm) {
+      Object.keys(vm.reserve).forEach(key => {
+        db.collection("students")
+          .doc(vm.reserve[key].student_did)
+          .get()
+          .then(doc => {
+            vm.reserve[key].student =
+              doc.data().name + ", " + doc.data().student_id;
+          });
+      });
+    },
+    fetchData() {
+      db.collection("reserve")
+        .where("status", "==", "ready")
+        .get()
+        .then(querySnapshot => {
+          querySnapshot
+            .forEach(doc => {
               const data = {
                 id: doc.id, // firebase document id
-                status: doc.data().status
+                book_did: doc.data().book_did,
+                copies_did: doc.data().copies_did,
+                due_date: doc
+                  .data()
+                  .due_date.toDate()
+                  .toLocaleString("en-GB", { timeZone: "UTC", hour12: true }),
+                student_did: doc.data().student_did
               };
-              this.copies.push(data); // books will now equal to data
-            }
-          });
+              this.reserve.push(data); // books will now equal to data
+            })
+            .then(test => {
+              Object.keys(this.reserve)
+                .forEach(key => {
+                  db.collection("book")
+                    .doc(this.reserve[key].book_did)
+                    .get()
+                    .then(querySnapshot => {
+                      querySnapshot.forEach(doc => {
+                        this.reserve[key].title = doc.data().title;
+                        this.reserve[
+                          key
+                        ].current_quantity = doc.data().current_quantity;
+                      });
+                    });
+                })
+                .then(test => {
+                  Object.keys(this.reserve).forEach(key => {
+                    db.collection("students")
+                      .doc(this.reserve[key].student_did)
+                      .get()
+                      .then(doc => {
+                        this.reserve[key].student =
+                          doc.data().name + ", " + doc.data().student_id;
+                      });
+                  });
+                  this.loading = false;
+                });
+            });
         });
     }
+  },
+  watch: {
+    $route: "fetchData"
   }
 };
 </script>
@@ -261,12 +453,14 @@ export default {
 <style scoped>
 div.centre {
   text-align: justify;
-  width: 30%;
+  width: 75%;
   margin: auto;
   margin-bottom: 20px;
 }
+.borrowing {
+  background-color: #99cc33 !important;
+}
+.late {
+  background-color: #ff9966;
+}
 </style>
-
-<!-- New step!
-     Add Multiselect CSS. Can be added as a static asset or inside a component. -->
-<style src="vue-multiselect/dist/vue-multiselect.min.css"></style>

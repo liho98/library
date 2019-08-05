@@ -210,9 +210,7 @@ export default {
     },
     reserveCopy(copy_id) {
       const created_at = new Date();
-      console.log(created_at);
       this.due_date = new Date(created_at.setDate(created_at.getDate() + 3));
-      console.log(this.due_date);
 
       // add new checkout record
       db.collection("reserve")
@@ -222,7 +220,8 @@ export default {
           copies_did: copy_id,
           reserve_at: new Date(),
           due_date: this.due_date,
-          student_did: localStorage.userId
+          student_did: localStorage.userId,
+          status: "ready"
         })
         .then(docRef => {
           // update copies to borrowed and add checkout id to refer
