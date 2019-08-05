@@ -156,6 +156,17 @@ const router = new Router({
       }
     },
     {
+      path: '/reserved',
+      name: 'reserved',
+      component: Return,
+      meta: {
+        requiresAuth: true,
+        librarianAuth: true,
+        studentAuth: false,
+        adminAuth: true
+      }
+    },
+    {
       path: '/checkout-return-history',
       name: 'checkout-return-history',
       component: CheckoutReturnHistory,

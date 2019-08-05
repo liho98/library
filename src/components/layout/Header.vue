@@ -116,13 +116,14 @@
                 </div>
               </li>
 
-
-
               <li class="navbar-item" v-if="role=='librarians' || role=='admins'">
                 <router-link to="/checkout" class="nav-link active">Checkout</router-link>
               </li>
               <li class="navbar-item" v-if="role=='librarians' || role=='admins'">
                 <router-link to="/return" class="nav-link active">Return</router-link>
+              </li>
+              <li class="navbar-item" v-if="role=='librarians' || role=='admins'">
+                <router-link to="/reserved" class="nav-link active">Reserved</router-link>
               </li>
 
               <!-- --------------------------Guest---------------------------------------- -->

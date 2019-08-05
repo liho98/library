@@ -25,7 +25,7 @@
           />
         </div>
         <div class="col-md-8" style="padding-top: 10px">
-          <table class="table table-hover table-bordered">
+          <table class="table table-hover table-borderless">
             <tbody>
               <tr class="d-flex">
                 <th class="col-2 text-right">Title</th>
@@ -47,18 +47,21 @@
                 <th class="col-2 text-right">Description</th>
                 <td class="col-10" style="text-align: justify">{{this.description}}</td>
               </tr>
+              <tr class="d-flex">
+                <th class="col-12" style="padding: 0"></th>
+              </tr>
             </tbody>
           </table>
 
           <h4 style="padding-bottom: 15px; padding-top: 15px">Copies</h4>
 
-          <table class="table table-hover table-bordered">
+          <table class="table table-hover table-borderless">
             <thead>
               <tr class="d-flex">
                 <th class="col-1 text-center">No.</th>
                 <th class="col-5 text-center">Copies ID</th>
                 <th class="col-3 text-center">Status</th>
-                <th class="col-3 text-center">Action</th>
+                <th class="col-3 text-center"></th>
               </tr>
             </thead>
             <tbody>
@@ -99,7 +102,7 @@
                         Are you sure you want to reserve
                         <b>{{title}}</b>?
                         <br />You are require to collect the book at library counter
-                        <b>within 3 days</b> of reserving it.
+                        <b>within 3 days</b> after reserving it.
                       </v-card-text>
                       <v-divider></v-divider>
                       <v-card-actions>
@@ -119,6 +122,9 @@
                     </v-card>
                   </v-dialog>
                 </td>
+              </tr>
+              <tr class="d-flex">
+                <th class="col-12" style="padding: 0"></th>
               </tr>
             </tbody>
           </table>
@@ -204,9 +210,9 @@ export default {
     },
     reserveCopy(copy_id) {
       const created_at = new Date();
-      console.log(created_at)
+      console.log(created_at);
       this.due_date = new Date(created_at.setDate(created_at.getDate() + 3));
-      console.log(this.due_date)
+      console.log(this.due_date);
 
       // add new checkout record
       db.collection("reserve")
@@ -284,5 +290,9 @@ img {
   margin-left: auto;
   margin-right: auto;
   display: block;
+}
+
+#borderless-cell {
+  border: 1px solid Transparent !important;
 }
 </style>

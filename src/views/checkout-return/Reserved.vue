@@ -4,10 +4,12 @@
       <div class="container" style="padding: 10px 20px;"
       >
         <router-link class="breadcrumb-item" to="/">Home</router-link>
-        <span class="breadcrumb-item active">Checkout</span>
+        <span class="breadcrumb-item active">Reserved</span>
       </div>
     </div>
     <div class="centre">
+
+
       <label for="books">Select book:</label>
       <!-- <multiselect
         id="books"
@@ -122,7 +124,7 @@ Vue.use(Vuetify)
 Vue.use(firestorePlugin);
 
 export default {
-  name: "checkout",
+  name: "reserved",
   components: { Multiselect },
   data() {
     return {
