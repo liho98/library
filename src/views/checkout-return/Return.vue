@@ -299,7 +299,6 @@ export default {
         });
     },
     onSelectCopies() {
-      var due_date = null;
       // get due date
       db.collection("checkout")
         .doc(this.copies_return.checkout_did)

@@ -129,12 +129,14 @@
                 <router-link to="/return" class="nav-link active">Return</router-link>
               </li>
               <li class="navbar-item" v-if="role=='librarians' || role=='admins'">
-                <router-link to="/personal-detail-librarian" class="nav-link active">Personal Detail</router-link>
-              </li>
-              <li>
                 <router-link to="/reserved" class="nav-link active">Reserved</router-link>
               </li>
 
+              <!-- ---------------------------Logged in user------------------------------------- -->
+              <li class="navbar-item" v-if="isLoggedIn">
+                <router-link to="/personal-detail-librarian" class="nav-link active">Personal Detail</router-link>
+              </li>
+              
               <!-- --------------------------Guest---------------------------------------- -->
               <li class="navbar-item" v-if="!isLoggedIn">
                 <router-link to="/about" class="nav-link active">About</router-link>

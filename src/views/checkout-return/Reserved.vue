@@ -8,59 +8,73 @@
       </div>
     </div>
     <div class="centre">
-      <v-data-table :headers="headers" :items="reserve" :loading="loading" class="elevation-1">
-        <!-- v-bind:pagination.sync="pagination" -->
-
-        <v-progress-linear v-show="progressBar" color="blue" indeterminate></v-progress-linear>
-        <template v-slot:items="props">
-          <!-- :style="{backgroundColor: (typeof props.item.days_late == 'string' ? '#ff9966' : 'transparent' ) }" -->
-          <tr>
-            <td>{{ props.item.title }}</td>
-            <td class="text-xs-left">{{ props.item.copies_did }}</td>
-            <td class="text-xs-left">{{ props.item.student }}</td>
-            <td class="text-xs-left">{{ props.item.due_date }}</td>
-            <td class="text-xs-center">
-              <v-dialog v-model="dialog" width="500">
-                <template v-slot:activator="{ on }">
-                  <v-btn
-                    small
-                    color="primary"
-                    style="background-color: #2A73C5; text-transform: none;"
-                    v-on="on"
-                  >Checkout</v-btn>
-                </template>
-                <v-card>
-                  <v-card-title
-                    class="headline grey lighten-2"
-                    primary-title
-                  >Checkout reserved book?</v-card-title>
-                  <v-card-text>
-                    Are you sure you want to checkout
-                    <b>{{props.item.title}}</b>?
-                  </v-card-text>
-                  <v-divider></v-divider>
-                  <v-card-actions>
-                    <v-spacer></v-spacer>
-                    <v-btn flat text style="text-transform: none;" @click="dialog = false">Cancel</v-btn>
+      <v-card>
+        <v-card-title>
+          <v-spacer></v-spacer>
+          <v-text-field
+            v-model="search"
+            append-icon="search"
+            label="Search"
+            single-line
+            hide-details
+          ></v-text-field>
+        </v-card-title>
+        <v-data-table
+          :headers="headers"
+          :items="reserve"
+          :loading="loading"
+          :search="search"
+          class="elevation-1"
+        >
+          <template v-slot:items="props">
+            <!-- :style="{backgroundColor: (typeof props.item.days_late == 'string' ? '#ff9966' : 'transparent' ) }" -->
+            <tr>
+              <td>{{ props.item.title }}</td>
+              <td class="text-xs-left">{{ props.item.copies_did }}</td>
+              <td class="text-xs-left">{{ props.item.student }}</td>
+              <td class="text-xs-left">{{ props.item.due_date }}</td>
+              <td class="text-xs-center">
+                <v-dialog v-model="dialog" width="500">
+                  <template v-slot:activator="{ on }">
                     <v-btn
+                      small
                       color="primary"
                       style="background-color: #2A73C5; text-transform: none;"
-                      @click="checkoutCopy(props.item.book_did, props.item.copies_did, props.item.current_quantity, props.item.student_did, props.item.id); dialog = false"
-                    >Reserve</v-btn>
-                  </v-card-actions>
-                </v-card>
-              </v-dialog>
-            </td>
-          </tr>
-        </template>
-      </v-data-table>
+                      v-on="on"
+                    >Checkout</v-btn>
+                  </template>
+                  <v-card>
+                    <v-card-title
+                      class="headline grey lighten-2"
+                      primary-title
+                    >Checkout reserved book?</v-card-title>
+                    <v-card-text>
+                      Are you sure you want to checkout
+                      <b>{{props.item.title}}</b>?
+                    </v-card-text>
+                    <v-divider></v-divider>
+                    <v-card-actions>
+                      <v-spacer></v-spacer>
+                      <v-btn flat text style="text-transform: none;" @click="dialog = false">Cancel</v-btn>
+                      <v-btn
+                        color="primary"
+                        style="background-color: #2A73C5; text-transform: none;"
+                        @click="checkoutCopy(props.item.book_did, props.item.copies_did, props.item.current_quantity, props.item.student_did, props.item.id); dialog = false"
+                      >Reserve</v-btn>
+                    </v-card-actions>
+                  </v-card>
+                </v-dialog>
+              </td>
+            </tr>
+          </template>
+        </v-data-table>
+      </v-card>
     </div>
   </div>
 </template>
 
 <script>
 import db from "../../components/firestoreInit";
-import Vue from "vue";
 // import ProgressCircular from "../../components/ProgressCircular";
 
 export default {
@@ -70,6 +84,7 @@ export default {
   //   },
   data() {
     return {
+      search: "",
       books: [],
       reserve: [],
       checkout: [],
@@ -82,7 +97,7 @@ export default {
       headers: [
         {
           text: "Book Title",
-          value: "book_title",
+          value: "title",
           align: "left",
           sortable: false
         },
@@ -319,7 +334,7 @@ export default {
               student_did: student_id
             });
         })
-        .then(test => {
+        .then(function() {
           // update reserve record
           console.log("checkout id2: " + this.checkout_did);
           console.log("reserve id2: " + reserve_id);
@@ -413,7 +428,7 @@ export default {
               };
               this.reserve.push(data); // books will now equal to data
             })
-            .then(test => {
+            .then(function() {
               Object.keys(this.reserve)
                 .forEach(key => {
                   db.collection("book")
@@ -428,7 +443,7 @@ export default {
                       });
                     });
                 })
-                .then(test => {
+                .then(function() {
                   Object.keys(this.reserve).forEach(key => {
                     db.collection("students")
                       .doc(this.reserve[key].student_did)

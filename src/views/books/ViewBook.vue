@@ -82,7 +82,15 @@
                   style="text-transform: capitalize;"
                 >{{copy.status}}</td>
 
-                <td class="col-3 text-center" style="padding: 0px">
+                <td class="col-3 text-center" style="padding: 0px" v-if="role === 'students'">
+                  <v-btn
+                    small
+                    color="primary"
+                    style="background-color: #2A73C5; text-transform: none;"
+                    v-if="copy.status === 'available' || copy.status === 'returned'"
+                    @click="displayConfirmDialog(title, copy.id)"
+                  >Reserve</v-btn>
+                  <!--                   
                   <v-dialog
                     v-model="dialog"
                     width="500"
@@ -120,7 +128,7 @@
                         >Reserve</v-btn>
                       </v-card-actions>
                     </v-card>
-                  </v-dialog>
+                  </v-dialog>-->
                 </td>
               </tr>
               <tr class="d-flex">
@@ -136,6 +144,7 @@
 
 <script>
 import db from "./../../components/firestoreInit";
+import firebase from "firebase";
 
 export default {
   name: "view-book",
@@ -152,16 +161,18 @@ export default {
       description: "",
       copies: [],
       dialog: false,
-      due_date: null
+      due_date: null,
+      role: ""
     };
   },
-  props: ["book"],
   created() {
-    // if (this.download_url === null) {
-    //   const imgLink = require("../../assets/no-image.png");
-    //   this.download_url = imgLink;
-    // }
+    this.role = localStorage.role
+  //   if (firebase.auth().currentUser) {
+  //     var currentUser = firebase.auth().currentUser;
+  //     this.role = currentUser.photoURL;
+  //   }
   },
+  props: ["book"],
   beforeRouteEnter(to, from, next) {
     // console.log(to.params.book_id);
     db.collection("books")
@@ -180,7 +191,6 @@ export default {
           vm.description = doc.data().description;
 
           if (doc.data().download_url === undefined) {
-            console.log("no image");
             const imgLink = require("../../assets/no-image.png");
             vm.download_url = imgLink;
           }
@@ -192,6 +202,16 @@ export default {
     $route: "fetchData"
   },
   methods: {
+    displayConfirmDialog(title, copy_id) {
+      var r = confirm(
+        "Are you sure you want to reserve " +
+          title +
+          "?\nYou are require to collect the book at library counter within 3 days."
+      );
+      if (r) {
+        this.reserveCopy(copy_id);
+      }
+    },
     getCopies(vm, book_id) {
       db.collection("books")
         .doc(book_id)
@@ -203,7 +223,6 @@ export default {
               id: doc.id, // firebase document id
               status: doc.data().status
             };
-            console.log(data);
             vm.copies.push(data); // books will now equal to data
           });
         });
@@ -259,7 +278,6 @@ export default {
           this.description = doc.data().description;
 
           if (doc.data().download_url === undefined) {
-            console.log("no image");
             const imgLink = require("../../assets/no-image.png");
             this.download_url = imgLink;
           }
