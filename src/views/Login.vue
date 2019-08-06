@@ -1,13 +1,13 @@
 <template>
   <div id="login">
-    <div class="breadcrumb" style="margin-bottom: 20px">
+    <div class="breadcrumb">
       <div class="container" style="padding: 10px 20px;">
         <!-- <a class="breadcrumb-item" href="index.html">Home</a> -->
         <span class="breadcrumb-item active">Login</span>
       </div>
     </div>
 
-    <div class="login centre">
+    <div class="container centre" style="padding-top: 0">
       <!-- <h3>Login</h3> -->
       <!-- <label class="radio-inline">
         <input name="role" type="radio" value="student" checked autocomplete="false" v-model="role" />
@@ -17,37 +17,51 @@
       <label class="radio-inline">
         <input name="role" type="radio" value="librarian" v-model="role" />
         Librarian
-      </label> -->
-      
-      <br />
-      <input
-        class="form-control"
-        type="text"
-        v-model="email"
-        placeholder="Email"
-        style="display: inline"
-        required
-        v-on:keyup.enter="login"
-      />
-      <br />
-      <input
-        class="form-control"
-        type="password"
-        v-model="password"
-        placeholder="Password"
-        style="display: inline"
-        required
-        v-on:keyup.enter="login"
-      />
-      <br />
-      <input type="submit"  class="btn" @click="login" value="Login"/>
+      </label>-->
+      <div class="form-row justify-content-center">
+        <div class="col-md-4">
+          <input
+            class="form-control"
+            type="text"
+            v-model="email"
+            placeholder="Email"
+            style="display: inline"
+            required
+            v-on:keyup.enter="login"
+          />
+        </div>
+      </div>
+      <div class="form-row justify-content-center">
+        <div class="col-md-4">
+          <input
+            class="form-control"
+            type="password"
+            v-model="password"
+            placeholder="Password"
+            style="display: inline"
+            required
+            v-on:keyup.enter="login"
+          />
+        </div>
+      </div>
+      <v-btn color="primary" large style="background-color: #ff9700; text-transform: none;" @click="login">
+        Login
+      </v-btn>
+
+      <!-- <input type="submit" class="btn" @click="login" value="Login" /> -->
       <!-- <button type="submit" class="btn" @click="login" >Login</button> -->
       <p>
         You don't have an account ? You can
         <router-link to="/register">create one</router-link>
       </p>
 
-      <p><b>Admin:<br/>Email: a@a.aa<br/>Password: aaaaaa</b></p>
+      <p>
+        <b>
+          Admin:
+          <br />Email: a@a.aa
+          <br />Password: aaaaaa
+        </b>
+      </p>
     </div>
     <!-- <section class="static about-sec">
       <div class="container">
@@ -87,7 +101,7 @@ export default {
   data() {
     return {
       email: "",
-      password: "",
+      password: ""
       // role: ""
     };
   },
@@ -118,13 +132,8 @@ div.centre {
   width: 100%;
   margin: auto;
 }
-
-.login {
-  margin-top: 40px;
-}
 input {
   margin: 10px 0;
-  width: 20%;
   padding: 15px;
 }
 input[type="radio"] {

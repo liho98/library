@@ -1,13 +1,13 @@
 <template>
   <div id="register">
-    <div class="breadcrumb" style="margin-bottom: 20px">
+    <div class="breadcrumb" style="margin-bottom: 0">
       <div class="container" style="padding: 10px 20px;">
         <!-- <a class="breadcrumb-item" href="index.html">Home</a> -->
         <span class="breadcrumb-item active">Register</span>
       </div>
     </div>
 
-    <div class="sign-up centre">
+    <div class="container centre">
       <div class="alert alert-danger" v-show="errors.any()">
         <!-- <div v-if="errors.has('role')">{{ errors.first('role') }}</div> -->
         <div v-if="errors.has('name')">{{ errors.first('name') }}</div>
@@ -38,61 +38,75 @@
       </label>
       <br />
 
-      <input
-        class="form-control"
-        type="text"
-        name="name"
-        v-model="name"
-        placeholder="Name"
-        style="display: inline"
-        v-validate="'required'"
-        required
-      />
-      <br />
+      <div class="form-row justify-content-center">
+        <div class="col-md-4">
+          <input
+            class="form-control"
+            type="text"
+            name="name"
+            v-model="name"
+            placeholder="Name"
+            style="display: inline"
+            v-validate="'required'"
+            required
+          />
+        </div>
+      </div>
+      <div class="form-row justify-content-center">
+        <div class="col-md-4">
+          <input
+            class="form-control"
+            type="text"
+            name="id"
+            v-model="id"
+            placeholder="Student ID"
+            style="display: inline"
+            v-validate="'required'"
+          />
+        </div>
+      </div>
+      <div class="form-row justify-content-center">
+        <div class="col-md-4">
+          <input
+            class="form-control"
+            type="text"
+            name="email"
+            v-model="email"
+            placeholder="Email"
+            style="display: inline"
+            v-validate="'required|email'"
+          />
+        </div>
+      </div>
+      <div class="form-row justify-content-center">
+        <div class="col-md-4">
+          <input
+            class="form-control"
+            type="password"
+            name="password"
+            v-model="password"
+            v-validate="'required'"
+            ref="password"
+            placeholder="Password"
+            style="display: inline"
+          />
+        </div>
+      </div>
+      <div class="form-row justify-content-center">
+        <div class="col-md-4">
+          <input
+            class="form-control"
+            type="password"
+            name="password_confirmation"
+            v-validate="'required|confirmed:password'"
+            placeholder="Confirm Password"
+            style="display: inline"
+            data-vv-as="password"
+          />
+        </div>
+      </div>
 
-      <input
-        class="form-control"
-        type="text"
-        name="id"
-        v-model="id"
-        placeholder="Student ID"
-        style="display: inline"
-        v-validate="'required'"
-      />
-      <br />
-
-      <input
-        class="form-control"
-        type="text"
-        name="email"
-        v-model="email"
-        placeholder="Email"
-        style="display: inline"
-        v-validate="'required|email'"
-      />
-      <br />
-      <input
-        class="form-control"
-        type="password"
-        name="password"
-        v-model="password"
-        v-validate="'required'"
-        ref="password"
-        placeholder="Password"
-        style="display: inline"
-      />
-      <br />
-      <input
-        class="form-control"
-        type="password"
-        name="password_confirmation"
-        v-validate="'required|confirmed:password'"
-        placeholder="Confirm Password"
-        style="display: inline"
-        data-vv-as="password"
-      />
-      <br />
-      <input class="btn" type="submit" value="Register" @click="signUp" />
+      <v-btn color="primary" large style="background-color: #ff9700; text-transform: none;" @click="signUp">Register</v-btn>
 
       <p>
         or go back to
@@ -193,7 +207,6 @@ div.centre {
 
 input {
   margin: 10px 0;
-  width: 20%;
   padding: 15px;
 }
 input[type="radio"] {

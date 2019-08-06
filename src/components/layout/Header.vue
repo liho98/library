@@ -12,12 +12,18 @@
           </div>-->
           <div v-if="isLoggedIn" class="p-2" style="display: inline;">
             <span class="ph-number">Welcome, {{name}}</span>
-            <button
+            <v-btn
+              small
+              color="primary"
+              v-on:click="logout"
+              style="padding: .15rem .35rem; text-transform: none; background: #ff9700"
+            >Logout</v-btn>
+            <!-- <button
               type="button"
               class="btn btn-default"
               style="padding: .15rem .35rem; text-transform: none"
               v-on:click="logout"
-            >Logout</button>
+            >Logout</button>-->
           </div>
 
           <!-- ---------------------------Logged In User----------------------------------- -->
@@ -33,7 +39,7 @@
       </div>
     </div>
     <div class="main-menu" style="padding-top: 0px;">
-      <div class="container" >
+      <div class="container">
         <nav class="navbar navbar-expand-lg navbar-light">
           <router-link to="/" class="navbar-brand" style="margin-right: 0px">
             <img src="images/logo.png" alt="logo" style="width: 150px" />
@@ -54,10 +60,13 @@
               <!-- ---------------------------Student--------------------------------------- -->
 
               <li class="navbar-item" v-if="role=='students'">
-                <router-link to="/view-book" class="nav-link active">Book List</router-link>
+                <router-link to="/view-book-list" class="nav-link active">Book List</router-link>
               </li>
               <li class="navbar-item" v-if="role=='students'">
-                <router-link to="/checkout-return-history" class="nav-link active">Your Borrowed Book</router-link>
+                <router-link
+                  to="/checkout-return-history"
+                  class="nav-link active"
+                >Your Borrowed Book</router-link>
               </li>
 
               <!-- ---------------------------Admins------------------------------------- -->
@@ -78,8 +87,6 @@
                 </div>
               </li>
 
-
-
               <li class="navbar-item dropdown" v-if="role=='admins'">
                 <a
                   class="nav-link dropdown-toggle active"
@@ -95,7 +102,7 @@
                   
                 </div>
               </li>
-              
+
               <!-- ---------------------------Librarians------------------------------------- -->
               <li class="navbar-item dropdown" v-if="role=='librarians' || role=='admins'">
                 <a
@@ -108,14 +115,12 @@
                   aria-expanded="false"
                 >Book</a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown" style="margin: 0px">
-                  <router-link to="/view-book" class="dropdown-item">View Book</router-link>
+                  <router-link to="/view-book-list" class="dropdown-item">View Book</router-link>
                   <router-link to="/add-book" class="dropdown-item">Add Book</router-link>
                   <router-link to="/edit-book" class="dropdown-item">Edit Book</router-link>
                   <router-link to="/search-book" class="dropdown-item">Search Book</router-link>
                 </div>
               </li>
-
-
 
               <li class="navbar-item" v-if="role=='librarians' || role=='admins'">
                 <router-link to="/checkout" class="nav-link active">Checkout</router-link>
@@ -126,6 +131,10 @@
               <li class="navbar-item" v-if="role=='librarians' || role=='admins'">
                 <router-link to="/personal-detail-librarian" class="nav-link active">Personal Detail</router-link>
               </li>
+              <li>
+                <router-link to="/reserved" class="nav-link active">Reserved</router-link>
+              </li>
+
               <!-- --------------------------Guest---------------------------------------- -->
               <li class="navbar-item" v-if="!isLoggedIn">
                 <router-link to="/about" class="nav-link active">About</router-link>
@@ -195,7 +204,6 @@ import firebase from "firebase";
 // }
 // console.log('currentUser is: ' + currentUser);
 export default {
-  name: "header",
   data() {
     return {
       isLoggedIn: false,

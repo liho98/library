@@ -12,6 +12,7 @@ import Register from "./views/Register.vue";
 
 // Book
 import AddBook from "./views/books/AddBook";
+import ViewBookList from "./views/books/ViewBookList";
 import ViewBook from "./views/books/ViewBook";
 import SearchBook from "./views/books/SearchBook"
 import EditBook from "./views/books/EditBook"
@@ -19,6 +20,8 @@ import EditBook from "./views/books/EditBook"
 // Checkout, Return
 import Checkout from "./views/checkout-return/Checkout";
 import Return from "./views/checkout-return/Return";
+import Reserved from "./views/checkout-return/Reserved";
+
 import CheckoutReturnHistory from "./views/checkout-return/CheckoutReturnHistory";
 
 // Admin
@@ -44,9 +47,9 @@ const router = new Router({
       path: "/",
       name: "home",
       component: Home,
-      // meta: {
-      //   requiresAuth: true
-      // }
+      meta: {
+        noAuth: true
+      }
     },
     {
       path: "/about",
@@ -86,6 +89,28 @@ const router = new Router({
       }
     },
     {
+      path: '/view-book-list',
+      name: 'view-book-list',
+      component: ViewBookList,
+      meta: {
+        requiresAuth: true,
+        librarianAuth: true,
+        studentAuth: true,
+        adminAuth: true
+      }
+    },
+    {
+      path: '/view-book/:book_id',
+      name: 'view-book',
+      component: ViewBook,
+      meta: {
+        requiresAuth: true,
+        librarianAuth: true,
+        studentAuth: true,
+        adminAuth: true
+      }
+    },
+    {
       path: '/add-book',
       name: 'add-book',
       component: AddBook,
@@ -119,17 +144,6 @@ const router = new Router({
       }
     },
     {
-      path: '/view-book/:book_id',
-      name: 'view-book',
-      component: ViewBook,
-      meta: {
-        requiresAuth: true,
-        librarianAuth: true,
-        studentAuth: false,
-        adminAuth: true
-      }
-    },
-    {
       path: '/checkout',
       name: 'checkout',
       component: Checkout,
@@ -144,6 +158,17 @@ const router = new Router({
       path: '/return',
       name: 'return',
       component: Return,
+      meta: {
+        requiresAuth: true,
+        librarianAuth: true,
+        studentAuth: false,
+        adminAuth: true
+      }
+    },
+    {
+      path: '/reserved',
+      name: 'reserved',
+      component: Reserved,
       meta: {
         requiresAuth: true,
         librarianAuth: true,
@@ -235,39 +260,67 @@ router.beforeEach((to, from, next) => {
     // console.log("User Logged In");
     // console.log("User Role: " + role);
 
-    // if user want to go to studentAuth page
-    if (to.meta.studentAuth) {
-      if (role === 'students') {
+
+    if (role === 'students') {
+      if (to.meta.studentAuth || to.meta.noAuth) {
+        next();
+      } else {
+        next('/');
+      }
+    } else if (role === 'librarians') {
+      if (to.meta.librarianAuth  || to.meta.noAuth) {
+        next();
+      } else {
+        next('/');
+      }
+    } else if (role === 'admins') {
+      if (to.meta.adminAuth || to.meta.noAuth) {
+        next();
+      } else {
+        next('/');
+      }
+    } else {
+      if (to.meta.requiresGuest || to.meta.noAuth) {
         next();
       } else {
         next('/');
       }
     }
-    // if user want to go to librarianAuth
-    else if (to.meta.librarianAuth) {
-      if (role === 'librarians') {
-        next();
-      } else {
-        next('/');
-      }
-    }
-    // if user want to go to adminAuth
-    else if (to.meta.adminAuth) {
-      if (role === 'admins') {
-        next();
-      } else {
-        next('/');
-      }
-    }
-    // for other page
-    else {
-      // cannot go to page for guest like login, register
-      if (to.meta.requiresGuest) {
-        next('/');
-      } else {
-        next();
-      }
-    }
+
+
+    // // if user want to go to studentAuth page
+    // if (to.meta.studentAuth) {
+    //   if (role === 'students') {
+    //     next();
+    //   } else {
+    //     next('/');
+    //   }
+    // }
+    // // if user want to go to librarianAuth
+    // else if (to.meta.librarianAuth) {
+    //   if (role === 'librarians') {
+    //     next();
+    //   } else {
+    //     next('/');
+    //   }
+    // }
+    // // if user want to go to adminAuth
+    // else if (to.meta.adminAuth) {
+    //   if (role === 'admins') {
+    //     next();
+    //   } else {
+    //     next('/');
+    //   }
+    // }
+    // // for other page
+    // else {
+    //   // cannot go to page for guest like login, register
+    //   if (to.meta.requiresGuest) {
+    //     next('/');
+    //   } else {
+    //     next();
+    //   }
+    // }
   }
 
   // if (to.meta.requiresAuth) {

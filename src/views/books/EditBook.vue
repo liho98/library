@@ -16,14 +16,11 @@
 
     <b-container>
       <!-- User Interface controls -->
-      <b-row>
+      <b-row style="padding-bottom: 15px">
         <b-col md="6" class="my-1">
           <b-form-group label-cols-sm="3" label="Filter" class="mb-0">
             <b-input-group>
               <b-form-input v-model="filter" placeholder="Type to Search"></b-form-input>
-              <b-input-group-append>
-                <b-button :disabled="!filter" @click="filter = ''">Clear</b-button>
-              </b-input-group-append>
             </b-input-group>
           </b-form-group>
         </b-col>
@@ -313,15 +310,6 @@ div.centre {
   margin-top: 40px;
 }
 
-input {
-  margin: 10px 0;
-  width: 20%;
-  padding: 15px;
-}
-input[type="radio"] {
-  width: 30px;
-}
-
 .no-spinner::-webkit-outer-spin-button,
 .no-spinner::-webkit-inner-spin-button {
   -webkit-appearance: none;
@@ -347,10 +335,8 @@ p a {
 }
 
 table {
-  margin-left: 10%;
-  margin-right: 10%;
   border-collapse: collapse;
-  width: 80%;
+  width: 100%;
 }
 
 th, td {

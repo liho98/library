@@ -21,6 +21,8 @@
 
       <!-- <div class="btn-group btn-group-toggle" style="margin-bottom: 20px">
       </div>-->
+      * All fields required unless specified
+      <br />
 
       <input
         class="form-control"
@@ -79,12 +81,26 @@
       <input
         class="form-control"
         type="number"
+        value
         name="quantity"
         v-model="quantity"
         v-validate="'required|integer'"
         placeholder="Quantity"
         style="display: inline"
       />
+
+      <br />
+      <textarea
+        class="form-control"
+        rows="5"
+        id="comment"
+        placeholder="Book Description (Optional)"
+        v-model="description"
+      ></textarea>
+
+      <br />
+      <app-file-uploader @uploaded="onImgUploaded" @downloadURL="getDownloadURL"></app-file-uploader>
+
       <br />
       <input
         class="btn"
@@ -101,11 +117,15 @@
 import db from "./../../components/firestoreInit";
 import Vue from "vue";
 import VeeValidate from "vee-validate";
+import FileUploader from "./../../components/FileUploader";
 
 Vue.use(VeeValidate);
 
 export default {
   name: "add-book",
+  components: {
+    "app-file-uploader": FileUploader
+  },
   data() {
     return {
       id: "",
@@ -113,7 +133,10 @@ export default {
       author: "",
       publisher: "",
       year: "",
-      quantity: 1
+      quantity: undefined,
+      fileName: "",
+      downloadURL: "",
+      description: ""
     };
   },
   methods: {
@@ -136,7 +159,10 @@ export default {
             year: this.year,
             quantity: Number(this.quantity),
             created_at: createdAt,
-            current_quantity: Number(this.quantity)
+            current_quantity: Number(this.quantity),
+            cover_image: this.fileName,
+            download_url: this.downloadURL,
+            description: this.description
           })
           .then(docRef => {
             // add copies based on book quantity
@@ -157,6 +183,12 @@ export default {
             console.error("Error adding book: ", error);
           });
       }
+    },
+    onImgUploaded(value) {
+      this.fileName = value;
+    },
+    getDownloadURL(value) {
+      this.downloadURL = value;
     }
   }
 };
@@ -175,9 +207,17 @@ div.centre {
 
 input {
   margin: 10px 0;
-  width: 20%;
+  width: 30%;
   padding: 15px;
 }
+
+textarea {
+  margin: 10px 0;
+  width: 30%;
+  padding: 15px;
+  display: inline;
+}
+
 input[type="radio"] {
   width: 30px;
 }
@@ -194,7 +234,7 @@ label.radio-inline {
 
 button {
   margin-top: 20px;
-  width: 10%;
+  width: 30%;
   cursor: pointer;
 }
 p {

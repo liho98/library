@@ -242,7 +242,7 @@ export default {
         .get()
         .then(querySnapshot => {
           querySnapshot.forEach(doc => {
-            if (doc.data().status != "borrowed") {
+            if (doc.data().status == "available" ) {
               const data = {
                 id: doc.id, // firebase document id
                 status: doc.data().status
