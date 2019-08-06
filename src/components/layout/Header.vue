@@ -81,8 +81,8 @@
                   aria-expanded="false"
                 >Student</a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown" style="margin: 0px">
-                  <router-link to="/" class="dropdown-item">View Student</router-link>
-                  <router-link to="/" class="dropdown-item">Edit Student</router-link>
+                  <router-link to="/view-student" class="dropdown-item">View Student</router-link>
+                  <router-link to="/edit-student" class="dropdown-item">Edit Student</router-link>
                   <router-link to="/" class="dropdown-item">Delete Student</router-link>
                 </div>
               </li>
@@ -98,9 +98,8 @@
                   aria-expanded="false"
                 >Librarian</a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown" style="margin: 0px">
-                  <router-link to="/" class="dropdown-item">View Librarian</router-link>
-                  <router-link to="/" class="dropdown-item">Edit Librarian</router-link>
-                  <router-link to="/" class="dropdown-item">Delete Librarian</router-link>
+                  <router-link to="/view-librarian" class="dropdown-item">View Librarian</router-link>
+                  
                 </div>
               </li>
 
@@ -130,6 +129,9 @@
                 <router-link to="/return" class="nav-link active">Return</router-link>
               </li>
               <li class="navbar-item" v-if="role=='librarians' || role=='admins'">
+                <router-link to="/personal-detail-librarian" class="nav-link active">Personal Detail</router-link>
+              </li>
+              <li>
                 <router-link to="/reserved" class="nav-link active">Reserved</router-link>
               </li>
 
