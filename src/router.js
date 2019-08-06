@@ -21,6 +21,14 @@ import Checkout from "./views/checkout-return/Checkout";
 import Return from "./views/checkout-return/Return";
 import CheckoutReturnHistory from "./views/checkout-return/CheckoutReturnHistory";
 
+// Admin
+import SearchLibrarian from "./views/admin/SearchLibrarian";
+import ViewLibrarian from "./views/admin/ViewLibrarian";
+import ViewStudent from "./views/admin/ViewStudent";
+
+//Librarian
+import PersonalDetialLibrarian from "./views/librarian/PersonalDetailLibrarian";
+
 Vue.use(Router);
 
 const router = new Router({
@@ -154,6 +162,50 @@ const router = new Router({
         adminAuth: false
       }
     },
+    {
+      path: '/view-librarian',
+      name: 'view-librarian',
+      component: ViewLibrarian,
+      meta: {
+        requiresAuth: true,
+        librarianAuth: false,
+        studentAuth: false,
+        adminAuth: true
+      }
+    },
+    {
+    path: '/view-student',
+    name: 'view-student',
+    component: ViewStudent,
+    meta: {
+      requiresAuth: true,
+      librarianAuth: false,
+      studentAuth: false,
+      adminAuth: true
+    }
+  },
+  {
+    path: '/search-librarian',
+    name: 'search-librarian',
+    component: SearchLibrarian,
+     meta: {
+       requiresAuth: true,
+       librarianAuth: false,
+       studentAuth: false,
+       adminAuth: true
+     }
+  },
+  {
+    path: '/personal-detail-librarian',
+     name: 'personal-detail-librarian',
+     component: PersonalDetialLibrarian,
+     meta: {
+       requiresAuth: true,
+       librarianAuth: true,
+       studentAuth: false,
+       adminAuth: true
+     }
+  },
   ]
 });
 

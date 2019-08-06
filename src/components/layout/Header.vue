@@ -72,7 +72,7 @@
                   aria-expanded="false"
                 >Student</a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown" style="margin: 0px">
-                  <router-link to="/" class="dropdown-item">View Student</router-link>
+                  <router-link to="/view-student" class="dropdown-item">View Student</router-link>
                   <router-link to="/" class="dropdown-item">Edit Student</router-link>
                   <router-link to="/" class="dropdown-item">Delete Student</router-link>
                 </div>
@@ -91,9 +91,8 @@
                   aria-expanded="false"
                 >Librarian</a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown" style="margin: 0px">
-                  <router-link to="/" class="dropdown-item">View Librarian</router-link>
-                  <router-link to="/" class="dropdown-item">Edit Librarian</router-link>
-                  <router-link to="/" class="dropdown-item">Delete Librarian</router-link>
+                  <router-link to="/view-librarian" class="dropdown-item">View Librarian</router-link>
+                  
                 </div>
               </li>
               
@@ -124,7 +123,9 @@
               <li class="navbar-item" v-if="role=='librarians' || role=='admins'">
                 <router-link to="/return" class="nav-link active">Return</router-link>
               </li>
-
+              <li class="navbar-item" v-if="role=='librarians' || role=='admins'">
+                <router-link to="/personal-detail-librarian" class="nav-link active">Personal Detail</router-link>
+              </li>
               <!-- --------------------------Guest---------------------------------------- -->
               <li class="navbar-item" v-if="!isLoggedIn">
                 <router-link to="/about" class="nav-link active">About</router-link>
