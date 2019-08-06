@@ -17,6 +17,9 @@ import ViewBook from "./views/books/ViewBook";
 import SearchBook from "./views/books/SearchBook"
 import EditBook from "./views/books/EditBook"
 
+// Students
+import EditStudent from "./views/students/EditStudent";
+
 // Checkout, Return
 import Checkout from "./views/checkout-return/Checkout";
 import Return from "./views/checkout-return/Return";
@@ -139,6 +142,17 @@ const router = new Router({
       meta: {
         requiresAuth: true,
         librarianAuth: true,
+        studentAuth: false,
+        adminAuth: true
+      }
+    },
+    {
+      path: '/edit-student',
+      name: 'edit-student',
+      component: EditStudent,
+      meta: {
+        requiresAuth: true,
+        librarianAuth: false,
         studentAuth: false,
         adminAuth: true
       }
