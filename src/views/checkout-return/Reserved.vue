@@ -34,42 +34,37 @@
               <td class="text-xs-left">{{ props.item.student }}</td>
               <td class="text-xs-left">{{ props.item.due_date }}</td>
               <td class="text-xs-center">
-                <v-dialog v-model="dialog" width="500">
-                  <template v-slot:activator="{ on }">
-                    <v-btn
-                      small
-                      color="primary"
-                      style="background-color: #2A73C5; text-transform: none;"
-                      v-on="on"
-                    >Checkout</v-btn>
-                  </template>
-                  <v-card>
-                    <v-card-title
-                      class="headline grey lighten-2"
-                      primary-title
-                    >Checkout reserved book?</v-card-title>
-                    <v-card-text>
-                      Are you sure you want to checkout
-                      <b>{{props.item.title}}</b>?
-                    </v-card-text>
-                    <v-divider></v-divider>
-                    <v-card-actions>
-                      <v-spacer></v-spacer>
-                      <v-btn flat text style="text-transform: none;" @click="dialog = false">Cancel</v-btn>
-                      <v-btn
-                        color="primary"
-                        style="background-color: #2A73C5; text-transform: none;"
-                        @click="checkoutCopy(props.item.book_did, props.item.copies_did, props.item.current_quantity, props.item.student_did, props.item.id); dialog = false"
-                      >Reserve</v-btn>
-                    </v-card-actions>
-                  </v-card>
-                </v-dialog>
+                <v-btn
+                  small
+                  color="primary"
+                  style="background-color: #2A73C5; text-transform: none;"
+                  @click.stop="setSeleted(props.item); dialog = true"
+                >Checkout</v-btn>
               </td>
             </tr>
           </template>
         </v-data-table>
       </v-card>
     </div>
+    <v-dialog v-model="dialog" width="500">
+      <v-card>
+        <v-card-title class="headline grey lighten-2" primary-title>Checkout reserved book?</v-card-title>
+        <v-card-text>
+          Are you sure you want to checkout
+          <b>{{selected.title}}</b>?
+        </v-card-text>
+        <v-divider></v-divider>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn flat text style="text-transform: none;" @click="dialog = false">Cancel</v-btn>
+          <v-btn
+            color="primary"
+            style="background-color: #2A73C5; text-transform: none;"
+            @click="checkoutCopy(selected); dialog = false"
+          >Checkout</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </div>
 </template>
 
@@ -93,6 +88,7 @@ export default {
       progressBar: true,
       dialog: false,
       checkout_did: "",
+      selected: {},
 
       headers: [
         {
@@ -206,45 +202,6 @@ export default {
     //     });
     //   });
   },
-  //   methods: {
-  //     fetchData() {
-  //       db.collection("books")
-  //         .get()
-  //         .then(querySnapshot => {
-  //           querySnapshot.forEach(doc => {
-  //             const data = {
-  //               id: doc.id, // firebase document id
-  //               book_id: doc.data().id,
-  //               title: doc.data().title,
-  //               author: doc.data().author,
-  //               publisher: doc.data().publisher,
-  //               year: doc.data().year,
-  //               quantity: doc.data().quantity,
-  //               current_quantity: doc.data().current_quantity
-  //             };
-  //             this.books.push(data); // books will now equal to data
-  //           });
-  //         }).then({
-
-  //         });
-
-  //   db.collection("checkout")
-  //     // .where("student_did", "==", String(localStorage.userId))
-  //     .get()
-  //     .then(querySnapshot => {
-  //       querySnapshot.forEach(doc => {
-  //         const data = {
-  //           id: doc.id, // firebase document id
-  //           book_did: doc.data().book_did,
-  //           borrowed_date: doc.data().borrowed_date,
-  //           copies_did: doc.data().copies_did,
-  //           due_date: doc.data().due_date
-  //         };
-  //         this.checkout.push(data); // books will now equal to data
-  //       });
-  //     });
-  // }
-  //   },
   beforeRouteEnter(to, from, next) {
     next(vm => {
       vm.getReserve(vm);
@@ -302,11 +259,15 @@ export default {
     // );
   },
   methods: {
-    checkoutCopy(book_id, copy_id, quantity, student_id, reserve_id) {
+    setSeleted(selected) {
+      this.selected = selected;
+    },
+    checkoutCopy(selected) {
       // decrease book quantity
-      const new_quantity = quantity - 1;
+      console.log(selected.title)
+      const new_quantity = selected.current_quantity - 1;
       db.collection("books")
-        .doc(book_id)
+        .doc(selected.book_did)
         .update({ current_quantity: new_quantity });
 
       const created_at = new Date();
@@ -315,32 +276,32 @@ export default {
       db.collection("checkout")
         .add({
           // use document id instead of book id or student id for easy query later
-          book_did: book_id,
-          copies_did: copy_id,
+          book_did: selected.book_did,
+          copies_did: selected.copies_did,
           borrowed_date: new Date(),
           due_date: due_date,
-          student_did: student_id
+          student_did: selected.student_did
         })
         .then(docRef => {
           // update copies to borrowed and add checkout id to refer
           this.checkout_did = docRef.id;
           db.collection("books")
-            .doc(book_id)
+            .doc(selected.book_did)
             .collection("copies")
-            .doc(copy_id)
+            .doc(selected.copies_did)
             .update({
               status: "borrowed",
               checkout_did: docRef.id,
-              student_did: student_id
+              student_did: selected.student_did
             });
         })
-        .then(function() {
+        .then(() => {
           // update reserve record
           console.log("checkout id2: " + this.checkout_did);
-          console.log("reserve id2: " + reserve_id);
+          console.log("reserve id2: " + selected.id);
 
           db.collection("reserve")
-            .doc(reserve_id)
+            .doc(selected.id)
             .update({
               status: "collected",
               checkout_did: this.checkout_did
