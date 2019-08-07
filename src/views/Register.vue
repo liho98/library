@@ -144,7 +144,7 @@ export default {
         db.collection("students")
           .doc(uid)
           .set({ name, student_id: id, email, created_at: createdAt })
-          .then(docRef => {
+          .then(function() {
             console.log("User added: ");
             alert("Your account has been created!");
             this.$router.go({ path: "/" });
@@ -156,7 +156,7 @@ export default {
         db.collection("librarians")
           .doc(uid)
           .set({ name, librarian_id: id, email, created_at: createdAt })
-          .then(docRef => {
+          .then(function()  {
             console.log("User added: ");
             alert("Your account has been created!");
             this.$router.go({ path: "/" });
@@ -172,7 +172,7 @@ export default {
           .auth()
           .createUserWithEmailAndPassword(this.email, this.password)
           .then(
-            user => {
+            function() {
               var currentUser = firebase.auth().currentUser;
               var uid = currentUser.uid;
 

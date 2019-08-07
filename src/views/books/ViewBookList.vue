@@ -13,9 +13,7 @@
 </template>
 
 <script>
-import Vue from "vue";
 import BookList from "../../components/books/BookList.vue";
-
 import db from "../../components/firestoreInit";
 
 export default {

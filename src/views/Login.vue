@@ -44,9 +44,12 @@
           />
         </div>
       </div>
-      <v-btn color="primary" large style="background-color: #ff9700; text-transform: none;" @click="login">
-        Login
-      </v-btn>
+      <v-btn
+        color="primary"
+        large
+        style="background-color: #ff9700; text-transform: none;"
+        @click="login"
+      >Login</v-btn>
 
       <!-- <input type="submit" class="btn" @click="login" value="Login" /> -->
       <!-- <button type="submit" class="btn" @click="login" >Login</button> -->
@@ -111,8 +114,7 @@ export default {
       firebase
         .auth()
         .signInWithEmailAndPassword(this.email, this.password)
-        .then(
-          user => {
+        .then(() => {
             // alert("Login successfully!");
             this.$router.go("/");
           },

@@ -7,32 +7,44 @@
       </div>
     </div>
     <div class="centre">
-      <v-data-table
-        :headers="headers"
-        :items="checkout"
-        :loading="true"
-        class="elevation-1"
-        v-bind:pagination.sync="pagination">
-        <v-progress-linear v-slot:progress color="blue" indeterminate></v-progress-linear>
-        <template v-slot:items="props">
-          <!-- :style="{backgroundColor: (typeof props.item.days_late == 'string' ? '#ff9966' : 'transparent' ) }" -->
-          <tr
-            :style="{backgroundColor:  (props.item.returned_date == null ? '#99cc33' : props.item.days_late.includes('late') ? '#ff9966' : ''  ) }"
-          >
-            <td>{{ props.item.book_title }}</td>
-            <td class="text-xs-left">{{ props.item.borrowed_date_str }}</td>
-            <td class="text-xs-left">{{ props.item.due_date_str }}</td>
-            <td class="text-xs-left">{{ props.item.returned_date_str }}</td>
-            <td class="text-xs-left">{{ props.item.days_late }}</td>
-          </tr>
-        </template>
-      </v-data-table>
+      <v-card>
+        <v-card-title>
+          <v-spacer></v-spacer>
+          <v-text-field
+            v-model="search"
+            append-icon="search"
+            label="Search"
+            single-line
+            hide-details
+          ></v-text-field>
+        </v-card-title>
+
+        <v-data-table
+          :headers="headers"
+          :items="checkout"
+          class="elevation-1"
+          :search="search"
+          v-bind:pagination.sync="pagination"
+        >
+          <template v-slot:items="props">
+            <!-- :style="{backgroundColor: (typeof props.item.days_late == 'string' ? '#ff9966' : 'transparent' ) }" -->
+            <!-- :style="{backgroundColor:  (props.item.returned_date == null ? '#99cc33' : props.item.days_late.includes('late') ? '#ff9966' : ''  ) }" -->
+
+            <tr>
+              <td>{{ props.item.book_title }}</td>
+              <td class="text-xs-left">{{ props.item.borrowed_date_str }}</td>
+              <td class="text-xs-left">{{ props.item.due_date_str }}</td>
+              <td class="text-xs-left">{{ props.item.returned_date_str }}</td>
+              <td class="text-xs-left">{{ props.item.days_late }}</td>
+            </tr>
+          </template>
+        </v-data-table>
+      </v-card>
     </div>
   </div>
 </template>
 
 <script>
-import Multiselect from "vue-multiselect";
 import db from "../../components/firestoreInit";
 import Vue from "vue";
 import { firestorePlugin } from "vuefire";
@@ -47,21 +59,38 @@ export default {
   name: "checkout-history",
   data() {
     return {
+      search: "",
+
       books: [],
       checkout: [],
       due_date: null,
       headers: [
-        { text: "Book Title", value: "book_title", align: "left", sortable: false },
-        { text: "Borrowed Date", value: "borrowed_date", align: "left", sortable: false  },
-        { text: "Due Date", vlue: "due_date", align: "left", sortable: false  },
-        { text: "Returned Date ", value: "returned_date", align: "left", sortable: false  },
+        {
+          text: "Book Title",
+          value: "book_title",
+          align: "left",
+          sortable: true
+        },
+        {
+          text: "Borrowed Date",
+          value: "borrowed_date",
+          align: "left",
+          sortable: true
+        },
+        { text: "Due Date", vlue: "due_date", align: "left", sortable: true },
+        {
+          text: "Returned Date ",
+          value: "returned_date",
+          align: "left",
+          sortable: true
+        },
         {
           text: "",
           value: "days_late",
           align: "left"
         }
       ],
-      pagination: { sortBy: "borrowed_date", descending: true, rowsPerPage: -1 }
+      pagination: { sortBy: "borrowed_date", descending: true, rowsPerPage: 10 }
     };
   },
   // vuefire library
@@ -300,11 +329,11 @@ export default {
         });
     },
     setRowColor(item) {
-      if (item.returned_date == null) {
-        return "borrowing";
-      } else if (item.days_late.includes("late")) {
-        return "late";
-      }
+      // if (item.returned_date == null) {
+      //   return "borrowing";
+      // } else if (item.days_late.includes("late")) {
+      //   return "late";
+      // }
       // console.log(item.due_date);
     }
     // },

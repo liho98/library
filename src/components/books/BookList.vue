@@ -9,7 +9,6 @@
 </template>
 
 <script>
-import Vue from "vue";
 import BookListItem from "./BookListItem";
 
 export default {

@@ -225,38 +225,38 @@ const router = new Router({
       }
     },
     {
-    path: '/view-student',
-    name: 'view-student',
-    component: ViewStudent,
-    meta: {
-      requiresAuth: true,
-      librarianAuth: false,
-      studentAuth: false,
-      adminAuth: true
-    }
-  },
-  {
-    path: '/search-librarian',
-    name: 'search-librarian',
-    component: SearchLibrarian,
-     meta: {
-       requiresAuth: true,
-       librarianAuth: false,
-       studentAuth: false,
-       adminAuth: true
-     }
-  },
-  {
-    path: '/personal-detail-librarian',
-     name: 'personal-detail-librarian',
-     component: PersonalDetialLibrarian,
-     meta: {
-       requiresAuth: true,
-       librarianAuth: true,
-       studentAuth: false,
-       adminAuth: true
-     }
-  },
+      path: '/view-student',
+      name: 'view-student',
+      component: ViewStudent,
+      meta: {
+        requiresAuth: true,
+        librarianAuth: false,
+        studentAuth: false,
+        adminAuth: true
+      }
+    },
+    {
+      path: '/search-librarian',
+      name: 'search-librarian',
+      component: SearchLibrarian,
+      meta: {
+        requiresAuth: true,
+        librarianAuth: false,
+        studentAuth: false,
+        adminAuth: true
+      }
+    },
+    {
+      path: '/personal-detail-librarian',
+      name: 'personal-detail-librarian',
+      component: PersonalDetialLibrarian,
+      meta: {
+        requiresAuth: true,
+        librarianAuth: true,
+        studentAuth: false,
+        adminAuth: true
+      }
+    },
   ]
 });
 
@@ -277,7 +277,6 @@ router.beforeEach((to, from, next) => {
     }
   } else {
 
-    localStorage.userId = currentUser.uid
 
     // get user role
     // I used photoURL attribute to store user role, because no other choice alr
@@ -285,7 +284,8 @@ router.beforeEach((to, from, next) => {
 
     // console.log("User Logged In");
     // console.log("User Role: " + role);
-
+    localStorage.userId = currentUser.uid
+    localStorage.role = role
 
     if (role === 'students') {
       if (to.meta.studentAuth || to.meta.noAuth) {
@@ -294,7 +294,7 @@ router.beforeEach((to, from, next) => {
         next('/');
       }
     } else if (role === 'librarians') {
-      if (to.meta.librarianAuth  || to.meta.noAuth) {
+      if (to.meta.librarianAuth || to.meta.noAuth) {
         next();
       } else {
         next('/');

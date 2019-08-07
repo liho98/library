@@ -15,8 +15,6 @@
 </template>
 
 <script>
-import firebaseStorage from "./../firebaseStorage";
-
 export default {
   data() {
     return {

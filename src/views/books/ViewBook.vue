@@ -82,45 +82,25 @@
                   style="text-transform: capitalize;"
                 >{{copy.status}}</td>
 
-                <td class="col-3 text-center" style="padding: 0px">
-                  <v-dialog
-                    v-model="dialog"
-                    width="500"
+                <td
+                  class="col-3 text-center"
+                  style="padding: 0px"
+                  v-if="role === 'students' && copy.status === 'available' || copy.status === 'returned'"
+                >
+                  <!-- <v-btn
+                    small
+                    color="primary"
+                    style="background-color: #2A73C5; text-transform: none;"
                     v-if="copy.status === 'available' || copy.status === 'returned'"
-                  >
-                    <template v-slot:activator="{ on }">
-                      <v-btn
-                        small
-                        color="primary"
-                        style="background-color: #2A73C5; text-transform: none;"
-                        v-on="on"
-                      >Reserve</v-btn>
-                    </template>
-                    <v-card>
-                      <v-card-title class="headline grey lighten-2" primary-title>Reserve Book?</v-card-title>
-                      <v-card-text>
-                        Are you sure you want to reserve
-                        <b>{{title}}</b>?
-                        <br />You are require to collect the book at library counter
-                        <b>within 3 days</b> after reserving it.
-                      </v-card-text>
-                      <v-divider></v-divider>
-                      <v-card-actions>
-                        <v-spacer></v-spacer>
-                        <v-btn
-                          flat
-                          text
-                          style="text-transform: none;"
-                          @click="dialog = false"
-                        >Cancel</v-btn>
-                        <v-btn
-                          color="primary"
-                          style="background-color: #2A73C5; text-transform: none;"
-                          @click="reserveCopy(copy.id); dialog = false"
-                        >Reserve</v-btn>
-                      </v-card-actions>
-                    </v-card>
-                  </v-dialog>
+                    @click="displayConfirmDialog(title, copy.id)"
+                  >Reserve</v-btn>-->
+                  <v-btn
+                    small
+                    color="primary"
+                    style="background-color: #2A73C5; text-transform: none;"
+                    @click.stop="setCopyID(copy.id); dialog = true"
+                    v-if="copy.status === 'available' || copy.status === 'returned'"
+                  >Reserve</v-btn>
                 </td>
               </tr>
               <tr class="d-flex">
@@ -131,14 +111,38 @@
         </div>
       </div>
     </div>
+
+    <v-dialog v-model="dialog" width="500">
+      <!-- <template v-slot:activator="{ on }"></template> -->
+      <v-card>
+        <v-card-title class="headline grey lighten-2" primary-title>Reserve Book?</v-card-title>
+        <v-card-text>
+          Are you sure you want to reserve
+          <b>{{title}}</b>?
+          <br />You are require to collect the book at library counter
+          <b>within 3 days</b> after reserving it.
+        </v-card-text>
+        <v-divider></v-divider>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn flat text style="text-transform: none;" @click="dialog = false">Cancel</v-btn>
+          <v-btn
+            color="primary"
+            style="background-color: #2A73C5; text-transform: none;"
+            @click="reserveCopy(selected_copy_id)"
+          >Reserve</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </div>
 </template>
 
 <script>
 import db from "./../../components/firestoreInit";
+// import firebase from "firebase";
 
 export default {
-  name: "view-book",
+  // name: "view-book",
   data() {
     return {
       id: "",
@@ -152,16 +156,19 @@ export default {
       description: "",
       copies: [],
       dialog: false,
-      due_date: null
+      due_date: null,
+      role: "",
+      selected_copy_id: ""
     };
   },
-  props: ["book"],
   created() {
-    // if (this.download_url === null) {
-    //   const imgLink = require("../../assets/no-image.png");
-    //   this.download_url = imgLink;
-    // }
+    this.role = localStorage.role;
+    //   if (firebase.auth().currentUser) {
+    //     var currentUser = firebase.auth().currentUser;
+    //     this.role = currentUser.photoURL;
+    //   }
   },
+  props: ["book"],
   beforeRouteEnter(to, from, next) {
     // console.log(to.params.book_id);
     db.collection("books")
@@ -180,7 +187,6 @@ export default {
           vm.description = doc.data().description;
 
           if (doc.data().download_url === undefined) {
-            console.log("no image");
             const imgLink = require("../../assets/no-image.png");
             vm.download_url = imgLink;
           }
@@ -192,6 +198,19 @@ export default {
     $route: "fetchData"
   },
   methods: {
+    setCopyID(copy_id) {
+      this.selected_copy_id = copy_id;
+    },
+    // displayConfirmDialog(title, copy_id) {
+    //   var r = confirm(
+    //     "Are you sure you want to reserve " +
+    //       title +
+    //       "?\nYou are require to collect the book at library counter within 3 days."
+    //   );
+    //   if (r) {
+    //     this.reserveCopy(copy_id);
+    //   }
+    // },
     getCopies(vm, book_id) {
       db.collection("books")
         .doc(book_id)
@@ -203,12 +222,13 @@ export default {
               id: doc.id, // firebase document id
               status: doc.data().status
             };
-            console.log(data);
             vm.copies.push(data); // books will now equal to data
           });
         });
     },
     reserveCopy(copy_id) {
+      this.dialog = false;
+
       const created_at = new Date();
       this.due_date = new Date(created_at.setDate(created_at.getDate() + 3));
 
@@ -259,7 +279,6 @@ export default {
           this.description = doc.data().description;
 
           if (doc.data().download_url === undefined) {
-            console.log("no image");
             const imgLink = require("../../assets/no-image.png");
             this.download_url = imgLink;
           }
