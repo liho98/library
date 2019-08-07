@@ -7,6 +7,14 @@
       </div>
     </div>
     <div class="centre">
+      <v-alert
+        type="success"
+        dark
+        :value="success"
+        transition="scale-transition"
+      >Return Successfully</v-alert>
+      <br />
+
       <label for="books">Select book:</label>
       <!-- <multiselect
         id="books"
@@ -111,7 +119,12 @@
 
         <br />
 
-        <label for="student">Late return fine (RM): &nbsp; <span v-tooltip="msg" ><i class="far fa-question-circle" style="color: #008CBA"></i></span></label>
+        <label for="student">
+          Late return fine (RM): &nbsp;
+          <span v-tooltip="msg">
+            <i class="far fa-question-circle" style="color: #008CBA"></i>
+          </span>
+        </label>
         <input
           v-model="fine"
           type="number"
@@ -127,7 +140,7 @@
 
       <br />
       <div class="text-center">
-        <input class="btn" type="submit" value="Return" @click="returnBook" />
+        <v-btn large color="primary" @click="returnBook">Return</v-btn>
       </div>
 
       <!--         :custom-label="nameWithLang"          :preselect-first="true"         :preserve-search="true"-->
@@ -144,11 +157,10 @@ import db from "../../components/firestoreInit";
 import Vue from "vue";
 import { firestorePlugin } from "vuefire";
 
-import Tooltip from 'vue-directive-tooltip';
-import 'vue-directive-tooltip/dist/vueDirectiveTooltip.css';
+import Tooltip from "vue-directive-tooltip";
+import "vue-directive-tooltip/dist/vueDirectiveTooltip.css";
 
 Vue.use(Tooltip);
-            
 
 // how to know the specific book got stock or not?
 // get number of record in return collections?
@@ -170,7 +182,8 @@ export default {
       return_date: null,
       fine: 0,
       days_late: 0,
-      msg: "Total fine = Days of late return x RM 0.50"
+      msg: "Total fine = Days of late return x RM 0.50",
+      success: false
     };
   },
   // vuefire library
@@ -229,6 +242,7 @@ export default {
       return `${name}, ${student_id}`;
     },
     returnBook() {
+      this.success = false;
       // decrease book quantity
       const new_quantity = this.books_return.quantity + 1;
       db.collection("books")
@@ -257,8 +271,13 @@ export default {
             .doc(this.copies_return.id)
             .update({ status: "available", returned_did: docRef.id });
           console.log("Return book successfully");
-          alert("Return book successfully");
-          this.$router.go({ path: this.path });
+          // alert("Return book successfully");
+          // this.$router.go({ path: this.path });
+
+          this.due_date = ""
+          this.copies_return = this.books_return = []
+
+          this.success = true;
         })
         .catch(error => {
           console.error("Error checking out book: ", error);
@@ -331,7 +350,7 @@ export default {
             );
             this.days_late = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) - 1;
             this.fine = this.days_late * 0.5;
-            this.fine = this.fine.toFixed(2)
+            this.fine = this.fine.toFixed(2);
 
             // console.log(
             //   this.return_date + " > " + this.due_date + ": Pay fine"

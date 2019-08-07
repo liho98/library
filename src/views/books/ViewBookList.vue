@@ -7,7 +7,8 @@
       </div>
     </div>
     <section class="recent-book-sec">
-      <app-book-list :books="books"></app-book-list>
+      <app-progress-circular :value="value"></app-progress-circular>
+      <app-book-list :books="books" @getValue="getValue"></app-book-list>
     </section>
   </div>
 </template>
@@ -15,20 +16,31 @@
 <script>
 import BookList from "../../components/books/BookList.vue";
 import db from "../../components/firestoreInit";
+import ProgressCircular from "../../components/ProgressCircular.vue";
 
 export default {
   data() {
     return {
-      books: [{}]
+      books: [{}],
+      value: true
     };
   },
   components: {
-    "app-book-list": BookList
+    "app-book-list": BookList,
+    "app-progress-circular": ProgressCircular
   },
   // vuefire library
   firestore: {
     // get books that are available from firebase
     books: db.collection("books")
+  },
+  created() {
+    // this.value = false;
+  },
+  methods: {
+    getValue: function(value) {
+      this.value = value;
+    }
   }
 };
 </script>

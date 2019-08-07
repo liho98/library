@@ -1,13 +1,20 @@
 <template>
   <div class="checkout">
     <div class="breadcrumb" style="margin-bottom: 20px">
-      <div class="container" style="padding: 10px 20px;"
-      >
+      <div class="container" style="padding: 10px 20px;">
         <router-link class="breadcrumb-item" to="/">Home</router-link>
         <span class="breadcrumb-item active">Checkout</span>
       </div>
     </div>
+
     <div class="centre">
+      <v-alert
+        type="success"
+        dark
+        :value="success"
+        transition="scale-transition"
+      >Checkout Successfully</v-alert>
+      <br />
       <label for="books">Select book:</label>
       <!-- <multiselect
         id="books"
@@ -94,8 +101,7 @@
 
       <br />
       <div class="text-center">
-
-        <input class="btn" type="submit" value="Checkout" @click="checkout" />
+        <v-btn large color="primary" @click="checkout">Checkout</v-btn>
       </div>
 
       <!--         :custom-label="nameWithLang"          :preselect-first="true"         :preserve-search="true"-->
@@ -112,9 +118,9 @@ import db from "../../components/firestoreInit";
 import Vue from "vue";
 import { firestorePlugin } from "vuefire";
 
-import Vuetify from 'vuetify'
-import 'vuetify/dist/vuetify.min.css'
-Vue.use(Vuetify)
+import Vuetify from "vuetify";
+import "vuetify/dist/vuetify.min.css";
+Vue.use(Vuetify);
 
 // how to know the specific book got stock or not?
 // get number of record in checkout collections?
@@ -132,7 +138,8 @@ export default {
       student_checkout: null,
       books_checkout: [],
       copies_checkout: [],
-      due_date: null
+      due_date: null,
+      success: false
     };
   },
   // vuefire library
@@ -190,6 +197,7 @@ export default {
       return `${name}, ${student_id}`;
     },
     checkout() {
+      this.success = false;
       // decrease book quantity
       const new_quantity = this.books_checkout.quantity - 1;
       db.collection("books")
@@ -213,16 +221,25 @@ export default {
             .doc(this.books_checkout.id)
             .collection("copies")
             .doc(this.copies_checkout.id)
-            .update({ status: "borrowed", checkout_did: docRef.id, student_did: this.student_checkout.id });
+            .update({
+              status: "borrowed",
+              checkout_did: docRef.id,
+              student_did: this.student_checkout.id
+            });
           console.log("Check out book successfully");
-          alert("Check out book successfully");
-          this.$router.go({ path: this.path });
+
+          this.student_checkout = null;
+          this.books_checkout = [];
+          this.copies_checkout = [];
+
+          this.success = true;
+          // this.$router.go({ path: this.path });
         })
         .catch(error => {
           console.error("Error checking out book: ", error);
         });
 
-// update isAvailable
+      // update isAvailable
 
       // this.books_checkout = [this.books_checkout]
 
@@ -242,7 +259,7 @@ export default {
         .get()
         .then(querySnapshot => {
           querySnapshot.forEach(doc => {
-            if (doc.data().status == "available" ) {
+            if (doc.data().status == "available") {
               const data = {
                 id: doc.id, // firebase document id
                 status: doc.data().status

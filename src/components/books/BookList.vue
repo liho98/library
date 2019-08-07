@@ -2,7 +2,7 @@
   <div id="book-list" class="container">
     <div class="row">
       <!-- <div v-bind:key="book.id" v-for="book in books"> -->
-        <app-book-list-item v-bind:key="book.id" v-for="book in books" :book="book"></app-book-list-item>
+      <app-book-list-item v-bind:key="book.id" v-for="book in books" :book="book"></app-book-list-item>
       <!-- </div> -->
     </div>
   </div>
@@ -18,6 +18,9 @@ export default {
   props: ["books"],
   components: {
     "app-book-list-item": BookListItem
+  },
+  updated(){
+    this.$emit("getValue", false);
   }
 };
 </script>

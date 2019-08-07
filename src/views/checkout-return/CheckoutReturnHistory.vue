@@ -24,6 +24,7 @@
           :items="checkout"
           class="elevation-1"
           :search="search"
+          :loading="loading"
           v-bind:pagination.sync="pagination"
         >
           <template v-slot:items="props">
@@ -60,7 +61,7 @@ export default {
   data() {
     return {
       search: "",
-
+      loading: true,
       books: [],
       checkout: [],
       due_date: null,
@@ -184,6 +185,7 @@ export default {
             .get()
             .then(snapshot => {
               this.checkout[key].book_title = snapshot.data().title;
+              this.loading = false;
             });
         });
       });

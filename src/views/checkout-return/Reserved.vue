@@ -115,10 +115,6 @@ export default {
       //   pagination: { sortBy: "due_date", descending: true, rowsPerPage: -1 }
     };
   },
-  // vuefire library
-  firestore: {
-    // get books that are available from firebase
-  },
 
   created() {
     // db.collection("checkout")
@@ -202,6 +198,10 @@ export default {
     //     });
     //   });
   },
+
+  updated() {
+    this.loading = false;
+  },
   beforeRouteEnter(to, from, next) {
     next(vm => {
       vm.getReserve(vm);
@@ -264,7 +264,7 @@ export default {
     },
     checkoutCopy(selected) {
       // decrease book quantity
-      console.log(selected.title)
+      console.log(selected.title);
       const new_quantity = selected.current_quantity - 1;
       db.collection("books")
         .doc(selected.book_did)
@@ -389,7 +389,7 @@ export default {
               };
               this.reserve.push(data); // books will now equal to data
             })
-            .then(function() {
+            .then(() => {
               Object.keys(this.reserve)
                 .forEach(key => {
                   db.collection("book")
@@ -404,7 +404,7 @@ export default {
                       });
                     });
                 })
-                .then(function() {
+                .then(() => {
                   Object.keys(this.reserve).forEach(key => {
                     db.collection("students")
                       .doc(this.reserve[key].student_did)
@@ -414,7 +414,6 @@ export default {
                           doc.data().name + ", " + doc.data().student_id;
                       });
                   });
-                  this.loading = false;
                 });
             });
         });
