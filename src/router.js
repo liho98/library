@@ -19,6 +19,7 @@ import EditBook from "./views/books/EditBook"
 
 // Students
 import EditStudent from "./views/students/EditStudent";
+import DeleteStudent from "./views/students/DeleteStudent";
 
 // Checkout, Return
 import Checkout from "./views/checkout-return/Checkout";
@@ -150,6 +151,17 @@ const router = new Router({
       path: '/edit-student',
       name: 'edit-student',
       component: EditStudent,
+      meta: {
+        requiresAuth: true,
+        librarianAuth: false,
+        studentAuth: false,
+        adminAuth: true
+      }
+    },
+    {
+      path: '/delete-student',
+      name: 'delete-student',
+      component: DeleteStudent,
       meta: {
         requiresAuth: true,
         librarianAuth: false,

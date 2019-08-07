@@ -83,7 +83,7 @@
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown" style="margin: 0px">
                   <router-link to="/view-student" class="dropdown-item">View Student</router-link>
                   <router-link to="/edit-student" class="dropdown-item">Edit Student</router-link>
-                  <router-link to="/" class="dropdown-item">Delete Student</router-link>
+                  <router-link to="/delete-student" class="dropdown-item">Delete Student</router-link>
                 </div>
               </li>
 
