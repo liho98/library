@@ -14,7 +14,39 @@
       <hr/>
     </div>
 
-    <b-container>
+    <div class="centre">
+      <v-card-title>
+        <v-spacer></v-spacer>
+          <v-text-field
+            v-model="search"
+            append-icon="search"
+            label="Search"
+            single-line
+            hide-details
+          ></v-text-field>
+      </v-card-title>
+    </div>
+
+    <div class="list">
+      <v-data-table fixed-header
+        :headers="headers"
+        :items="items"
+        :search="search">
+
+        <v-progress-linear v-show="progressBar" color="blue" indeterminate></v-progress-linear>
+        <template v-slot:items="props">
+          <tr>
+            <!-- <td>{{ props.item.title }}</td> -->
+            <td class="text-xs-left">{{ props.item.student_id}}</td>
+            <td class="text-xs-left">{{ props.item.name }}</td>
+            <td class="text-xs-left">{{ props.item.email }}</td>
+          </tr>
+        </template>
+      </v-data-table>
+  
+    </div>
+
+    <!-- <b-container>
       <b-row style="padding-bottom: 15px">
         <b-col md="6" class="my-1">
           <b-form-group label-cols-sm="3" label="Filter" class="mb-0">
@@ -85,7 +117,7 @@
           aria-controls="my-0"
         ></b-pagination>
       </b-row>
-    </b-container>
+    </b-container> -->
 
     <div style="margin-left: 10%; margin-right: 10%">
       <hr/>
@@ -141,7 +173,6 @@
           <v-flex xs12 text-xs-center>
             <v-btn
               centered
-              
                 color="primary"
                 :disabled="!valid"
                 @click="updateStudent"
@@ -207,6 +238,26 @@ export default {
         { key: "student_id", label: "Student ID", sortable: true },
         { key: "name", label: "Student Name", sortable: true },
         { key: "email", label: "Student Email", sortable: true },
+      ],
+      headers:[
+        {
+          text: "Student ID",
+          value: "student_id",
+          align: "left",
+          sortable: true
+        },
+        {
+          text: "Student Name",
+          value: "name",
+          align: "left",
+          sortable: true
+        },
+        {
+          text: "Student Email",
+          value: "email",
+          align: "left",
+          sortable: true
+        }
       ],
       totalRows: 1,
       currentPage: 1,
@@ -279,6 +330,18 @@ export default {
 </script>
 
 <style>
+div.centre {
+  text-align: center;
+  width: 60%;
+  margin-right: 30px;
+}
+
+div.list {
+  text-align: justify;
+  width: 75%;
+  margin: auto;
+  margin-bottom: 20px;
+}
 </style>
 
 
