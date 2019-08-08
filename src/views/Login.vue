@@ -109,7 +109,7 @@ export default {
     };
   },
   methods: {
-    login: function() {
+    login() {
       // this.$router.replace('home');
       firebase
         .auth()
