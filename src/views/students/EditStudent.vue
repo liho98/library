@@ -1,5 +1,5 @@
 <template>
-  <div id="view-student">
+  <div id="edit-student">
     <div class="breadcrumb" style="margin-bottom: 20px">
       <div class="container" style="padding: 10px 20px;">
         <router-link class="breadcrumb-item" to="/">Home</router-link>

@@ -1,5 +1,5 @@
 <template>
-  <div id="edit-librarian">
+  <div id="delete-librarian">
     <div class="breadcrumb" style="margin-bottom: 20px">
       <div class="container" style="padding: 10px 20px;">
         <router-link class="breadcrumb-item" to="/">Home</router-link>
@@ -10,7 +10,7 @@
 
     <div style="margin-left: 10%; margin-right: 10%">
       <hr />
-      <h2>View Student Page</h2>
+      <h2>Delete Librarian Page</h2>
       <hr />
     </div>
 
@@ -37,9 +37,13 @@
         <template v-slot:items="props">
           <tr>
             <!-- <td>{{ props.item.title }}</td> -->
-            <td class="text-xs-left">{{ props.item.student_id}}</td>
+            <td class="text-xs-left">{{ props.item.librarian_id}}</td>
             <td class="text-xs-left">{{ props.item.name }}</td>
             <td class="text-xs-left">{{ props.item.email }}</td>
+            <td class="text-xs-left"><v-icon
+                small
+                @click="deleteLibrarian(props.item)"
+            >delete</v-icon></td>
           </tr>
         </template>
       </v-data-table>
@@ -162,34 +166,40 @@ import "vuetify/dist/vuetify.min.css";
 Vue.use(Vuetify);
 
 export default {
-  name: "view-student",
+  name: "delete-librarian",
   data() {
     return {
       search: '',
       items: [],
       fields: [
         { key: "name", label: "Name", sortable: true },
-        { key: "student_id", label: "ID", sortable: true },
+        { key: "librarian_id", label: "ID", sortable: true },
         { key: "email", label: "Email", sortable: true }
       ],
       headers:[
         {
-          text: "Student ID",
-          value: "student_id",
+          text: "Librarian ID",
+          value: "librarian_id",
           align: "left",
           sortable: true
         },
         {
-          text: "Student Name",
+          text: "Librarian Name",
           value: "name",
           align: "left",
           sortable: true
         },
         {
-          text: "Student Email",
+          text: "Librarian Email",
           value: "email",
           align: "left",
           sortable: true
+        },
+        {
+            text: "Action",
+            value: "action",
+            align: "left",
+            sortable: false
         }
       ],
       totalRows: 1,
@@ -208,7 +218,7 @@ export default {
   },
   firestore() {
     return {
-      items: db.collection("students").orderBy("name")
+      items: db.collection("librarians").orderBy("name")
     };
   },
   computed: {
@@ -242,8 +252,12 @@ export default {
     clear() {
       this.$refs.form.reset();
     },
-    getStudent(){
+    deleteLibrarian(librarian){
+        if(confirm("Are you sure to remove this record?")){
+            db.collection("librarians").doc(librarian.id).delete();
+        }else{
 
+        }
     }
   }
 };

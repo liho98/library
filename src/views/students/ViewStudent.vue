@@ -1,16 +1,16 @@
 <template>
-  <div id="delete-student">
+  <div id="view-student">
     <div class="breadcrumb" style="margin-bottom: 20px">
       <div class="container" style="padding: 10px 20px;">
         <router-link class="breadcrumb-item" to="/">Home</router-link>
         <!-- <a class="breadcrumb-item" href="index.html">Book</a> -->
-        <span class="breadcrumb-item active">Search Student</span>
+        <span class="breadcrumb-item active">View Student</span>
       </div>
     </div>
 
     <div style="margin-left: 10%; margin-right: 10%">
       <hr />
-      <h2>Delete Student Page</h2>
+      <h2>View Student Page</h2>
       <hr />
     </div>
 
@@ -40,10 +40,6 @@
             <td class="text-xs-left">{{ props.item.student_id}}</td>
             <td class="text-xs-left">{{ props.item.name }}</td>
             <td class="text-xs-left">{{ props.item.email }}</td>
-            <td class="text-xs-left"><v-icon
-                small
-                @click="deleteStud(props.item)"
-            >delete</v-icon></td>
           </tr>
         </template>
       </v-data-table>
@@ -166,7 +162,7 @@ import "vuetify/dist/vuetify.min.css";
 Vue.use(Vuetify);
 
 export default {
-  name: "delete-student",
+  name: "view-student",
   data() {
     return {
       search: '',
@@ -194,12 +190,6 @@ export default {
           value: "email",
           align: "left",
           sortable: true
-        },
-        {
-            text: "Action",
-            value: "action",
-            align: "left",
-            sortable: false
         }
       ],
       totalRows: 1,
@@ -252,12 +242,8 @@ export default {
     clear() {
       this.$refs.form.reset();
     },
-    deleteStud(student){
-        if(confirm("Are you sure to remove this record?")){
-            db.collection("students").doc(student.id).delete();
-        }else{
+    getStudent(){
 
-        }
     }
   }
 };

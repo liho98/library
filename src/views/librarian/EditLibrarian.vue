@@ -1,22 +1,57 @@
 <template>
-  <div id="edit-book">
+  <div id="edit-librarian">
     <div class="breadcrumb" style="margin-bottom: 20px">
       <div class="container" style="padding: 10px 20px;">
         <router-link class="breadcrumb-item" to="/">Home</router-link>
-        <!-- <a class="breadcrumb-item" href="index.html">Book</a> -->
-        <span class="breadcrumb-item active">Edit Book</span>
+        <!-- <a class="breadcrumb-item" href="index.html">librarian</a> -->
+        <span class="breadcrumb-item active">Edit Librarian</span>
       </div>
     </div>
 
     <div style="margin-left: 10%; margin-right: 10%">
       <hr/>
-      <h2>Step 1. Select book for updating</h2>
+      <h2>Step 1. Select librarian for updating</h2>
       <hr/>
     </div>
 
-    <b-container>
+<div class="centre">
+      <v-card-title>
+        <v-spacer></v-spacer>
+          <v-text-field
+            v-model="search"
+            append-icon="search"
+            label="Search"
+            single-line
+            hide-details
+          ></v-text-field>
+      </v-card-title>
+    </div>
+
+    <div class="list">
+      <v-data-table fixed-header
+        :headers="headers"
+        :items="items"
+        :search="search"
+        @row-selected="rowSelected">
+
+        <v-progress-linear v-show="progressBar" color="blue" indeterminate></v-progress-linear>
+        <template v-slot:items="props">
+          <tr>
+            <!-- <td>{{ props.item.title }}</td> -->
+            <td class="text-xs-left">{{ props.item.librarian_id}}</td>
+            <td class="text-xs-left">{{ props.item.name }}</td>
+            <td class="text-xs-left">{{ props.item.email }}</td>
+            <td class="text-xs-left"><v-icon
+                small
+                @click="rowSelected(props.item)"
+            >update</v-icon></td>
+          </tr>
+        </template>
+      </v-data-table>
+    </div>
+    <!-- <b-container> -->
       <!-- User Interface controls -->
-      <b-row style="padding-bottom: 15px">
+      <!-- <b-row>
         <b-col md="6" class="my-1">
           <b-form-group label-cols-sm="3" label="Filter" class="mb-0">
             <b-input-group>
@@ -53,10 +88,10 @@
             <b-form-select v-model="perPage" :options="pageOptions"></b-form-select>
           </b-form-group>
         </b-col>
-      </b-row>
+      </b-row> -->
 
       <!-- Main table element -->
-      <b-table
+      <!-- <b-table
         show-empty
         stacked="md"
         selectable
@@ -86,7 +121,7 @@
           aria-controls="my-0"
           ></b-pagination>
       </b-row>
-    </b-container>
+    </b-container> -->
     
     <div style="margin-left: 10%; margin-right: 10%">
       <hr/>
@@ -96,14 +131,15 @@
     
     <v-container align-center>
       <v-form ref="form" v-model="valid">
+        
         <v-layout row>
           <v-flex xs2 text-xs-right>
-            Title
+            Name
           </v-flex>
           <v-flex xs8>
             <v-text-field
               type="text"
-              v-model="title"
+              v-model="name"
               :rules="[v => (v && v.length) >= 1 || 'Required']"
               required
             >
@@ -112,12 +148,12 @@
         </v-layout>
         <v-layout row>
           <v-flex xs2 text-xs-right>
-            Author
+            Id
           </v-flex>
           <v-flex xs8>
             <v-text-field
               type="text"
-              v-model="author"
+              v-model="librarian_id"
               :rules="[v => (v && v.length) >= 1 || 'Required']"
               required
             >
@@ -126,26 +162,13 @@
         </v-layout>
         <v-layout row>
           <v-flex xs2 text-xs-right>
-            Publisher
+            Email
           </v-flex>
           <v-flex xs8>
             <v-text-field
               type="text"
-              v-model="publisher"
+              v-model="email"
               :rules="[v => (v && v.length) >= 1 || 'Required']"
-              required
-            >
-            </v-text-field>
-          </v-flex>
-        </v-layout>
-        <v-layout row>
-          <v-flex xs2 text-xs-right>
-            Year
-          </v-flex>
-          <v-flex xs8>
-            <v-text-field
-              type="number"
-              v-model="year"
               required
             >
             </v-text-field>
@@ -155,10 +178,9 @@
           <v-flex xs12 text-xs-center>
             <v-btn
               centered
-              
                 color="primary"
                 :disabled="!valid"
-                @click="updateBook"
+                @click="updateLibrarian"
             >
             submit
             </v-btn>
@@ -212,17 +234,31 @@ import 'vuetify/dist/vuetify.min.css'
 Vue.use(Vuetify)
 
 export default {
-  name: "edit-book",
+  name: "edit-librarian",
   data () {
     return {
+      search: '',
       items: [],
-      fields: [
-        { key: 'book_id', label: 'Book ID', sortable: true },
-        { key: 'title', label: 'Title', sortable: true },
-        { key: 'author', label: 'Author', sortable: true },
-        { key: 'publisher', label: 'Publisher', sortable: true },
-        { key: 'year', label: 'Year', sortable: true },
-        { key: 'quantity', label: 'Quantity', sortable: true },
+      
+      headers:[
+        {
+          text: "Librarian ID",
+          value: "librarian_id",
+          align: "left",
+          sortable: true
+        },
+        {
+          text: "Librarian Name",
+          value: "name",
+          align: "left",
+          sortable: true
+        },
+        {
+          text: "Librarian Email",
+          value: "email",
+          align: "left",
+          sortable: true
+        }
       ],
       totalRows: 1,
       currentPage: 1,
@@ -234,16 +270,15 @@ export default {
       filter: null,
       selected: [],
       selectMode: 'single',
-      title: "",
-      author: "",
-      publisher: "",
-      year: "",
+      id:"",
+      name: "",
+      email: "",
       valid: true
     }
   },
   firestore () {
     return {
-      items: db.collection("books").orderBy("book_id")
+      items: db.collection("librarians").orderBy("name")
     }
   },
   computed: {
@@ -269,24 +304,20 @@ export default {
       this.totalRows = filteredItems.length
       this.currentPage = 1
     },
-    rowSelected(items) {
-      this.selected = items
-      this.title = this.selected[0].title
-      this.author = this.selected[0].author
-      this.publisher = this.selected[0].publisher
-      this.year = this.selected[0].year
-      document.getElementById("updateBookTitle").value = this.selected[0].title
-      document.getElementById("updateBookAuthor").value = this.selected[0].author
-      document.getElementById("updateBookPublisher").value = this.selected[0].publisher
-      document.getElementById("updateBookYear").value = this.selected[0].year
+    rowSelected(librarian) {
+      this.id = librarian.id
+      this.librarian_id = librarian.librarian_id
+      this.name = librarian.name
+      this.email = librarian.email
+      // db.collection("librarians").doc(librarian);
+     
     },
-    updateBook() {
-      db.collection("books").doc(this.selected[0].id).update(
+    updateLibrarian() {
+      db.collection("librarians").doc(this.id).update(
         {
-          title: this.title,
-          author: this.author,
-          publisher: this.publisher,
-          year: this.year
+          librarian_id: this.librarian_id,
+          name: this.name,
+          email: this.email, 
         }
       )
       this.$refs.form.reset();
