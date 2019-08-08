@@ -40,6 +40,10 @@
             <td class="text-xs-left">{{ props.item.student_id}}</td>
             <td class="text-xs-left">{{ props.item.name }}</td>
             <td class="text-xs-left">{{ props.item.email }}</td>
+            <td class="text-xs-left"><v-icon
+                small
+                @click="rowSelected(props.item)"
+            >edit</v-icon></td>
           </tr>
         </template>
       </v-data-table>
@@ -257,6 +261,12 @@ export default {
           value: "email",
           align: "left",
           sortable: true
+        },
+        {
+            text: "Action",
+            value: "action",
+            align: "left",
+            sortable: false
         }
       ],
       totalRows: 1,
