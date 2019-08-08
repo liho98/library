@@ -31,7 +31,8 @@
       <v-data-table fixed-header
         :headers="headers"
         :items="items"
-        :search="search">
+        :search="search"
+        @row-selected="rowSelected">
 
         <v-progress-linear v-show="progressBar" color="blue" indeterminate></v-progress-linear>
         <template v-slot:items="props">
@@ -234,7 +235,7 @@ import "vuetify/dist/vuetify.min.css";
 Vue.use(Vuetify);
 
 export default {
-  name: "view-student",
+  name: "edit-student",
   data() {
     return {
       items: [],
@@ -313,17 +314,14 @@ export default {
       this.totalRows = filteredItems.length
       this.currentPage = 1
     },
-    rowSelected(items) {
-      this.selected = items
-      this.student_id = this.selected[0].student_id
-      this.name = this.selected[0].name
-      this.email = this.selected[0].email
-      document.getElementById("updateStudentID").value = this.selected[0].student_id
-      document.getElementById("updateStudentName").value = this.selected[0].name
-      document.getElementById("updateStudentEmail").value = this.selected[0].email
+    rowSelected(student) {
+      this.id = student.id
+      this.student_id = student.student_id
+      this.name = student.name
+      this.email = student.email
     },
     updateStudent() {
-      db.collection("students").doc(this.selected[0].id).update(
+      db.collection("students").doc(this.id).update(
         {
           student_id: this.student_id,
           name: this.name,
