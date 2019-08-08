@@ -14,9 +14,44 @@
       <hr/>
     </div>
 
-    <b-container>
+<div class="centre">
+      <v-card-title>
+        <v-spacer></v-spacer>
+          <v-text-field
+            v-model="search"
+            append-icon="search"
+            label="Search"
+            single-line
+            hide-details
+          ></v-text-field>
+      </v-card-title>
+    </div>
+
+    <div class="list">
+      <v-data-table fixed-header
+        :headers="headers"
+        :items="items"
+        :search="search"
+        @row-selected="rowSelected">
+
+        <v-progress-linear v-show="progressBar" color="blue" indeterminate></v-progress-linear>
+        <template v-slot:items="props">
+          <tr>
+            <!-- <td>{{ props.item.title }}</td> -->
+            <td class="text-xs-left">{{ props.item.librarian_id}}</td>
+            <td class="text-xs-left">{{ props.item.name }}</td>
+            <td class="text-xs-left">{{ props.item.email }}</td>
+            <td class="text-xs-left"><v-icon
+                small
+                @click="rowSelected(props.item)"
+            >update</v-icon></td>
+          </tr>
+        </template>
+      </v-data-table>
+    </div>
+    <!-- <b-container> -->
       <!-- User Interface controls -->
-      <b-row style="padding-bottom: 15px">
+      <!-- <b-row>
         <b-col md="6" class="my-1">
           <b-form-group label-cols-sm="3" label="Filter" class="mb-0">
             <b-input-group>
@@ -53,10 +88,10 @@
             <b-form-select v-model="perPage" :options="pageOptions"></b-form-select>
           </b-form-group>
         </b-col>
-      </b-row>
+      </b-row> -->
 
       <!-- Main table element -->
-      <b-table
+      <!-- <b-table
         show-empty
         stacked="md"
         selectable
@@ -86,7 +121,7 @@
           aria-controls="my-0"
           ></b-pagination>
       </b-row>
-    </b-container>
+    </b-container> -->
     
     <div style="margin-left: 10%; margin-right: 10%">
       <hr/>
@@ -96,9 +131,10 @@
     
     <v-container align-center>
       <v-form ref="form" v-model="valid">
+        
         <v-layout row>
           <v-flex xs2 text-xs-right>
-            name
+            Name
           </v-flex>
           <v-flex xs8>
             <v-text-field
@@ -112,7 +148,21 @@
         </v-layout>
         <v-layout row>
           <v-flex xs2 text-xs-right>
-            email
+            Id
+          </v-flex>
+          <v-flex xs8>
+            <v-text-field
+              type="text"
+              v-model="librarian_id"
+              :rules="[v => (v && v.length) >= 1 || 'Required']"
+              required
+            >
+            </v-text-field>
+          </v-flex>
+        </v-layout>
+        <v-layout row>
+          <v-flex xs2 text-xs-right>
+            Email
           </v-flex>
           <v-flex xs8>
             <v-text-field
@@ -125,27 +175,12 @@
           </v-flex>
         </v-layout>
         <v-layout row>
-          <v-flex xs2 text-xs-right>
-            status
-          </v-flex>
-          <v-flex xs8>
-            <v-text-field
-              type="text"
-              v-model="status"
-              :rules="[v => (v && v.length) >= 1 || 'Required']"
-              required
-            >
-            </v-text-field>
-          </v-flex>
-        </v-layout>
-        <v-layout row>
           <v-flex xs12 text-xs-center>
             <v-btn
               centered
-              
                 color="primary"
                 :disabled="!valid"
-                @click="updateBook"
+                @click="updateLibrarian"
             >
             submit
             </v-btn>
@@ -202,12 +237,28 @@ export default {
   name: "edit-librarian",
   data () {
     return {
+      search: '',
       items: [],
-      fields: [
-        { key: 'librarian_id', label: 'Librarian ID', sortable: true },
-        { key: 'name', label: 'Name', sortable: true },
-        { key: 'email', label: 'Email', sortable: true },
-        { key: 'status', label: 'Status', sortable: true },
+      
+      headers:[
+        {
+          text: "Librarian ID",
+          value: "librarian_id",
+          align: "left",
+          sortable: true
+        },
+        {
+          text: "Librarian Name",
+          value: "name",
+          align: "left",
+          sortable: true
+        },
+        {
+          text: "Librarian Email",
+          value: "email",
+          align: "left",
+          sortable: true
+        }
       ],
       totalRows: 1,
       currentPage: 1,
@@ -219,10 +270,9 @@ export default {
       filter: null,
       selected: [],
       selectMode: 'single',
+      id:"",
       name: "",
       email: "",
-      status: "",
-      year: "",
       valid: true
     }
   },
@@ -254,24 +304,20 @@ export default {
       this.totalRows = filteredItems.length
       this.currentPage = 1
     },
-    rowSelected(items) {
-      this.selected = items
-      this.name = this.selected[0].name
-      this.email = this.selected[0].email
-      this.status = this.selected[0].status
-      
-      document.getElementById("updateLibrarianName").value = this.selected[0].name
-      document.getElementById("updateLibrarianEmail").value = this.selected[0].email
-      document.getElementById("updateLibrarianStatus").value = this.selected[0].status
+    rowSelected(librarian) {
+      this.id = librarian.id
+      this.librarian_id = librarian.librarian_id
+      this.name = librarian.name
+      this.email = librarian.email
+      // db.collection("librarians").doc(librarian);
      
     },
-    updateBook() {
-      db.collection("librarians").doc(this.selected[0].id).update(
+    updateLibrarian() {
+      db.collection("librarians").doc(this.id).update(
         {
+          librarian_id: this.librarian_id,
           name: this.name,
-          email: this.email,
-          status: this.status,
-         
+          email: this.email, 
         }
       )
       this.$refs.form.reset();

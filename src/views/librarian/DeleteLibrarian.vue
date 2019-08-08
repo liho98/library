@@ -42,7 +42,7 @@
             <td class="text-xs-left">{{ props.item.email }}</td>
             <td class="text-xs-left"><v-icon
                 small
-                @click="deleteStud(props.item)"
+                @click="deleteLibrarian(props.item)"
             >delete</v-icon></td>
           </tr>
         </template>
@@ -252,7 +252,7 @@ export default {
     clear() {
       this.$refs.form.reset();
     },
-    deleteStud(librarian){
+    deleteLibrarian(librarian){
         if(confirm("Are you sure to remove this record?")){
             db.collection("librarians").doc(librarian.id).delete();
         }else{
