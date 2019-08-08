@@ -106,7 +106,12 @@
         </div>
       </div>
 
-      <v-btn color="primary" large style="background-color: #ff9700; text-transform: none;" @click="signUp">Register</v-btn>
+      <v-btn
+        color="primary"
+        large
+        style="background-color: #ff9700; text-transform: none;"
+        @click="signUp()"
+      >Register</v-btn>
 
       <p>
         or go back to
@@ -144,7 +149,7 @@ export default {
         db.collection("students")
           .doc(uid)
           .set({ name, student_id: id, email, created_at: createdAt })
-          .then(function() {
+          .then(() => {
             console.log("User added: ");
             alert("Your account has been created!");
             this.$router.go({ path: "/" });
@@ -156,7 +161,7 @@ export default {
         db.collection("librarians")
           .doc(uid)
           .set({ name, librarian_id: id, email, created_at: createdAt })
-          .then(function()  {
+          .then(() => {
             console.log("User added: ");
             alert("Your account has been created!");
             this.$router.go({ path: "/" });
@@ -166,16 +171,16 @@ export default {
           });
       }
     },
-    signUp: function() {
+    signUp() {
       if (this.role && this.name && this.email && this.id && this.password) {
         firebase
           .auth()
           .createUserWithEmailAndPassword(this.email, this.password)
           .then(
-            function() {
+            () => {
               var currentUser = firebase.auth().currentUser;
               var uid = currentUser.uid;
-
+              console.log("name: " + this.name);
               // update user profile
               currentUser.updateProfile({
                 displayName: this.name,
