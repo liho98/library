@@ -99,7 +99,8 @@
                 >Librarian</a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown" style="margin: 0px">
                   <router-link to="/view-librarian" class="dropdown-item">View Librarian</router-link>
-                  
+                  <router-link to="/edit-librarian" class="dropdown-item">Edit Librarian</router-link>
+                  <router-link to="/delete-librarian" class="dropdown-item">Delete Librarian</router-link>
                 </div>
               </li>
 
@@ -133,9 +134,7 @@
               </li>
 
               <!-- ---------------------------Logged in user------------------------------------- -->
-              <li class="navbar-item" v-if="isLoggedIn">
-                <router-link to="/personal-detail-librarian" class="nav-link active">Personal Detail</router-link>
-              </li>
+              
               
               <!-- --------------------------Guest---------------------------------------- -->
               <li class="navbar-item" v-if="!isLoggedIn">

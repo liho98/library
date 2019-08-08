@@ -4,7 +4,7 @@
       <div class="container" style="padding: 10px 20px;">
         <router-link class="breadcrumb-item" to="/">Home</router-link>
         <!-- <a class="breadcrumb-item" href="index.html">Book</a> -->
-        <span class="breadcrumb-item active">Search Book</span>
+        <span class="breadcrumb-item active">Edit Book</span>
       </div>
     </div>
 

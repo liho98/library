@@ -20,21 +20,18 @@ import EditBook from "./views/books/EditBook"
 // Students
 import EditStudent from "./views/students/EditStudent";
 import DeleteStudent from "./views/students/DeleteStudent";
+import ViewStudent from "./views/students/ViewStudent";
 
 // Checkout, Return
 import Checkout from "./views/checkout-return/Checkout";
 import Return from "./views/checkout-return/Return";
 import Reserved from "./views/checkout-return/Reserved";
-
 import CheckoutReturnHistory from "./views/checkout-return/CheckoutReturnHistory";
 
-// Admin
-import SearchLibrarian from "./views/admin/SearchLibrarian";
-import ViewLibrarian from "./views/admin/ViewLibrarian";
-import ViewStudent from "./views/admin/ViewStudent";
-
 //Librarian
-import PersonalDetialLibrarian from "./views/librarian/PersonalDetailLibrarian";
+import ViewLibrarian from "./views/librarian/ViewLibrarian";
+import DeleteLibrarian from "./views/librarian/DeleteLibrarian";
+import EditLibrarian from "./views/librarian/EditLibrarian";
 
 Vue.use(Router);
 
@@ -170,6 +167,17 @@ const router = new Router({
       }
     },
     {
+      path: '/view-student',
+      name: 'view-student',
+      component: ViewStudent,
+      meta: {
+        requiresAuth: true,
+        librarianAuth: false,
+        studentAuth: false,
+        adminAuth: true
+      }
+    },
+    {
       path: '/checkout',
       name: 'checkout',
       component: Checkout,
@@ -224,10 +232,11 @@ const router = new Router({
         adminAuth: true
       }
     },
+    
     {
-      path: '/view-student',
-      name: 'view-student',
-      component: ViewStudent,
+      path: '/delete-librarian',
+      name: 'delete-librarian',
+      component: DeleteLibrarian,
       meta: {
         requiresAuth: true,
         librarianAuth: false,
@@ -236,23 +245,12 @@ const router = new Router({
       }
     },
     {
-      path: '/search-librarian',
-      name: 'search-librarian',
-      component: SearchLibrarian,
+      path: '/edit-librarian',
+      name: 'edit-librarian',
+      component: EditLibrarian,
       meta: {
         requiresAuth: true,
         librarianAuth: false,
-        studentAuth: false,
-        adminAuth: true
-      }
-    },
-    {
-      path: '/personal-detail-librarian',
-      name: 'personal-detail-librarian',
-      component: PersonalDetialLibrarian,
-      meta: {
-        requiresAuth: true,
-        librarianAuth: true,
         studentAuth: false,
         adminAuth: true
       }
