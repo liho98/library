@@ -135,7 +135,9 @@
 
               <!-- ---------------------------Logged in user------------------------------------- -->
               
-              
+            <li class="navbar-item" v-if="role=='librarians' || role=='admins'|| role=='students'">
+                <router-link to="/personal-detail" class="nav-link active">Personal Detail</router-link>
+              </li>
               <!-- --------------------------Guest---------------------------------------- -->
               <li class="navbar-item" v-if="!isLoggedIn">
                 <router-link to="/about" class="nav-link active">About</router-link>

@@ -33,6 +33,8 @@ import ViewLibrarian from "./views/librarian/ViewLibrarian";
 import DeleteLibrarian from "./views/librarian/DeleteLibrarian";
 import EditLibrarian from "./views/librarian/EditLibrarian";
 
+import PersonalDetail from "./views/PersonalDetail";
+
 Vue.use(Router);
 
 const router = new Router({
@@ -255,7 +257,18 @@ const router = new Router({
         adminAuth: true
       }
     },
-  ]
+    {
+     path: '/personal-detail',
+      name: 'personal-detail',
+      component: PersonalDetail,
+      meta: {
+        requiresAuth: true,
+        librarianAuth: true,
+        studentAuth: true,
+        adminAuth: true
+      }
+   },
+ ]
 });
 
 // If the route we navigate to requires authentication and there is no current user logged in, we redirect to the Login view.

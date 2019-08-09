@@ -40,6 +40,7 @@
             <td class="text-xs-left">{{ props.item.librarian_id}}</td>
             <td class="text-xs-left">{{ props.item.name }}</td>
             <td class="text-xs-left">{{ props.item.email }}</td>
+            <td class="text-xs-left">{{ props.item.contact }}</td>
           </tr>
         </template>
       </v-data-table>
@@ -167,11 +168,6 @@ export default {
     return {
       search: '',
       items: [],
-      fields: [
-        { key: "name", label: "Name", sortable: true },
-        { key: "librarian_id", label: "ID", sortable: true },
-        { key: "email", label: "Email", sortable: true }
-      ],
       headers:[
         {
           text: "Librarian ID",
@@ -190,7 +186,13 @@ export default {
           value: "email",
           align: "left",
           sortable: true
-        }
+        },
+        {
+          text: "Librarian Contact",
+          value: "contact",
+          align: "left",
+          sortable: true
+        },
       ],
       totalRows: 1,
       currentPage: 1,
@@ -254,6 +256,7 @@ div.centre {
   text-align: center;
   width: 60%;
   margin-right: 30px;
+  
 }
 
 div.list {

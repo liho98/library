@@ -41,6 +41,7 @@
             <td class="text-xs-left">{{ props.item.student_id}}</td>
             <td class="text-xs-left">{{ props.item.name }}</td>
             <td class="text-xs-left">{{ props.item.email }}</td>
+            <td class="text-xs-left">{{ props.item.contact }}</td>
             <td class="text-xs-left"><v-icon
                 small
                 @click="rowSelected(props.item)"
@@ -175,6 +176,20 @@
           </v-flex>
         </v-layout>
         <v-layout row>
+          <v-flex xs2 text-xs-right>
+            Contact
+          </v-flex>
+          <v-flex xs8>
+            <v-text-field
+              type="contact"
+              v-model="contact"
+              :rules="[v => (v && v.length) >= 1 || 'Required']"
+              required
+            >
+            </v-text-field>
+          </v-flex>
+        </v-layout>
+        <v-layout row>
           <v-flex xs12 text-xs-center>
             <v-btn
               centered
@@ -239,11 +254,6 @@ export default {
   data() {
     return {
       items: [],
-      fields: [
-        { key: "student_id", label: "Student ID", sortable: true },
-        { key: "name", label: "Student Name", sortable: true },
-        { key: "email", label: "Student Email", sortable: true },
-      ],
       headers:[
         {
           text: "Student ID",
@@ -260,6 +270,12 @@ export default {
         {
           text: "Student Email",
           value: "email",
+          align: "left",
+          sortable: true
+        },
+        {
+          text: "Student Contact",
+          value: "contact",
           align: "left",
           sortable: true
         },
@@ -283,6 +299,7 @@ export default {
       student_id: "",
       name: "",
       email: "",
+      contact:"",
       valid: true
     };
   },
@@ -319,6 +336,7 @@ export default {
       this.student_id = student.student_id
       this.name = student.name
       this.email = student.email
+      this.contact = student.contact
     },
     updateStudent() {
       db.collection("students").doc(this.id).update(
@@ -326,8 +344,10 @@ export default {
           student_id: this.student_id,
           name: this.name,
           email: this.email,
+          contact: this.contact
         }
       )
+      
       this.$refs.form.reset();
     },
     clear() {

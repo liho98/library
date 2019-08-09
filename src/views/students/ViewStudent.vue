@@ -40,6 +40,7 @@
             <td class="text-xs-left">{{ props.item.student_id}}</td>
             <td class="text-xs-left">{{ props.item.name }}</td>
             <td class="text-xs-left">{{ props.item.email }}</td>
+            <td class="text-xs-left">{{ props.item.contact }}</td>
           </tr>
         </template>
       </v-data-table>
@@ -167,11 +168,6 @@ export default {
     return {
       search: '',
       items: [],
-      fields: [
-        { key: "name", label: "Name", sortable: true },
-        { key: "student_id", label: "ID", sortable: true },
-        { key: "email", label: "Email", sortable: true }
-      ],
       headers:[
         {
           text: "Student ID",
@@ -188,6 +184,12 @@ export default {
         {
           text: "Student Email",
           value: "email",
+          align: "left",
+          sortable: true
+        },
+         {
+          text: "Student Contact",
+          value: "contact",
           align: "left",
           sortable: true
         }

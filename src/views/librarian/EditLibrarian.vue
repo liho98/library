@@ -41,6 +41,7 @@
             <td class="text-xs-left">{{ props.item.librarian_id}}</td>
             <td class="text-xs-left">{{ props.item.name }}</td>
             <td class="text-xs-left">{{ props.item.email }}</td>
+            <td class="text-xs-left">{{ props.item.contact }}</td>
             <td class="text-xs-left"><v-icon
                 small
                 @click="rowSelected(props.item)"
@@ -175,6 +176,21 @@
           </v-flex>
         </v-layout>
         <v-layout row>
+
+          <v-flex xs2 text-xs-right>
+            Contact
+          </v-flex>
+          <v-flex xs8>
+            <v-text-field
+              type="text"
+              v-model="contact"
+              :rules="[v => (v && v.length) >= 1 || 'Required']"
+              required
+            >
+            </v-text-field>
+          </v-flex>
+        </v-layout>
+        <v-layout row>
           <v-flex xs12 text-xs-center>
             <v-btn
               centered
@@ -203,6 +219,7 @@ import Vue from "vue";
 import VeeValidate from "vee-validate";
 import { firestorePlugin } from "vuefire";
 import BootstrapVue from 'bootstrap-vue'
+import firebase from "firebase";
 
 Vue.use(BootstrapVue)
 Vue.use(firestorePlugin);
@@ -258,6 +275,12 @@ export default {
           value: "email",
           align: "left",
           sortable: true
+        },
+        {
+          text: "Librarian Contact",
+          value: "contact",
+          align: "left",
+          sortable: true
         }
       ],
       totalRows: 1,
@@ -273,6 +296,7 @@ export default {
       id:"",
       name: "",
       email: "",
+      contact:"",
       valid: true
     }
   },
@@ -309,7 +333,8 @@ export default {
       this.librarian_id = librarian.librarian_id
       this.name = librarian.name
       this.email = librarian.email
-      // db.collection("librarians").doc(librarian);
+      this.contact = librarian.contact
+     
      
     },
     updateLibrarian() {
@@ -318,9 +343,23 @@ export default {
           librarian_id: this.librarian_id,
           name: this.name,
           email: this.email, 
+          contact: this.contact
         }
       )
       this.$refs.form.reset();
+      admin.auth().updateUser(librarian.id, {
+      email: this.email,
+      name: this.name,
+      contact: this.contact,
+      disabled: true
+    })
+      .then(function(userRecord) {
+    // See the UserRecord reference doc for the contents of userRecord.
+    console.log('Successfully updated user', userRecord.toJSON());
+      })
+      .catch(function(error) {
+    console.log('Error updating user:', error);
+      });
     },
     clear() {
       this.$refs.form.reset();

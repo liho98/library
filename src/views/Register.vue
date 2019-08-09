@@ -82,6 +82,19 @@
         <div class="col-md-4">
           <input
             class="form-control"
+            type="text"
+            name="contact"
+            v-model="contact"
+            placeholder="Contact Number"
+            style="display: inline"
+            v-validate="'required|contact'"
+          />
+        </div>
+      </div>
+      <div class="form-row justify-content-center">
+        <div class="col-md-4">
+          <input
+            class="form-control"
             type="password"
             name="password"
             v-model="password"
@@ -138,17 +151,18 @@ export default {
       id: "",
       email: "",
       password: "",
-      uid: ""
+      uid: "",
+      contact:""
     };
   },
   methods: {
-    addUser(uid, id, name, email, role) {
+    addUser(uid, id, name, email, role, contact) {
       const createdAt = new Date();
 
       if (role === "students") {
         db.collection("students")
           .doc(uid)
-          .set({ name, student_id: id, email, created_at: createdAt })
+          .set({ name, student_id: id, email, contact, created_at: createdAt })
           .then(() => {
             console.log("User added: ");
             alert("Your account has been created!");
@@ -160,7 +174,7 @@ export default {
       } else {
         db.collection("librarians")
           .doc(uid)
-          .set({ name, librarian_id: id, email, created_at: createdAt })
+          .set({ name, librarian_id: id, email, contact, created_at: createdAt })
           .then(() => {
             console.log("User added: ");
             alert("Your account has been created!");
@@ -172,7 +186,7 @@ export default {
       }
     },
     signUp() {
-      if (this.role && this.name && this.email && this.id && this.password) {
+      if (this.role && this.name && this.email && this.id && this.password && this.contact) {
         firebase
           .auth()
           .createUserWithEmailAndPassword(this.email, this.password)
@@ -187,7 +201,7 @@ export default {
                 photoURL: this.role
               });
 
-              this.addUser(uid, this.id, this.name, this.email, this.role);
+              this.addUser(uid, this.id, this.name, this.email, this.role, this.contact);
             },
             err => {
               alert("Oops. " + err.message);
