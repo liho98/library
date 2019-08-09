@@ -346,20 +346,6 @@ export default {
           contact: this.contact
         }
       )
-      this.$refs.form.reset();
-      admin.auth().updateUser(librarian.id, {
-      email: this.email,
-      name: this.name,
-      contact: this.contact,
-      disabled: true
-    })
-      .then(function(userRecord) {
-    // See the UserRecord reference doc for the contents of userRecord.
-    console.log('Successfully updated user', userRecord.toJSON());
-      })
-      .catch(function(error) {
-    console.log('Error updating user:', error);
-      });
     },
     clear() {
       this.$refs.form.reset();

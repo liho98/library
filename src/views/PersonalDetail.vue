@@ -15,32 +15,122 @@
               <tr class="d-flex">
                 <th class="col-2 text-right">ID:</th>
                 <td class="col-8">{{this.id}}</td>
+              </tr>
               <tr class="d-flex">
                 <th class="col-2 text-right">Name:</th>
                 <td class="col-8">{{this.name}}</td>
               </tr>
               <tr class="d-flex">
                 <th class="col-2 text-right">Email:</th>
-                <td class="col-8">{{this.email}}</td>
+                <td class="col-8">{{this.currentEmail}}</td>
                 <td class="text-xs-left"><v-icon
                 small
-                @click="updateEmail(props.item)"
+                 @click.stop="dialog = true"
             >update</v-icon></td>
               </tr>
               <tr class="d-flex">
                 <th class="col-2 text-right">Contact:</th>
-                <td class="col-8">{{this.contact}}</td>
+                <td class="col-8">{{this.curentContact}}</td>
                 <td class="text-xs-left"><v-icon
                 small
-                @click="updateContact(props.item)"
+                 @click.stop="dialog1 = true"
             >update</v-icon></td>
-                
               </tr>
               
             </tbody>
           </table>
         </div>
         </div>
+        <v-dialog v-model="dialog" width="500">
+      <!-- <template v-slot:activator="{ on }"></template> -->
+      <v-card>
+        <v-card-title class="headline grey lighten-2" primary-title>Change Email</v-card-title>
+        <v-card-text>
+          <v-layout row>
+          <v-flex xs4 text-xs-right>
+            Current Email
+          </v-flex>
+          <v-flex xs8>
+            <v-text-field
+              type="text"
+              v-model="currentEmail"
+              readonly="true"
+            >
+            </v-text-field>
+          </v-flex>
+        </v-layout>
+        <v-layout row>
+          <v-flex xs4 text-xs-right>
+            New Email
+          </v-flex>
+          <v-flex xs8>
+            <v-text-field
+              type="text"
+              v-model="latestEmail"
+              :rules="[v => (v && v.length) >= 1 || 'Required']"
+              required
+            >
+            </v-text-field>
+          </v-flex>
+        </v-layout>
+        </v-card-text>
+        <v-divider></v-divider>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn flat text style="text-transform: none;" @click="dialog = false">Cancel</v-btn>
+          <v-btn
+            color="primary"
+            style="background-color: #2A73C5; text-transform: none;"
+            @click="updateEmail"
+          >Change</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+    <v-dialog v-model="dialog1" width="500">
+      <!-- <template v-slot:activator="{ on }"></template> -->
+      <v-card>
+        <v-card-title class="headline grey lighten-2" primary-title>Change Contact</v-card-title>
+        <v-card-text>
+          <v-layout row>
+          <v-flex xs4 text-xs-right>
+            Current Contact
+          </v-flex>
+          <v-flex xs8>
+            <v-text-field
+              type="text"
+              v-model="currentContact"
+              readonly="true"
+            >
+            </v-text-field>
+          </v-flex>
+        </v-layout>
+        <v-layout row>
+          <v-flex xs4 text-xs-right>
+            New Contact
+          </v-flex>
+          <v-flex xs8>
+            <v-text-field
+              type="text"
+              v-model="latestContact"
+              :rules="[v => (v && v.length) >= 1 || 'Required']"
+              required
+            >
+            </v-text-field>
+          </v-flex>
+        </v-layout>
+        </v-card-text>
+        <v-divider></v-divider>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn flat text style="text-transform: none;" @click="dialog1 = false">Cancel</v-btn>
+          <v-btn
+            color="primary"
+            style="background-color: #2A73C5; text-transform: none;"
+            @click="updateContact"
+          >Change</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
       </div>
    
 </template>
@@ -55,18 +145,21 @@ export default {
     return {
       id: "",
       name: "",
-      email: "",
-      contact: "",
+      currentEmail: "",
+      latestContact: "",
       role: "",
       uid:"",
-      
+      latestEmail:"",
+      dialog: false,
+      dialog1: false,
+      curentContact:""   
     }
   },
   created() {
     if (firebase.auth().currentUser) {
       var currentUser = firebase.auth().currentUser;
       this.role = currentUser.photoURL;
-      this.email = currentUser.email;
+      this.currentEmail = currentUser.email;
       this.name = currentUser.displayName;
       this.uid = currentUser.uid;
       
@@ -76,7 +169,7 @@ export default {
         .get()
         .then(doc => {
           this.id = doc.data().librarian_id;
-          this.contact = doc.data().contact;
+          this.curentContact = doc.data().contact;
           }
         );
       }
@@ -94,7 +187,43 @@ export default {
   },
   methods: {
     updateEmail(){
-      
+       if(this.role=='librarians'||this.role=='admins'){
+    db.collection("librarians").doc(this.uid).update(
+        {
+          email: this.latestEmail, 
+        }
+      )
+    }
+    if(this.role=='students'){
+      db.collection("students").doc(this.uid).update(
+        {
+          email: this.latestEmail, 
+        }
+      )
+    }
+      var user = firebase.auth().currentUser;
+      user.updateEmail(this.latestEmail);
+    
+   alert("Your email already updated!");
+    },
+  
+  updateContact(){
+    if(this.role=='librarians'||this.role=='admins'){
+    db.collection("librarians").doc(this.uid).update(
+        {
+          contact: this.latestContact, 
+        }
+      )
+    }
+     if(this.role=='students'){
+    db.collection("students").doc(this.uid).update(
+        {
+          contact: this.latestContact, 
+        }
+      )
+    }
+  alert("Your contact has already updated.");   
+   
     }
   }
 };
