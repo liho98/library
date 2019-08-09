@@ -30,7 +30,7 @@
               </tr>
               <tr class="d-flex">
                 <th class="col-2 text-right">Contact:</th>
-                <td class="col-8">{{this.curentContact}}</td>
+                <td class="col-8">{{this.currentContact}}</td>
                 <td class="text-xs-left"><v-icon
                 small
                  @click.stop="dialog1 = true"
@@ -152,7 +152,7 @@ export default {
       latestEmail:"",
       dialog: false,
       dialog1: false,
-      curentContact:""   
+      currentContact:""   
     }
   },
   created() {
@@ -169,7 +169,7 @@ export default {
         .get()
         .then(doc => {
           this.id = doc.data().librarian_id;
-          this.curentContact = doc.data().contact;
+          this.currentContact = doc.data().contact;
           }
         );
       }
@@ -179,7 +179,7 @@ export default {
         .get()
         .then(doc => {
           this.id = doc.data().student_id;
-         this.contact = doc.data().contact;
+         this.currentContact = doc.data().contact;
           }
         );
       }
@@ -201,10 +201,9 @@ export default {
         }
       )
     }
-      var user = firebase.auth().currentUser;
-      user.updateEmail(this.latestEmail);
+      firebase.auth().currentUser.updateEmail(this.latestEmail);
     
-   alert("Your email already updated!");
+   alert('Your email has already updated')
     },
   
   updateContact(){
@@ -221,9 +220,8 @@ export default {
           contact: this.latestContact, 
         }
       )
-    }
-  alert("Your contact has already updated.");   
-   
+    } 
+          alert("Your email has already updated");
     }
   }
 };
