@@ -57,7 +57,9 @@
         You don't have an account ? You can
         <router-link to="/register">create one</router-link>
       </p>
-
+      <p>
+        Forget your password?<a @click="sendEmail"> Click here</a>
+      </p>
       <p>
         <b>
           Admin:
@@ -122,6 +124,18 @@ export default {
             alert("Oops. " + err.message);
           }
         );
+    },
+    sendEmail(){
+      var auth = firebase.auth();
+      var emailAddress = this.email;
+      if(this.email==""){
+    alert("Please enter an email first!")
+  }
+      auth.sendPasswordResetEmail(emailAddress).then(()=> {
+        alert("Email has sent to " + this.email);
+      }).catch(function(error) {
+  
+});
     }
   }
 };

@@ -22,13 +22,18 @@
               <tr class="d-flex">
                 <th class="col-2 text-right">Email:</th>
                 <td class="col-8">{{this.email}}</td>
-                
-                
-           
+                <td class="text-xs-left"><v-icon
+                small
+                @click="updateEmail(props.item)"
+            >update</v-icon></td>
               </tr>
               <tr class="d-flex">
                 <th class="col-2 text-right">Contact:</th>
                 <td class="col-8">{{this.contact}}</td>
+                <td class="text-xs-left"><v-icon
+                small
+                @click="updateContact(props.item)"
+            >update</v-icon></td>
                 
               </tr>
               
@@ -53,7 +58,8 @@ export default {
       email: "",
       contact: "",
       role: "",
-      uid:""
+      uid:"",
+      
     }
   },
   created() {
@@ -63,6 +69,7 @@ export default {
       this.email = currentUser.email;
       this.name = currentUser.displayName;
       this.uid = currentUser.uid;
+      
       if(this.role=='admins'||this.role=='librarians'){
         db.collection("librarians")
         .doc(this.uid)
@@ -86,7 +93,9 @@ export default {
      }
   },
   methods: {
-  
+    updateEmail(){
+      
+    }
   }
 };
 </script>
@@ -133,7 +142,7 @@ p a {
 
 table {
   border-collapse: collapse;
-  width: 80%;
+  width: 50%;
 }
 
 th, td {
