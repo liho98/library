@@ -5,7 +5,7 @@
       <v-btn dark text @click="snackbar = false" style="text-transform: none">Close</v-btn>
     </v-snackbar>
 
-    <div class="breadcrumb" style="margin-bottom: 20px">
+    <div class="breadcrumb" style="margin-bottom: 0px">
       <div class="container" style="padding: 10px 20px;">
         <router-link class="breadcrumb-item" to="/">Home</router-link>
         <!-- <a class="breadcrumb-item" href="index.html">Book</a> -->
@@ -17,6 +17,13 @@
       <v-card>
         <v-card-title>
           Manage Librarian
+          <v-btn
+            @click="add_dialog = true"
+            color="success"
+            style="margin: 0 15px; text-transform: none"
+          >
+            <v-icon>add</v-icon>Librarian
+          </v-btn>
           <v-spacer></v-spacer>
           <v-text-field
             v-model="search"
@@ -34,7 +41,6 @@
           :search="search"
           :loading="loading"
         >
-          <v-progress-linear v-show="progressBar" color="blue" indeterminate></v-progress-linear>
           <!-- <template v-slot:items="props">
           <tr>
             <td class="text-xs-left">{{ props.item.student_id}}</td>
@@ -54,6 +60,74 @@
         </v-data-table>
       </v-card>
     </div>
+
+    <v-dialog v-model="add_dialog" persistent max-width="600px">
+      <v-card>
+        <v-card-title>
+          <span class="headline">Add Librarian</span>
+        </v-card-title>
+        <v-card-text>
+          <v-container grid-list-md>
+            <v-layout wrap>
+              <v-flex xs12>
+                <v-text-field
+                  v-model="librarian_id"
+                  label="Librarian ID *"
+                  :rules="[v => (v && v.length) >= 1 || 'Required']"
+                  required
+                ></v-text-field>
+              </v-flex>
+              <v-flex xs12>
+                <v-text-field
+                  v-model="name"
+                  label="Name *"
+                  :rules="[v => (v && v.length) >= 1 || 'Required']"
+                  required
+                ></v-text-field>
+              </v-flex>
+              <v-flex xs12>
+                <v-text-field
+                  v-model="email"
+                  label="Email *"
+                  type="email"
+                  :rules="[v => (v && v.length) >= 1 || 'Required']"
+                ></v-text-field>
+              </v-flex>
+              <v-flex xs12>
+                <v-text-field
+                  v-model="password"
+                  label="Password *"
+                  type="password"
+                  :rules="[v => (v && v.length) >= 1 || 'Required']"
+                ></v-text-field>
+              </v-flex>
+              <v-flex xs12>
+                <v-text-field
+                  v-model="contact"
+                  label="Contact"
+                  type="number"
+                ></v-text-field>
+              </v-flex>
+            </v-layout>
+          </v-container>
+          <small>*indicates required field</small>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn
+            color="blue darken-1"
+            style="text-transform: none"
+            text
+            @click="add_dialog = false"
+          >Close</v-btn>
+          <v-btn
+            color="success"
+            style="text-transform: none"
+            @click="signUp(); add_dialog = false"
+          >Add</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
 
     <v-dialog v-model="edit_dialog" persistent max-width="600px">
       <v-card>
@@ -113,7 +187,7 @@
         <v-card-text style="padding-top: 16px">
           Are you sure you want to delete librarian
           <b>{{name}}</b>
-          ({{id}})?
+          ({{librarian_id}})?
           <br />You will not able to recover it after deleting.
         </v-card-text>
         <v-divider style="margin: 0"></v-divider>
@@ -216,6 +290,8 @@
 
 <script>
 import db from "./../../components/firestoreInit";
+import firebase from "firebase";
+import firebaseConfig from "./../../components/firebaseConfig";
 
 export default {
   name: "manage-student",
@@ -277,6 +353,9 @@ export default {
       name: "",
       email: "",
       contact: "",
+      password: "",
+      uid: "",
+      add_dialog: false,
       edit_dialog: false,
       delete_dialog: false
     };
@@ -306,11 +385,11 @@ export default {
     // Set the initial number of items
     this.totalRows = this.items.length;
   },
-  beforeRouteEnter(to, from, next) {
-    next(vm => {
-      vm.getReserve(vm);
-    });
-  },
+  // beforeRouteEnter(to, from, next) {
+  //   next(vm => {
+  //     vm.getReserve(vm);
+  //   });
+  // },
   methods: {
     onFiltered(filteredItems) {
       // Trigger pagination to update the number of buttons/pages due to filtering
@@ -361,6 +440,67 @@ export default {
 
       //   } else {
       //   }
+    },
+    addUser(uid, librarian_id, name, email, contact) {
+      const createdAt = new Date();
+
+      db.collection("librarians")
+        .doc(uid)
+        .set({
+          name,
+          librarian_id: librarian_id,
+          email,
+          contact,
+          created_at: createdAt
+        })
+        .then(() => {
+          this.snackbar = true;
+          this.message = "Add librarian successfully";
+          this.color = "success";
+
+          // console.log("User added: ");
+          // alert("Your account has been created!");
+          // this.$router.go({ path: "/" });
+        })
+        .catch(error => {
+          console.error("Error adding user: ", error);
+        });
+    },
+    signUp() {
+      var secondaryFirebase = firebase.initializeApp(
+        firebaseConfig,
+        "Secondary"
+      );
+
+      if (this.name && this.email && this.librarian_id && this.password) {
+        secondaryFirebase
+          .auth()
+          .createUserWithEmailAndPassword(this.email, this.password)
+          .then(
+            () => {
+              var currentUser = secondaryFirebase.auth().currentUser;
+              var uid = currentUser.uid;
+              console.log("name: " + this.name);
+              // update user profile
+              currentUser.updateProfile({
+                displayName: this.name,
+                photoURL: "librarians"
+              });
+              secondaryFirebase.auth().signOut();
+              secondaryFirebase.delete();
+              this.addUser(
+                uid,
+                this.librarian_id,
+                this.name,
+                this.email,
+                this.contact
+              );
+            },
+            err => {
+              alert("Oops. " + err.message);
+            }
+          );
+      }
     }
   }
 };

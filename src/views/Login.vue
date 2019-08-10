@@ -63,8 +63,8 @@
       <p>
         <b>
           Admin:
-          <br />Email: a@a.aa
-          <br />Password: aaaaaa
+          <br />Email: admin@admin.admin
+          <br />Password: qweqwe
         </b>
       </p>
     </div>

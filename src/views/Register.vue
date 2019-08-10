@@ -82,12 +82,12 @@
         <div class="col-md-4">
           <input
             class="form-control"
-            type="text"
+            type="number"
             name="contact"
             v-model="contact"
             placeholder="Contact Number"
             style="display: inline"
-            v-validate="'required|contact'"
+            v-validate="'required'"
           />
         </div>
       </div>

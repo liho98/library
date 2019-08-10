@@ -5,7 +5,7 @@
       <v-btn dark text @click="snackbar = false" style="text-transform: none">Close</v-btn>
     </v-snackbar>
 
-    <div class="breadcrumb" style="margin-bottom: 20px">
+    <div class="breadcrumb" style="margin-bottom: 0px">
       <div class="container" style="padding: 10px 20px;">
         <router-link class="breadcrumb-item" to="/">Home</router-link>
         <!-- <a class="breadcrumb-item" href="index.html">Book</a> -->
@@ -17,6 +17,13 @@
       <v-card>
         <v-card-title>
           Manage Student
+          <v-btn
+            @click="add_dialog = true"
+            color="success"
+            style="margin: 0 15px; text-transform: none"
+          >
+            <v-icon>add</v-icon>Student
+          </v-btn>
           <v-spacer></v-spacer>
           <v-text-field
             v-model="search"
@@ -34,7 +41,6 @@
           :search="search"
           :loading="loading"
         >
-          <v-progress-linear v-show="progressBar" color="blue" indeterminate></v-progress-linear>
           <!-- <template v-slot:items="props">
           <tr>
             <td class="text-xs-left">{{ props.item.student_id}}</td>
@@ -54,6 +60,70 @@
         </v-data-table>
       </v-card>
     </div>
+
+    <v-dialog v-model="add_dialog" persistent max-width="600px">
+      <v-card>
+        <v-card-title>
+          <span class="headline">Add student</span>
+        </v-card-title>
+        <v-card-text>
+          <v-container grid-list-md>
+            <v-layout wrap>
+              <v-flex xs12>
+                <v-text-field
+                  v-model="student_id"
+                  label="Student ID *"
+                  :rules="[v => (v && v.length) >= 1 || 'Required']"
+                  required
+                ></v-text-field>
+              </v-flex>
+              <v-flex xs12>
+                <v-text-field
+                  v-model="name"
+                  label="Name *"
+                  :rules="[v => (v && v.length) >= 1 || 'Required']"
+                  required
+                ></v-text-field>
+              </v-flex>
+              <v-flex xs12>
+                <v-text-field
+                  v-model="email"
+                  label="Email *"
+                  type="email"
+                  :rules="[v => (v && v.length) >= 1 || 'Required']"
+                ></v-text-field>
+              </v-flex>
+              <v-flex xs12>
+                <v-text-field
+                  v-model="password"
+                  label="Password *"
+                  type="password"
+                  :rules="[v => (v && v.length) >= 1 || 'Required']"
+                ></v-text-field>
+              </v-flex>
+              <v-flex xs12>
+                <v-text-field v-model="contact" label="Contact" type="number"></v-text-field>
+              </v-flex>
+            </v-layout>
+          </v-container>
+          <small>*indicates required field</small>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn
+            color="blue darken-1"
+            style="text-transform: none"
+            text
+            @click="add_dialog = false"
+          >Close</v-btn>
+          <v-btn
+            color="success"
+            style="text-transform: none"
+            @click="signUp(); add_dialog = false"
+          >Add</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
 
     <v-dialog v-model="edit_dialog" persistent max-width="600px">
       <v-card>
@@ -216,6 +286,8 @@
 
 <script>
 import db from "./../../components/firestoreInit";
+import firebase from "firebase";
+import firebaseConfig from "./../../components/firebaseConfig";
 
 export default {
   name: "manage-student",
@@ -277,6 +349,8 @@ export default {
       name: "",
       email: "",
       contact: "",
+      password: "",
+      add_dialog: false,
       edit_dialog: false,
       delete_dialog: false
     };
@@ -305,11 +379,6 @@ export default {
   mounted() {
     // Set the initial number of items
     this.totalRows = this.items.length;
-  },
-  beforeRouteEnter(to, from, next) {
-    next(vm => {
-      vm.getReserve(vm);
-    });
   },
   methods: {
     onFiltered(filteredItems) {
@@ -350,6 +419,67 @@ export default {
       this.message = "Update student successfully";
       this.color = "success";
       //   this.$refs.form.reset();
+    },
+    addUser(uid, student_id, name, email, contact) {
+      const createdAt = new Date();
+
+      db.collection("students")
+        .doc(uid)
+        .set({
+          name,
+          student_id: student_id,
+          email,
+          contact,
+          created_at: createdAt
+        })
+        .then(() => {
+          this.snackbar = true;
+          this.message = "Add Student successfully";
+          this.color = "success";
+
+          // console.log("User added: ");
+          // alert("Your account has been created!");
+          // this.$router.go({ path: "/" });
+        })
+        .catch(error => {
+          console.error("Error adding user: ", error);
+        });
+    },
+    signUp() {
+      var secondaryFirebase = firebase.initializeApp(
+        firebaseConfig,
+        "Secondary"
+      );
+
+      if (this.name && this.email && this.student_id && this.password) {
+        secondaryFirebase
+          .auth()
+          .createUserWithEmailAndPassword(this.email, this.password)
+          .then(
+            () => {
+              var currentUser = secondaryFirebase.auth().currentUser;
+              var uid = currentUser.uid;
+              console.log("name: " + this.name);
+              // update user profile
+              currentUser.updateProfile({
+                displayName: this.name,
+                photoURL: "students"
+              });
+              secondaryFirebase.auth().signOut();
+              secondaryFirebase.delete();
+              this.addUser(
+                uid,
+                this.student_id,
+                this.name,
+                this.email,
+                this.contact
+              );
+            },
+            err => {
+              alert("Oops. " + err.message);
+            }
+          );
+      }
     }
   }
 };
