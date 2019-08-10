@@ -82,7 +82,7 @@
                   style="text-transform: capitalize;"
                 >{{copy.status}}</td>
 
-                <td class="col-3 text-center" style="padding: 0px">
+                <td class="col-3 text-center">
                   <!-- <v-btn
                     small
                     color="primary"
@@ -93,7 +93,7 @@
                   <v-btn
                     small
                     color="primary"
-                    style="background-color: #2A73C5; text-transform: none;"
+                    style="text-transform: none;"
                     @click.stop="setCopyID(copy.id); dialog = true"
                     v-if="role === 'students' && copy.status === 'available' || copy.status === 'returned'"
                   >Reserve</v-btn>

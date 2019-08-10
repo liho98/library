@@ -193,9 +193,19 @@ export default {
                   created_at: createdAt
                 });
             }
+            this.id = "";
+            this.title = "";
+            this.author = "";
+            this.publisher = "";
+            this.year = "";
+            this.quantity = undefined;
+            this.fileName = "";
+            this.downloadURL = "";
+            this.description = "";
+
             console.log("Book added");
             alert("Book added!");
-            this.$router.go({ path: this.path });
+            // this.$router.go({ path: this.path });
           })
           .catch(error => {
             console.error("Error adding book: ", error);
@@ -213,6 +223,9 @@ export default {
 </script>
 
  <style scoped>
+.col-md-4 {
+  padding: 0;
+}
 div.centre {
   text-align: center;
   width: 100%;

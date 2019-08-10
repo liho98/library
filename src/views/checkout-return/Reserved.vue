@@ -10,7 +10,6 @@
     <div class="centre">
       <v-card>
         <v-card-title>
-          <v-spacer></v-spacer>
           <v-text-field
             v-model="search"
             append-icon="search"
@@ -19,29 +18,9 @@
             hide-details
           ></v-text-field>
         </v-card-title>
-        <v-data-table
-          :headers="headers"
-          :items="reserve"
-          :loading="loading"
-          :search="search"
-          class="elevation-1"
-        >
-          <template v-slot:items="props">
-            <!-- :style="{backgroundColor: (typeof props.item.days_late == 'string' ? '#ff9966' : 'transparent' ) }" -->
-            <tr>
-              <td>{{ props.item.title }}</td>
-              <td class="text-xs-left">{{ props.item.copies_did }}</td>
-              <td class="text-xs-left">{{ props.item.student }}</td>
-              <td class="text-xs-left">{{ props.item.due_date }}</td>
-              <td class="text-xs-center">
-                <v-btn
-                  small
-                  color="primary"
-                  style="background-color: #2A73C5; text-transform: none;"
-                  @click.stop="setSeleted(props.item); dialog = true"
-                >Checkout</v-btn>
-              </td>
-            </tr>
+        <v-data-table :headers="headers" :items="reserve" :loading="loading" :search="search">
+          <template v-slot:item.action="{ item }">
+            <v-btn color="primary" small style="text-transform: none" @click.stop="setSeleted(item); dialog = true">Checkout</v-btn>
           </template>
         </v-data-table>
       </v-card>
@@ -83,7 +62,7 @@ export default {
       books: [],
       reserve: [],
       checkout: [],
-      due_date: null,
+      due_date: "",
       loading: true,
       progressBar: true,
       dialog: false,
@@ -97,15 +76,21 @@ export default {
           align: "left",
           sortable: false
         },
-        { text: "Copy ID", value: "copy_id", align: "left", sortable: false },
         {
-          text: "Student",
+          text: "Copy ID",
+          value: "copies_did",
+          align: "left",
+          sortable: false
+        },
+        {
+          text: "Student ID",
           value: "student",
           align: "left",
           sortable: false
         },
-        { text: "Due Date", vlue: "due_date", align: "left", sortable: false },
-        { text: "Action ", value: "action", align: "center", sortable: false }
+        { text: "Due Date", value: "due_date", align: "left", sortable: false },
+        { text: "Actions", value: "action", sortable: false }
+
         // {
         //   text: "",
         //   value: "days_late",
@@ -365,8 +350,8 @@ export default {
           .doc(vm.reserve[key].student_did)
           .get()
           .then(doc => {
-            vm.reserve[key].student =
-              doc.data().name + ", " + doc.data().student_id;
+            vm.reserve[key].student = doc.data().student_id;
+            // doc.data().name + ", " + doc.data().student_id;
           });
       });
     },

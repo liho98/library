@@ -25,8 +25,11 @@
           class="elevation-1"
           :search="search"
           :loading="loading"
-          v-bind:pagination.sync="pagination"
+          :items-per-page="5"
         >
+          <!-- :sort-by="borrowed_date"
+          :sort-desc=true -->
+        
           <template v-slot:items="props">
             <!-- :style="{backgroundColor: (typeof props.item.days_late == 'string' ? '#ff9966' : 'transparent' ) }" -->
             <!-- :style="{backgroundColor:  (props.item.returned_date == null ? '#99cc33' : props.item.days_late.includes('late') ? '#ff9966' : ''  ) }" -->
@@ -91,7 +94,6 @@ export default {
           align: "left"
         }
       ],
-      pagination: { sortBy: "borrowed_date", descending: true, rowsPerPage: 10 }
     };
   },
   // vuefire library
