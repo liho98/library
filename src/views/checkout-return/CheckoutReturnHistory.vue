@@ -19,20 +19,13 @@
           ></v-text-field>
         </v-card-title>
 
-        <v-data-table
-          :headers="headers"
-          :items="checkout"
-          class="elevation-1"
-          :search="search"
-          :loading="loading"
-          :items-per-page="5"
-        >
+        <v-data-table :headers="headers" :items="checkout" :search="search" :loading="loading">
           <!-- :sort-by="borrowed_date"
-          :sort-desc=true -->
-        
-          <template v-slot:items="props">
-            <!-- :style="{backgroundColor: (typeof props.item.days_late == 'string' ? '#ff9966' : 'transparent' ) }" -->
-            <!-- :style="{backgroundColor:  (props.item.returned_date == null ? '#99cc33' : props.item.days_late.includes('late') ? '#ff9966' : ''  ) }" -->
+          :sort-desc=true-->
+
+          <!-- <template v-slot:items="props">
+            :style="{backgroundColor: (typeof props.item.days_late == 'string' ? '#ff9966' : 'transparent' ) }"
+            :style="{backgroundColor:  (props.item.returned_date == null ? '#99cc33' : props.item.days_late.includes('late') ? '#ff9966' : ''  ) }"
 
             <tr>
               <td>{{ props.item.book_title }}</td>
@@ -41,7 +34,19 @@
               <td class="text-xs-left">{{ props.item.returned_date_str }}</td>
               <td class="text-xs-left">{{ props.item.days_late }}</td>
             </tr>
-          </template>
+          </template>-->
+
+          <!-- <template v-slot:body="{ items }">
+            <tbody>
+              <tr v-for="item in items" :key="item.id">
+                <td>{{ item.book_title }}</td>
+                <td>{{ item.borrowed_date_str }}</td>
+                <td>{{ item.due_date_str }}</td>
+                <td>CONTENT</td>
+                <td>CONTENT</td>
+              </tr>
+            </tbody>
+          </template> -->
         </v-data-table>
       </v-card>
     </div>
@@ -77,14 +82,19 @@ export default {
         },
         {
           text: "Borrowed Date",
-          value: "borrowed_date",
+          value: "borrowed_date_str",
           align: "left",
           sortable: true
         },
-        { text: "Due Date", vlue: "due_date", align: "left", sortable: true },
+        {
+          text: "Due Date",
+          value: "due_date_str",
+          align: "left",
+          sortable: true
+        },
         {
           text: "Returned Date ",
-          value: "returned_date",
+          value: "returned_date_str",
           align: "left",
           sortable: true
         },
@@ -93,7 +103,7 @@ export default {
           value: "days_late",
           align: "left"
         }
-      ],
+      ]
     };
   },
   // vuefire library
