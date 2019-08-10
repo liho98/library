@@ -1,5 +1,10 @@
 <template>
   <div class="return">
+    <v-snackbar v-model="snackbar" :color="color" :timeout="timeout" :top="true">
+      {{ message }}
+      <v-btn dark text @click="snackbar = false" style="text-transform: none">Close</v-btn>
+    </v-snackbar>
+
     <div class="breadcrumb" style="margin-bottom: 20px">
       <div class="container" style="padding: 10px 20px;">
         <router-link class="breadcrumb-item" to="/">Home</router-link>
@@ -7,12 +12,12 @@
       </div>
     </div>
     <div class="centre">
-      <v-alert
+      <!-- <v-alert
         type="success"
         dark
         :value="success"
         transition="scale-transition"
-      >Return Successfully</v-alert>
+      >Return Successfully</v-alert>-->
       <br />
 
       <label for="books">Select book:</label>
@@ -140,7 +145,7 @@
 
       <br />
       <div class="text-center">
-        <v-btn large color="primary" @click="returnBook">Return</v-btn>
+        <v-btn large color="primary" style="text-transform: none" @click="returnBook">Return</v-btn>
       </div>
 
       <!--         :custom-label="nameWithLang"          :preselect-first="true"         :preserve-search="true"-->
@@ -172,6 +177,11 @@ export default {
   components: { Multiselect },
   data() {
     return {
+      snackbar: false,
+      color: "",
+      timeout: 5000, // 5 seconds
+      message: "",
+
       books: [],
       students: [],
       copies: [],
@@ -182,8 +192,7 @@ export default {
       return_date: null,
       fine: 0,
       days_late: 0,
-      msg: "Total fine = Days of late return x RM 0.50",
-      success: false
+      msg: "Total fine = Days of late return x RM 0.50"
     };
   },
   // vuefire library
@@ -242,7 +251,6 @@ export default {
       return `${name}, ${student_id}`;
     },
     returnBook() {
-      this.success = false;
       // decrease book quantity
       const new_quantity = this.books_return.quantity + 1;
       db.collection("books")
@@ -274,10 +282,12 @@ export default {
           // alert("Return book successfully");
           // this.$router.go({ path: this.path });
 
-          this.due_date = ""
-          this.copies_return = this.books_return = []
+          this.due_date = "";
+          this.copies_return = this.books_return = [];
 
-          this.success = true;
+          this.snackbar = true;
+          this.message = "Return book successfully";
+          this.color = "success";
         })
         .catch(error => {
           console.error("Error checking out book: ", error);

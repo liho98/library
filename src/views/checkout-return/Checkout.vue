@@ -1,5 +1,10 @@
 <template>
   <div class="checkout">
+    <v-snackbar v-model="snackbar" :color="color" :timeout="timeout" :top="true">
+      {{ message }}
+      <v-btn dark text @click="snackbar = false" style="text-transform: none">Close</v-btn>
+    </v-snackbar>
+
     <div class="breadcrumb" style="margin-bottom: 20px">
       <div class="container" style="padding: 10px 20px;">
         <router-link class="breadcrumb-item" to="/">Home</router-link>
@@ -8,12 +13,12 @@
     </div>
 
     <div class="centre">
-      <v-alert
+      <!-- <v-alert
         type="success"
         dark
         :value="success"
         transition="scale-transition"
-      >Checkout Successfully</v-alert>
+      >Checkout Successfully</v-alert>-->
       <br />
       <label for="books">Select book:</label>
       <!-- <multiselect
@@ -101,7 +106,7 @@
 
       <br />
       <div class="text-center">
-        <v-btn large color="primary" @click="checkout">Checkout</v-btn>
+        <v-btn large color="primary" style="text-transform: none"  @click="checkout">Checkout</v-btn>
       </div>
 
       <!--         :custom-label="nameWithLang"          :preselect-first="true"         :preserve-search="true"-->
@@ -132,14 +137,18 @@ export default {
   components: { Multiselect },
   data() {
     return {
+      snackbar: false,
+      color: "",
+      timeout: 5000, // 5 seconds
+      message: "",
+
       books: [],
       students: [],
       copies: [],
       student_checkout: null,
       books_checkout: [],
       copies_checkout: [],
-      due_date: null,
-      success: false
+      due_date: null
     };
   },
   // vuefire library
@@ -197,7 +206,6 @@ export default {
       return `${name}, ${student_id}`;
     },
     checkout() {
-      this.success = false;
       // decrease book quantity
       const new_quantity = this.books_checkout.quantity - 1;
       db.collection("books")
@@ -232,7 +240,9 @@ export default {
           this.books_checkout = [];
           this.copies_checkout = [];
 
-          this.success = true;
+          this.snackbar = true;
+          this.message = "Checkout book successfully";
+          this.color = "success";
           // this.$router.go({ path: this.path });
         })
         .catch(error => {

@@ -174,6 +174,7 @@ export default {
     };
   },
   created() {
+    this.$store.commit("startLoading");
     this.role = localStorage.role;
     //   if (firebase.auth().currentUser) {
     //     var currentUser = firebase.auth().currentUser;
@@ -198,7 +199,10 @@ export default {
           vm.current_quantity = doc.data().current_quantity;
           vm.description = doc.data().description;
 
-          if (doc.data().download_url === undefined) {
+          if (
+            doc.data().download_url === undefined ||
+            doc.data().download_url === ""
+          ) {
             const imgLink = require("../../assets/no-image.png");
             vm.download_url = imgLink;
           }
@@ -286,7 +290,6 @@ export default {
         });
     },
     fetchData() {
-      this.$store.commit("startLoading");
       db.collection("books")
         .doc(this.$route.params.book_id)
         .get()
@@ -301,7 +304,10 @@ export default {
           this.current_quantity = doc.data().current_quantity;
           this.description = doc.data().description;
 
-          if (doc.data().download_url === undefined) {
+          if (
+            doc.data().download_url === undefined ||
+            doc.data().download_url === ""
+          ) {
             const imgLink = require("../../assets/no-image.png");
             this.download_url = imgLink;
           }
