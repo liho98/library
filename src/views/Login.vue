@@ -1,5 +1,10 @@
 <template>
   <div id="login">
+        <v-snackbar v-model="snackbar" :color="color" :timeout="timeout" :top="true">
+      {{ message }}
+      <v-btn dark text @click="snackbar = false" style="text-transform: none">Close</v-btn>
+    </v-snackbar>
+
     <div class="breadcrumb">
       <div class="container" style="padding: 10px 20px;">
         <!-- <a class="breadcrumb-item" href="index.html">Home</a> -->
@@ -19,7 +24,7 @@
         Librarian
       </label>-->
       <div class="form-row justify-content-center">
-        <div class="col-md-4">
+        <div class="col-md-4" style="padding: 0 5px">
           <input
             class="form-control"
             type="text"
@@ -31,7 +36,7 @@
           />
         </div>
       </div>
-      <div class="form-row justify-content-center">
+      <div class="form-row justify-content-center" style="padding: 0 5px">
         <div class="col-md-4">
           <input
             class="form-control"
@@ -56,9 +61,10 @@
       <p>
         You don't have an account ? You can
         <router-link to="/register">create one</router-link>
-      </p>
-      <p>
-        Forget your password?<a @click="sendEmail"> Click here</a>
+
+        <br />
+        <br />Forget your password?
+        <a @click="dialog = true">Click here</a>
       </p>
       <p>
         <b>
@@ -68,6 +74,47 @@
         </b>
       </p>
     </div>
+
+
+    <v-dialog v-model="dialog" width="600">
+      <v-card>
+        <v-card-title>
+          <span class="headline">Forgot Password</span>
+        </v-card-title>
+        <v-card-text style="padding-top: 0px">
+          <v-container grid-list-md>
+            <v-layout wrap>
+              <v-flex xs12>
+                <v-text-field
+                  v-model="forgot_pass_email"
+                  label="Email"
+                  type="email"
+                  :rules="[v => (v && v.length) >= 1 || 'Required']"
+                  required
+                ></v-text-field>
+              </v-flex>
+            </v-layout>
+          </v-container>
+          <small>Reset password email will be send to your email</small>
+        </v-card-text>
+        <v-card-actions>
+        <v-divider style="margin: 0"></v-divider>
+          <v-btn
+          large
+            color="blue darken-1"
+            style="text-transform: none; margin: 0 5px;"
+            text
+            @click="dialog = false"
+          >Close</v-btn>
+          <v-btn
+          large
+            color="primary"
+            style="text-transform: none; width: fit-content; margin: 0 5px;"
+            @click="sendEmail(); dialog = false"
+          >Reset Password</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
     <!-- <section class="static about-sec">
       <div class="container">
         <h1>My Account / Login</h1>
@@ -105,8 +152,16 @@ export default {
   name: "login",
   data() {
     return {
+      snackbar: false,
+      color: "",
+      timeout: 5000, // 5 seconds
+      message: "",
+
+
       email: "",
-      password: ""
+      password: "",
+      forgot_pass_email: "",
+      dialog: false
       // role: ""
     };
   },
@@ -116,7 +171,8 @@ export default {
       firebase
         .auth()
         .signInWithEmailAndPassword(this.email, this.password)
-        .then(() => {
+        .then(
+          () => {
             // alert("Login successfully!");
             this.$router.go("/");
           },
@@ -125,17 +181,26 @@ export default {
           }
         );
     },
-    sendEmail(){
+    sendEmail() {
       var auth = firebase.auth();
-      var emailAddress = this.email;
-      if(this.email==""){
-    alert("Please enter an email first!")
-  }
-      auth.sendPasswordResetEmail(emailAddress).then(()=> {
-        alert("Email has sent to " + this.email);
-      }).catch(function(error) {
-  
-});
+      var emailAddress = this.forgot_pass_email;
+      if (this.forgot_pass_email == "") {
+            this.snackbar = true;
+            this.message = "Please enter an email first!";
+            this.color = "error";
+
+        // alert("Please enter an email first!");
+      }
+      auth
+        .sendPasswordResetEmail(emailAddress)
+        .then(() => {
+            this.snackbar = true;
+            this.message = "Email has sent to " + this.forgot_pass_email;
+            this.color = "success";
+
+          // alert("Email has sent to " + this.email);
+        })
+        .catch(function(error) {});
     }
   }
 };
