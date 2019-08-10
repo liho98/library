@@ -179,7 +179,7 @@
     <v-dialog v-model="delete_dialog" width="500">
       <!-- <template v-slot:activator="{ on }"></template> -->
       <v-card>
-        <v-card-title class="headline grey lighten-2" primary-title>Delete Librarian?</v-card-title>
+        <v-card-title class="headline grey lighten-2" primary-title>Delete Student?</v-card-title>
         <v-card-text style="padding-top: 16px">
           Are you sure you want to delete student
           <b>{{name}}</b>

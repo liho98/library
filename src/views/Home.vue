@@ -15,7 +15,7 @@
                 <div class="title">
                   <h3>welcome to library system</h3>
                   <h5>Discover the best books online with us</h5>
-                  <a href="#" class="btn">view books</a>
+                  <router-link to="/view-book-list" class="btn">view books</router-link>
                 </div>
               </div>
             </div>
@@ -388,7 +388,6 @@
         <img src="images/right-quote.png" alt="quote" />
       </div>
     </section>
-
   </div>
 </template>
 

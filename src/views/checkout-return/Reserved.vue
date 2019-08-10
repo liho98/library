@@ -1,15 +1,21 @@
 <template>
   <div class="checkout">
+    <v-snackbar v-model="snackbar" :color="color" :timeout="timeout" :top="true">
+      {{ message }}
+      <v-btn dark text @click="snackbar = false" style="text-transform: none">Close</v-btn>
+    </v-snackbar>
+
     <!-- <app-progress-circular :value="loading"></app-progress-circular> -->
-    <div class="breadcrumb" style="margin-bottom: 20px">
+    <div class="breadcrumb" style="margin-bottom: 0">
       <div class="container" style="padding: 10px 20px;">
         <router-link class="breadcrumb-item" to="/">Home</router-link>
         <span class="breadcrumb-item active">Reserved</span>
       </div>
     </div>
-    <div class="centre">
+    <div class="container">
       <v-card>
         <v-card-title>
+          Checkout Reserved Book
           <v-spacer></v-spacer>
           <v-text-field
             v-model="search"
@@ -19,7 +25,13 @@
             hide-details
           ></v-text-field>
         </v-card-title>
-        <v-data-table :headers="headers" :items="reserve" :loading="loading" :search="search">
+        <v-data-table
+          v-model="selected_row"
+          :headers="headers"
+          :items="reserve"
+          :loading="loading"
+          :search="search"
+        >
           <template v-slot:item.action="{ item }">
             <v-btn
               color="primary"
@@ -31,21 +43,22 @@
         </v-data-table>
       </v-card>
     </div>
+
     <v-dialog v-model="dialog" width="500">
       <v-card>
         <v-card-title class="headline grey lighten-2" primary-title>Checkout reserved book?</v-card-title>
-        <v-card-text>
+        <v-card-text style="padding-top: 16px">
           Are you sure you want to checkout
           <b>{{selected.title}}</b>?
         </v-card-text>
-        <v-divider></v-divider>
+        <v-divider style="margin: 0"></v-divider>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn flat text style="text-transform: none;" @click="dialog = false">Cancel</v-btn>
+          <v-btn text style="text-transform: none; margin: 0 5px;" @click="dialog = false">Cancel</v-btn>
           <v-btn
             color="primary"
-            style="background-color: #2A73C5; text-transform: none;"
-            @click="checkoutCopy(selected); dialog = false"
+            style="text-transform: none; margin: 0 5px;"
+            @click="checkoutCopy(selected, selected_row); dialog = false"
           >Checkout</v-btn>
         </v-card-actions>
       </v-card>
@@ -64,6 +77,13 @@ export default {
   //   },
   data() {
     return {
+      snackbar: false,
+      color: "",
+      timeout: 5000, // 5 seconds
+      message: "",
+
+      selected_row: [],
+
       search: "",
       books: [],
       reserve: [],
@@ -253,7 +273,7 @@ export default {
     setSeleted(selected) {
       this.selected = selected;
     },
-    checkoutCopy(selected) {
+    checkoutCopy(selected, selected_row) {
       // decrease book quantity
       console.log(selected.title);
       const new_quantity = selected.current_quantity - 1;
@@ -297,9 +317,16 @@ export default {
               status: "collected",
               checkout_did: this.checkout_did
             });
-          console.log("Check out book successfully");
-          alert("Check out book successfully");
-          this.$router.go({ path: this.path });
+          // console.log("Check out book successfully");
+          // alert("Check out book successfully");
+          // this.$router.go({ path: this.path });
+
+          const index = this.reserve.indexOf(this.selected);
+          this.reserve.splice(index, 1);
+
+          this.snackbar = true;
+          this.message = "Checkout reserved book successfully";
+          this.color = "success";
         })
         .catch(error => {
           console.error("Error checking out book: ", error);
@@ -401,8 +428,7 @@ export default {
                       .doc(this.reserve[key].student_did)
                       .get()
                       .then(doc => {
-                        this.reserve[key].student =
-                          doc.data().name + ", " + doc.data().student_id;
+                        this.reserve[key].student = doc.data().student_id;
                       });
                   });
                 });

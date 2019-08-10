@@ -1,6 +1,6 @@
 <template>
   <div class="checkout">
-    <div class="breadcrumb" style="margin-bottom: 20px">
+    <div class="breadcrumb" style="margin-bottom: 0px">
       <div class="container" style="padding: 10px 20px;">
         <router-link class="breadcrumb-item" to="/">Home</router-link>
         <span class="breadcrumb-item active">Your Borrowed Book</span>
@@ -9,6 +9,7 @@
     <div class="container">
       <v-card>
         <v-card-title>
+          Borrowed Book
           <v-spacer></v-spacer>
           <v-text-field
             v-model="search"

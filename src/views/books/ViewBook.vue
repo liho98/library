@@ -1,5 +1,10 @@
 <template>
   <div id="view-book">
+    <v-snackbar v-model="snackbar" :color="color" :timeout="timeout" :top="true">
+      {{ message }}
+      <v-btn dark text @click="snackbar = false" style="text-transform: none">Close</v-btn>
+    </v-snackbar>
+
     <div class="breadcrumb" style="margin-bottom: 20px">
       <div class="container" style="padding: 10px 20px;">
         <router-link class="breadcrumb-item" to="/">Home</router-link>
@@ -72,8 +77,13 @@
                   v-if="copy.status === 'available' || copy.status === 'returned'"
                   class="col-3 text-center"
                   style="text-transform: capitalize;"
+                  v-bind:id="copy.id + '-status'"
                 >
-                  <i class="fas fa-check-circle" style="color: #02ac1e">&nbsp;</i>
+                  <i
+                    class="fas fa-check-circle"
+                    style="color: #02ac1e"
+                    v-bind:id="copy.id + '-icon'"
+                  >&nbsp;</i>
                   {{copy.status}}
                 </td>
                 <td
@@ -91,10 +101,11 @@
                     @click="displayConfirmDialog(title, copy.id)"
                   >Reserve</v-btn>-->
                   <v-btn
+                    v-bind:id="copy.id + '-button'"
                     small
                     color="primary"
                     style="text-transform: none;"
-                    @click.stop="setCopyID(copy.id); dialog = true"
+                    @click.stop="setCopy(copy); dialog = true"
                     v-if="role === 'students' && copy.status === 'available' || copy.status === 'returned'"
                   >Reserve</v-btn>
                 </td>
@@ -112,20 +123,20 @@
       <!-- <template v-slot:activator="{ on }"></template> -->
       <v-card>
         <v-card-title class="headline grey lighten-2" primary-title>Reserve Book?</v-card-title>
-        <v-card-text>
+        <v-card-text style="padding-top: 16px">
           Are you sure you want to reserve
           <b>{{title}}</b>?
           <br />You are require to collect the book at library counter
           <b>within 3 days</b> after reserving it.
         </v-card-text>
-        <v-divider></v-divider>
+        <v-divider style="margin: 0"></v-divider>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn flat text style="text-transform: none;" @click="dialog = false">Cancel</v-btn>
+          <v-btn text style="text-transform: none; margin: 0 5px;" @click="dialog = false">Cancel</v-btn>
           <v-btn
             color="primary"
-            style="background-color: #2A73C5; text-transform: none;"
-            @click="reserveCopy(selected_copy_id)"
+            style="text-transform: none; margin: 0 5px;"
+            @click="reserveCopy()"
           >Reserve</v-btn>
         </v-card-actions>
       </v-card>
@@ -141,6 +152,11 @@ export default {
   // name: "view-book",
   data() {
     return {
+      snackbar: false,
+      color: "",
+      timeout: 5000, // 5 seconds
+      message: "",
+
       id: "",
       title: "",
       author: "",
@@ -154,7 +170,7 @@ export default {
       dialog: false,
       due_date: null,
       role: "",
-      selected_copy_id: ""
+      selected_copy: {}
     };
   },
   created() {
@@ -194,8 +210,8 @@ export default {
     $route: "fetchData"
   },
   methods: {
-    setCopyID(copy_id) {
-      this.selected_copy_id = copy_id;
+    setCopy(copy) {
+      this.selected_copy = copy;
     },
     // displayConfirmDialog(title, copy_id) {
     //   var r = confirm(
@@ -222,7 +238,7 @@ export default {
           });
         });
     },
-    reserveCopy(copy_id) {
+    reserveCopy() {
       this.dialog = false;
 
       const created_at = new Date();
@@ -233,7 +249,7 @@ export default {
         .add({
           // use document id instead of book id or student id for easy query later
           book_did: this.$route.params.book_id,
-          copies_did: copy_id,
+          copies_did: this.selected_copy.id,
           reserve_at: new Date(),
           due_date: this.due_date,
           student_did: localStorage.userId,
@@ -244,16 +260,26 @@ export default {
           db.collection("books")
             .doc(this.$route.params.book_id)
             .collection("copies")
-            .doc(copy_id)
+            .doc(this.selected_copy.id)
             .update({
               status: "reserved",
               reserve_did: docRef.id,
               student_did: localStorage.userId,
               due_date: this.due_date
             });
-          console.log("Reserve book successfully");
-          alert("Reserve book successfully");
-          this.$router.go({ path: this.path });
+          // console.log("Reserve book successfully");
+          // alert("Reserve book successfully");
+          // this.$router.go({ path: this.path });
+          document.getElementById(this.selected_copy.id + "-icon").remove();
+
+          document.getElementById(
+            this.selected_copy.id + "-status"
+          ).textContent = "reserved";
+          document.getElementById(this.selected_copy.id + "-button").remove();
+
+          this.snackbar = true;
+          this.message = "Reserve book successfully";
+          this.color = "success";
         })
         .catch(error => {
           console.error("Error reserving out book: ", error);

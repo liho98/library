@@ -15,6 +15,7 @@
         :items-per-page.sync="itemsPerPage"
         :page="page"
         :search="search"
+        :no-data-text="no_data_text"
         :sort-by="sortBy.toLowerCase()"
         :sort-desc="sortDesc"
         hide-default-footer
@@ -121,16 +122,7 @@ export default {
       page: 1,
       itemsPerPage: 18,
       sortBy: "title",
-      keys: [
-        "Name",
-        "Calories",
-        "Fat",
-        "Carbs",
-        "Protein",
-        "Sodium",
-        "Calcium",
-        "Iron"
-      ]
+      no_data_text: "Loading Books Details ..."
     };
   },
   computed: {
