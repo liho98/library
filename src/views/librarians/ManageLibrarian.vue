@@ -1,22 +1,18 @@
 <template>
-  <div id="delete-librarian">
+  <div id="delete-student">
     <div class="breadcrumb" style="margin-bottom: 20px">
       <div class="container" style="padding: 10px 20px;">
         <router-link class="breadcrumb-item" to="/">Home</router-link>
         <!-- <a class="breadcrumb-item" href="index.html">Book</a> -->
-        <span class="breadcrumb-item active">Search Student</span>
+        <span class="breadcrumb-item active">Manage Librarian</span>
       </div>
     </div>
 
-    <div style="margin-left: 10%; margin-right: 10%">
-      <hr />
-      <h2>Delete Librarian Page</h2>
-      <hr />
-    </div>
-
-    <div class="centre">
-      <v-card-title>
-        <v-spacer></v-spacer>
+    <div class="container">
+      <v-card>
+        <v-card-title>
+          Manage Librarian
+          <v-spacer></v-spacer>
           <v-text-field
             v-model="search"
             append-icon="search"
@@ -24,35 +20,96 @@
             single-line
             hide-details
           ></v-text-field>
-      </v-card-title>
-    </div>
+        </v-card-title>
 
-    <div class="list">
-      <v-data-table fixed-header
-        :headers="headers"
-        :items="items"
-        :search="search">
-
-        <v-progress-linear v-show="progressBar" color="blue" indeterminate></v-progress-linear>
-        <template v-slot:items="props">
+        <v-data-table
+          fixed-header
+          :headers="headers"
+          :items="items"
+          :search="search"
+          :loading="loading"
+        >
+          <v-progress-linear v-show="progressBar" color="blue" indeterminate></v-progress-linear>
+          <!-- <template v-slot:items="props">
           <tr>
-            <!-- <td>{{ props.item.title }}</td> -->
-            <td class="text-xs-left">{{ props.item.librarian_id}}</td>
+            <td class="text-xs-left">{{ props.item.student_id}}</td>
             <td class="text-xs-left">{{ props.item.name }}</td>
             <td class="text-xs-left">{{ props.item.email }}</td>
             <td class="text-xs-left">{{ props.item.contact }}</td>
             <td class="text-xs-left"><v-icon
                 small
-                @click="deleteLibrarian(props.item)"
+                @click="deleteStud(props.item)"
             >delete</v-icon></td>
           </tr>
-        </template>
-      </v-data-table>
+          </template>-->
+          <template v-slot:item.action="{ item }">
+            <v-icon small @click="rowSelected(item); dialog = true">edit</v-icon>&nbsp;
+            <v-icon small @click="deleteLibrarian(item)">delete</v-icon>
+          </template>
+        </v-data-table>
+      </v-card>
     </div>
 
+    <v-dialog v-model="dialog" persistent max-width="600px">
+      <v-card>
+        <v-card-title>
+          <span class="headline">Edit Student</span>
+        </v-card-title>
+        <v-card-text>
+          <v-container grid-list-md>
+            <v-layout wrap>
+              <v-flex xs12>
+                <v-text-field
+                  v-model="librarian_id"
+                  label="Librarian ID*"
+                  :rules="[v => (v && v.length) >= 1 || 'Required']"
+                  required
+                ></v-text-field>
+              </v-flex>
+              <v-flex xs12>
+                <v-text-field
+                  v-model="name"
+                  label="Name *"
+                  :rules="[v => (v && v.length) >= 1 || 'Required']"
+                  required
+                ></v-text-field>
+              </v-flex>
+              <!-- <v-flex xs12>
+                <v-text-field v-model="email" label="Email*" type="email" required></v-text-field>
+              </v-flex>-->
+              <v-flex xs12>
+                <v-text-field
+                  v-model="contact"
+                  label="Contact"
+                  :rules="[v => (v && v.length) >= 1 || 'Required']"
+                  type="number"
+                ></v-text-field>
+              </v-flex>
+            </v-layout>
+          </v-container>
+          <small>*indicates required field</small>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn
+            color="blue darken-1"
+            style="text-transform: none"
+            text
+            @click="dialog = false"
+          >Close</v-btn>
+          <v-btn
+            color="primary"
+            style="text-transform: none"
+            text
+            @click="updateLibrarian(); dialog = false"
+          >Save</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+
     <!-- <b-container> -->
-      <!-- User Interface controls -->
-      <!-- <b-row>
+    <!-- User Interface controls -->
+    <!-- <b-row>
         <b-col md="6" class="my-1">
           <b-form-group label-cols-sm="3" label="Filter" class="mb-0">
             <b-input-group>
@@ -93,10 +150,10 @@
             <b-form-select v-model="perPage" :options="pageOptions"></b-form-select>
           </b-form-group>
         </b-col>
-      </b-row> -->
+    </b-row>-->
 
-      <!-- Main table element -->
-      <!-- <b-table
+    <!-- Main table element -->
+    <!-- <b-table
         show-empty
         stacked="md"
         selectable
@@ -126,7 +183,7 @@
           aria-controls="my-0"
         ></b-pagination>
       </b-row>
-    </b-container> -->
+    </b-container>-->
   </div>
 </template>
 
@@ -167,12 +224,13 @@ import "vuetify/dist/vuetify.min.css";
 Vue.use(Vuetify);
 
 export default {
-  name: "delete-librarian",
+  name: "manage-student",
   data() {
     return {
-      search: '',
+      search: "",
       items: [],
-      headers:[
+      loading: true,
+      headers: [
         {
           text: "Librarian ID",
           value: "librarian_id",
@@ -180,28 +238,28 @@ export default {
           sortable: true
         },
         {
-          text: "Librarian Name",
+          text: "Name",
           value: "name",
           align: "left",
           sortable: true
         },
         {
-          text: "Librarian Email",
+          text: "Email",
           value: "email",
           align: "left",
           sortable: true
         },
         {
-          text: "Librarian Contact",
+          text: "Contact",
           value: "contact",
           align: "left",
           sortable: true
         },
         {
-            text: "Action",
-            value: "action",
-            align: "left",
-            sortable: false
+          text: "Action",
+          value: "action",
+          align: "left",
+          sortable: false
         }
       ],
       totalRows: 1,
@@ -215,7 +273,12 @@ export default {
       selected: [],
       selectMode: "single",
       role: "",
-      valid: true
+      valid: true,
+      librarian_id: "",
+      name: "",
+      email: "",
+      contact: "",
+      dialog: false
     };
   },
   firestore() {
@@ -236,6 +299,9 @@ export default {
       return this.items.length;
     }
   },
+  updated() {
+    this.loading = false;
+  },
   mounted() {
     // Set the initial number of items
     this.totalRows = this.items.length;
@@ -254,12 +320,38 @@ export default {
     clear() {
       this.$refs.form.reset();
     },
-    deleteLibrarian(librarian){
-        if(confirm("Are you sure to remove this record?")){
-            db.collection("librarians").doc(librarian.id).delete();
-        }else{
-
-        }
+    deleteStud(student) {
+      if (confirm("Are you sure to remove this record?")) {
+        db.collection("students")
+          .doc(student.id)
+          .delete();
+      } else {
+      }
+    },
+    rowSelected(librarian) {
+      this.id = librarian.id;
+      this.librarian_id = librarian.librarian_id;
+      this.name = librarian.name;
+      this.email = librarian.email;
+      this.contact = librarian.contact;
+    },
+    updateLibrarian() {
+      db.collection("librarians")
+        .doc(this.id)
+        .update({
+          librarian_id: this.librarian_id,
+          name: this.name,
+          //   email: this.email,
+          contact: this.contact
+        });
+    },
+    deleteLibrarian(librarian) {
+      if (confirm("Are you sure to remove this record?")) {
+        db.collection("librarians")
+          .doc(librarian.id)
+          .delete();
+      } else {
+      }
     }
   }
 };
@@ -333,8 +425,6 @@ td {
 tr:hover {
   background-color: #f5f5f5;
 }
-
-
 </style>
 
 

@@ -1,47 +1,60 @@
 <template>
-  <div id="delete-student">
+  <div id="edit-librarian">
     <div class="breadcrumb" style="margin-bottom: 20px">
       <div class="container" style="padding: 10px 20px;">
         <router-link class="breadcrumb-item" to="/">Home</router-link>
-        <!-- <a class="breadcrumb-item" href="index.html">Book</a> -->
-        <span class="breadcrumb-item active">Search Student</span>
+        <!-- <a class="breadcrumb-item" href="index.html">librarian</a> -->
+        <span class="breadcrumb-item active">Edit Librarian</span>
       </div>
     </div>
 
     <div style="margin-left: 10%; margin-right: 10%">
       <hr />
-      <h2>Delete Student Page</h2>
+      <h2>Step 1. Select librarian for updating</h2>
       <hr />
     </div>
 
-    <div class="centre">
-      <v-card-title>
-        <v-spacer></v-spacer>
-        <v-text-field v-model="search" append-icon="search" label="Search" single-line hide-details></v-text-field>
-      </v-card-title>
-    </div>
+    <div class="centre"></div>
 
-    <div class="list">
-      <v-data-table fixed-header :headers="headers" :items="items" :search="search">
-        <v-progress-linear v-show="progressBar" color="blue" indeterminate></v-progress-linear>
-        <!-- <template v-slot:items="props">
+    <div class="container">
+      <v-card>
+        <v-card-title>
+          <v-spacer></v-spacer>
+          <v-text-field
+            v-model="search"
+            append-icon="search"
+            label="Search"
+            single-line
+            hide-details
+          ></v-text-field>
+        </v-card-title>
+        <v-data-table
+          fixed-header
+          :headers="headers"
+          :items="items"
+          :search="search"
+          @row-selected="rowSelected"
+        >
+          <v-progress-linear v-show="progressBar" color="blue" indeterminate></v-progress-linear>
+          <!-- <template v-slot:items="props">
           <tr>
-            <td class="text-xs-left">{{ props.item.student_id}}</td>
+            <td class="text-xs-left">{{ props.item.librarian_id}}</td>
             <td class="text-xs-left">{{ props.item.name }}</td>
             <td class="text-xs-left">{{ props.item.email }}</td>
             <td class="text-xs-left">{{ props.item.contact }}</td>
             <td class="text-xs-left"><v-icon
                 small
-                @click="deleteStud(props.item)"
-            >delete</v-icon></td>
+                @click="rowSelected(props.item)"
+            >update</v-icon></td>
           </tr>
-        </template>-->
-        <template v-slot:item.action="{ item }">
-          <v-icon small @click="deleteStud(item)">delete</v-icon>
-        </template>
-      </v-data-table>
-    </div>
+          </template>-->
 
+          <template v-slot:item.action="{ item }">
+            <v-icon small @click="rowSelected(item)">edit</v-icon>
+          </template>
+        </v-data-table>
+      </v-card>
+    </div>
     <!-- <b-container> -->
     <!-- User Interface controls -->
     <!-- <b-row>
@@ -49,9 +62,6 @@
           <b-form-group label-cols-sm="3" label="Filter" class="mb-0">
             <b-input-group>
               <b-form-input v-model="filter" placeholder="Type to Search"></b-form-input>
-              <b-input-group-append>
-                <b-button :disabled="!filter" @click="filter = ''">Clear</b-button>
-              </b-input-group-append>
             </b-input-group>
           </b-form-group>
         </b-col>
@@ -63,8 +73,7 @@
                 <option slot="first" :value="null">-- none --</option>
               </b-form-select>
               <b-form-select v-model="sortDesc" :disabled="!sortBy" slot="append">
-                <option :value="false">Asc</option>
-                <option :value="true">Desc</option>
+                <option :value="false">Asc</option> <option :value="true">Desc</option>
               </b-form-select>
             </b-input-group>
           </b-form-group>
@@ -111,14 +120,75 @@
       </b-table>
 
       <b-row class="row d-flex justify-content-center">
-        <b-pagination
+          <b-pagination
           v-model="currentPage"
           :total-rows="rows"
           :per-page="perPage"
           aria-controls="my-0"
-        ></b-pagination>
+          ></b-pagination>
       </b-row>
     </b-container>-->
+
+    <div style="margin-left: 10%; margin-right: 10%">
+      <hr />
+      <h2>Step 2. Enter new detail</h2>
+      <hr />
+    </div>
+
+    <v-container align-center>
+      <v-form ref="form" v-model="valid">
+        <v-layout row>
+          <v-flex xs2 text-xs-right>Name</v-flex>
+          <v-flex xs8>
+            <v-text-field
+              type="text"
+              v-model="name"
+              :rules="[v => (v && v.length) >= 1 || 'Required']"
+              required
+            ></v-text-field>
+          </v-flex>
+        </v-layout>
+        <v-layout row>
+          <v-flex xs2 text-xs-right>Id</v-flex>
+          <v-flex xs8>
+            <v-text-field
+              type="text"
+              v-model="librarian_id"
+              :rules="[v => (v && v.length) >= 1 || 'Required']"
+              required
+            ></v-text-field>
+          </v-flex>
+        </v-layout>
+        <v-layout row>
+          <v-flex xs2 text-xs-right>Email</v-flex>
+          <v-flex xs8>
+            <v-text-field
+              type="text"
+              v-model="email"
+              :rules="[v => (v && v.length) >= 1 || 'Required']"
+              required
+            ></v-text-field>
+          </v-flex>
+        </v-layout>
+        <v-layout row>
+          <v-flex xs2 text-xs-right>Contact</v-flex>
+          <v-flex xs8>
+            <v-text-field
+              type="text"
+              v-model="contact"
+              :rules="[v => (v && v.length) >= 1 || 'Required']"
+              required
+            ></v-text-field>
+          </v-flex>
+        </v-layout>
+        <v-layout row>
+          <v-flex xs12 text-xs-center>
+            <v-btn centered color="primary" :disabled="!valid" @click="updateLibrarian">submit</v-btn>
+            <v-btn @click="clear">clear</v-btn>
+          </v-flex>
+        </v-layout>
+      </v-form>
+    </v-container>
   </div>
 </template>
 
@@ -128,6 +198,7 @@ import Vue from "vue";
 import VeeValidate from "vee-validate";
 import { firestorePlugin } from "vuefire";
 import BootstrapVue from "bootstrap-vue";
+import firebase from "firebase";
 
 Vue.use(BootstrapVue);
 Vue.use(firestorePlugin);
@@ -159,42 +230,38 @@ import "vuetify/dist/vuetify.min.css";
 Vue.use(Vuetify);
 
 export default {
-  name: "delete-student",
+  name: "edit-librarian",
   data() {
     return {
       search: "",
       items: [],
+
       headers: [
         {
-          text: "Student ID",
-          value: "student_id",
+          text: "Librarian ID",
+          value: "librarian_id",
           align: "left",
           sortable: true
         },
         {
-          text: "Student Name",
+          text: "Name",
           value: "name",
           align: "left",
           sortable: true
         },
         {
-          text: "Student Email",
+          text: "Email",
           value: "email",
           align: "left",
           sortable: true
         },
         {
-          text: "Student Contact",
+          text: "Contact",
           value: "contact",
           align: "left",
           sortable: true
         },
-        {
-          text: "Action",
-          value: "action",
-          align: "left",
-          sortable: false
-        }
+        { text: "Actions", value: "action", sortable: false }
       ],
       totalRows: 1,
       currentPage: 1,
@@ -206,13 +273,16 @@ export default {
       filter: null,
       selected: [],
       selectMode: "single",
-      role: "",
+      id: "",
+      name: "",
+      email: "",
+      contact: "",
       valid: true
     };
   },
   firestore() {
     return {
-      items: db.collection("students").orderBy("name")
+      items: db.collection("librarians").orderBy("name")
     };
   },
   computed: {
@@ -232,27 +302,31 @@ export default {
     // Set the initial number of items
     this.totalRows = this.items.length;
   },
-  beforeRouteEnter(to, from, next) {
-    next(vm => {
-      vm.getReserve(vm);
-    });
-  },
   methods: {
     onFiltered(filteredItems) {
       // Trigger pagination to update the number of buttons/pages due to filtering
       this.totalRows = filteredItems.length;
       this.currentPage = 1;
     },
+    rowSelected(librarian) {
+      this.id = librarian.id;
+      this.librarian_id = librarian.librarian_id;
+      this.name = librarian.name;
+      this.email = librarian.email;
+      this.contact = librarian.contact;
+    },
+    updateLibrarian() {
+      db.collection("librarians")
+        .doc(this.id)
+        .update({
+          librarian_id: this.librarian_id,
+          name: this.name,
+          email: this.email,
+          contact: this.contact
+        });
+    },
     clear() {
       this.$refs.form.reset();
-    },
-    deleteStud(student) {
-      if (confirm("Are you sure to remove this record?")) {
-        db.collection("students")
-          .doc(student.id)
-          .delete();
-      } else {
-      }
     }
   }
 };
@@ -261,28 +335,12 @@ export default {
 <style scoped>
 div.centre {
   text-align: center;
-  width: 60%;
-  margin-right: 30px;
-}
-
-div.list {
-  text-align: justify;
-  width: 75%;
+  width: 100%;
   margin: auto;
-  margin-bottom: 20px;
 }
 
 .sign-up {
   margin-top: 40px;
-}
-
-input {
-  margin: 10px 0;
-  width: 20%;
-  padding: 15px;
-}
-input[type="radio"] {
-  width: 30px;
 }
 
 .no-spinner::-webkit-outer-spin-button,
@@ -310,10 +368,8 @@ p a {
 }
 
 table {
-  margin-left: 10%;
-  margin-right: 10%;
   border-collapse: collapse;
-  width: 80%;
+  width: 100%;
 }
 
 th,

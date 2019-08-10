@@ -9,14 +9,15 @@
     </div>
 
     <div style="margin-left: 10%; margin-right: 10%">
-      <hr/>
+      <hr />
       <h2>Step 1. Select student for updating</h2>
-      <hr/>
+      <hr />
     </div>
 
-    <div class="centre">
-      <v-card-title>
-        <v-spacer></v-spacer>
+    <div class="container">
+      <v-card>
+        <v-card-title>
+          <v-spacer></v-spacer>
           <v-text-field
             v-model="search"
             append-icon="search"
@@ -24,20 +25,22 @@
             single-line
             hide-details
           ></v-text-field>
-      </v-card-title>
-    </div>
+        </v-card-title>
 
-    <div class="list">
-      <v-data-table fixed-header
-        :headers="headers"
-        :items="items"
-        :search="search"
-        @row-selected="rowSelected">
+        <v-data-table
+          fixed-header
+          :headers="headers"
+          :items="items"
+          :search="search"
+          @row-selected="rowSelected"
+        >
+          <v-progress-linear v-show="progressBar" color="blue" indeterminate></v-progress-linear>
+          <template v-slot:item.action="{ item }">
+            <v-icon small @click="rowSelected(item)">edit</v-icon>
+          </template>
 
-        <v-progress-linear v-show="progressBar" color="blue" indeterminate></v-progress-linear>
-        <template v-slot:items="props">
+          <!-- <template v-slot:items="props">
           <tr>
-            <!-- <td>{{ props.item.title }}</td> -->
             <td class="text-xs-left">{{ props.item.student_id}}</td>
             <td class="text-xs-left">{{ props.item.name }}</td>
             <td class="text-xs-left">{{ props.item.email }}</td>
@@ -47,9 +50,9 @@
                 @click="rowSelected(props.item)"
             >edit</v-icon></td>
           </tr>
-        </template>
-      </v-data-table>
-  
+          </template>-->
+        </v-data-table>
+      </v-card>
     </div>
 
     <!-- <b-container>
@@ -123,90 +126,66 @@
           aria-controls="my-0"
         ></b-pagination>
       </b-row>
-    </b-container> -->
+    </b-container>-->
 
     <div style="margin-left: 10%; margin-right: 10%">
-      <hr/>
+      <hr />
       <h2>Step 2. Enter new detail</h2>
-      <hr/>
+      <hr />
     </div>
 
     <v-container align-center>
       <v-form ref="form" v-model="valid">
         <v-layout row>
-          <v-flex xs2 text-xs-right>
-            ID
-          </v-flex>
+          <v-flex xs2 text-xs-right>ID</v-flex>
           <v-flex xs8>
             <v-text-field
               type="text"
               v-model="student_id"
               :rules="[v => (v && v.length) >= 1 || 'Required']"
               required
-            >
-            </v-text-field>
+            ></v-text-field>
           </v-flex>
         </v-layout>
         <v-layout row>
-          <v-flex xs2 text-xs-right>
-            Name
-          </v-flex>
+          <v-flex xs2 text-xs-right>Name</v-flex>
           <v-flex xs8>
             <v-text-field
               type="text"
               v-model="name"
               :rules="[v => (v && v.length) >= 1 || 'Required']"
               required
-            >
-            </v-text-field>
+            ></v-text-field>
           </v-flex>
         </v-layout>
         <v-layout row>
-          <v-flex xs2 text-xs-right>
-            Email
-          </v-flex>
+          <v-flex xs2 text-xs-right>Email</v-flex>
           <v-flex xs8>
             <v-text-field
               type="email"
               v-model="email"
               :rules="[v => (v && v.length) >= 1 || 'Required']"
               required
-            >
-            </v-text-field>
+            ></v-text-field>
           </v-flex>
         </v-layout>
         <v-layout row>
-          <v-flex xs2 text-xs-right>
-            Contact
-          </v-flex>
+          <v-flex xs2 text-xs-right>Contact</v-flex>
           <v-flex xs8>
             <v-text-field
               type="contact"
               v-model="contact"
               :rules="[v => (v && v.length) >= 1 || 'Required']"
               required
-            >
-            </v-text-field>
+            ></v-text-field>
           </v-flex>
         </v-layout>
         <v-layout row>
           <v-flex xs12 text-xs-center>
-            <v-btn
-              centered
-                color="primary"
-                :disabled="!valid"
-                @click="updateStudent"
-            >
-            submit
-            </v-btn>
-            <v-btn 
-              @click="clear"
-            >
-            clear
-            </v-btn>
+            <v-btn centered color="primary" :disabled="!valid" @click="updateStudent">submit</v-btn>
+            <v-btn @click="clear">clear</v-btn>
           </v-flex>
         </v-layout>
-        
       </v-form>
     </v-container>
   </div>
@@ -254,7 +233,7 @@ export default {
   data() {
     return {
       items: [],
-      headers:[
+      headers: [
         {
           text: "Student ID",
           value: "student_id",
@@ -262,28 +241,28 @@ export default {
           sortable: true
         },
         {
-          text: "Student Name",
+          text: "Name",
           value: "name",
           align: "left",
           sortable: true
         },
         {
-          text: "Student Email",
+          text: "Email",
           value: "email",
           align: "left",
           sortable: true
         },
         {
-          text: "Student Contact",
+          text: "Contact",
           value: "contact",
           align: "left",
           sortable: true
         },
         {
-            text: "Action",
-            value: "action",
-            align: "left",
-            sortable: false
+          text: "Action",
+          value: "action",
+          align: "left",
+          sortable: false
         }
       ],
       totalRows: 1,
@@ -299,14 +278,14 @@ export default {
       student_id: "",
       name: "",
       email: "",
-      contact:"",
+      contact: "",
       valid: true
     };
   },
-  firestore () {
+  firestore() {
     return {
       items: db.collection("students").orderBy("student_id")
-    }
+    };
   },
   computed: {
     sortOptions() {
@@ -314,40 +293,40 @@ export default {
       return this.fields
         .filter(f => f.sortable)
         .map(f => {
-          return { text: f.label, value: f.key }
-        })
+          return { text: f.label, value: f.key };
+        });
     },
     rows() {
-      return this.items.length
+      return this.items.length;
     }
   },
   mounted() {
     // Set the initial number of items
-    this.totalRows = this.items.length
+    this.totalRows = this.items.length;
   },
   methods: {
     onFiltered(filteredItems) {
       // Trigger pagination to update the number of buttons/pages due to filtering
-      this.totalRows = filteredItems.length
-      this.currentPage = 1
+      this.totalRows = filteredItems.length;
+      this.currentPage = 1;
     },
     rowSelected(student) {
-      this.id = student.id
-      this.student_id = student.student_id
-      this.name = student.name
-      this.email = student.email
-      this.contact = student.contact
+      this.id = student.id;
+      this.student_id = student.student_id;
+      this.name = student.name;
+      this.email = student.email;
+      this.contact = student.contact;
     },
     updateStudent() {
-      db.collection("students").doc(this.id).update(
-        {
+      db.collection("students")
+        .doc(this.id)
+        .update({
           student_id: this.student_id,
           name: this.name,
           email: this.email,
           contact: this.contact
-        }
-      )
-      
+        });
+
       this.$refs.form.reset();
     },
     clear() {

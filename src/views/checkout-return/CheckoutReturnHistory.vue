@@ -6,7 +6,7 @@
         <span class="breadcrumb-item active">Your Borrowed Book</span>
       </div>
     </div>
-    <div class="centre">
+    <div class="container">
       <v-card>
         <v-card-title>
           <v-spacer></v-spacer>
@@ -19,7 +19,14 @@
           ></v-text-field>
         </v-card-title>
 
-        <v-data-table :headers="headers" :items="checkout" :search="search" :loading="loading">
+        <v-data-table
+          class="elevation-1"
+          :items-per-page="5"
+          :headers="headers"
+          :items="checkout"
+          :search="search"
+          :loading="loading"
+        >
           <!-- :sort-by="borrowed_date"
           :sort-desc=true-->
 
@@ -46,7 +53,7 @@
                 <td>CONTENT</td>
               </tr>
             </tbody>
-          </template> -->
+          </template>-->
         </v-data-table>
       </v-card>
     </div>

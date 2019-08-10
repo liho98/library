@@ -1,22 +1,23 @@
 <template>
-  <div id="edit-librarian">
+  <div id="delete-librarian">
     <div class="breadcrumb" style="margin-bottom: 20px">
       <div class="container" style="padding: 10px 20px;">
         <router-link class="breadcrumb-item" to="/">Home</router-link>
-        <!-- <a class="breadcrumb-item" href="index.html">librarian</a> -->
-        <span class="breadcrumb-item active">Edit Librarian</span>
+        <!-- <a class="breadcrumb-item" href="index.html">Book</a> -->
+        <span class="breadcrumb-item active">Search Student</span>
       </div>
     </div>
 
     <div style="margin-left: 10%; margin-right: 10%">
-      <hr/>
-      <h2>Step 1. Select librarian for updating</h2>
-      <hr/>
+      <hr />
+      <h2>Delete Librarian Page</h2>
+      <hr />
     </div>
 
-<div class="centre">
-      <v-card-title>
-        <v-spacer></v-spacer>
+    <div class="container">
+      <v-card>
+        <v-card-title>
+          <v-spacer></v-spacer>
           <v-text-field
             v-model="search"
             append-icon="search"
@@ -24,39 +25,38 @@
             single-line
             hide-details
           ></v-text-field>
-      </v-card-title>
-    </div>
-
-    <div class="list">
-      <v-data-table fixed-header
-        :headers="headers"
-        :items="items"
-        :search="search"
-        @row-selected="rowSelected">
-
-        <v-progress-linear v-show="progressBar" color="blue" indeterminate></v-progress-linear>
-        <template v-slot:items="props">
+        </v-card-title>
+        <v-data-table fixed-header :headers="headers" :items="items" :search="search">
+          <v-progress-linear v-show="progressBar" color="blue" indeterminate></v-progress-linear>
+          <!-- <template v-slot:items="props">
           <tr>
-            <!-- <td>{{ props.item.title }}</td> -->
             <td class="text-xs-left">{{ props.item.librarian_id}}</td>
             <td class="text-xs-left">{{ props.item.name }}</td>
             <td class="text-xs-left">{{ props.item.email }}</td>
             <td class="text-xs-left">{{ props.item.contact }}</td>
             <td class="text-xs-left"><v-icon
                 small
-                @click="rowSelected(props.item)"
-            >update</v-icon></td>
+                @click="deleteLibrarian(props.item)"
+            >delete</v-icon></td>
           </tr>
-        </template>
-      </v-data-table>
+          </template>-->
+          <template v-slot:item.action="{ item }">
+            <v-icon small @click="deleteLibrarian(item)">delete</v-icon>
+          </template>
+        </v-data-table>
+      </v-card>
     </div>
+
     <!-- <b-container> -->
-      <!-- User Interface controls -->
-      <!-- <b-row>
+    <!-- User Interface controls -->
+    <!-- <b-row>
         <b-col md="6" class="my-1">
           <b-form-group label-cols-sm="3" label="Filter" class="mb-0">
             <b-input-group>
               <b-form-input v-model="filter" placeholder="Type to Search"></b-form-input>
+              <b-input-group-append>
+                <b-button :disabled="!filter" @click="filter = ''">Clear</b-button>
+              </b-input-group-append>
             </b-input-group>
           </b-form-group>
         </b-col>
@@ -68,7 +68,8 @@
                 <option slot="first" :value="null">-- none --</option>
               </b-form-select>
               <b-form-select v-model="sortDesc" :disabled="!sortBy" slot="append">
-                <option :value="false">Asc</option> <option :value="true">Desc</option>
+                <option :value="false">Asc</option>
+                <option :value="true">Desc</option>
               </b-form-select>
             </b-input-group>
           </b-form-group>
@@ -89,10 +90,10 @@
             <b-form-select v-model="perPage" :options="pageOptions"></b-form-select>
           </b-form-group>
         </b-col>
-      </b-row> -->
+    </b-row>-->
 
-      <!-- Main table element -->
-      <!-- <b-table
+    <!-- Main table element -->
+    <!-- <b-table
         show-empty
         stacked="md"
         selectable
@@ -115,101 +116,14 @@
       </b-table>
 
       <b-row class="row d-flex justify-content-center">
-          <b-pagination
+        <b-pagination
           v-model="currentPage"
           :total-rows="rows"
           :per-page="perPage"
           aria-controls="my-0"
-          ></b-pagination>
+        ></b-pagination>
       </b-row>
-    </b-container> -->
-    
-    <div style="margin-left: 10%; margin-right: 10%">
-      <hr/>
-      <h2>Step 2. Enter new detail</h2>
-      <hr/>
-    </div>
-    
-    <v-container align-center>
-      <v-form ref="form" v-model="valid">
-        
-        <v-layout row>
-          <v-flex xs2 text-xs-right>
-            Name
-          </v-flex>
-          <v-flex xs8>
-            <v-text-field
-              type="text"
-              v-model="name"
-              :rules="[v => (v && v.length) >= 1 || 'Required']"
-              required
-            >
-            </v-text-field>
-          </v-flex>
-        </v-layout>
-        <v-layout row>
-          <v-flex xs2 text-xs-right>
-            Id
-          </v-flex>
-          <v-flex xs8>
-            <v-text-field
-              type="text"
-              v-model="librarian_id"
-              :rules="[v => (v && v.length) >= 1 || 'Required']"
-              required
-            >
-            </v-text-field>
-          </v-flex>
-        </v-layout>
-        <v-layout row>
-          <v-flex xs2 text-xs-right>
-            Email
-          </v-flex>
-          <v-flex xs8>
-            <v-text-field
-              type="text"
-              v-model="email"
-              :rules="[v => (v && v.length) >= 1 || 'Required']"
-              required
-            >
-            </v-text-field>
-          </v-flex>
-        </v-layout>
-        <v-layout row>
-
-          <v-flex xs2 text-xs-right>
-            Contact
-          </v-flex>
-          <v-flex xs8>
-            <v-text-field
-              type="text"
-              v-model="contact"
-              :rules="[v => (v && v.length) >= 1 || 'Required']"
-              required
-            >
-            </v-text-field>
-          </v-flex>
-        </v-layout>
-        <v-layout row>
-          <v-flex xs12 text-xs-center>
-            <v-btn
-              centered
-                color="primary"
-                :disabled="!valid"
-                @click="updateLibrarian"
-            >
-            submit
-            </v-btn>
-            <v-btn 
-              @click="clear"
-            >
-            clear
-            </v-btn>
-          </v-flex>
-        </v-layout>
-        
-      </v-form>
-    </v-container>
+    </b-container>-->
   </div>
 </template>
 
@@ -218,46 +132,44 @@ import db from "./../../components/firestoreInit";
 import Vue from "vue";
 import VeeValidate from "vee-validate";
 import { firestorePlugin } from "vuefire";
-import BootstrapVue from 'bootstrap-vue'
-import firebase from "firebase";
+import BootstrapVue from "bootstrap-vue";
 
-Vue.use(BootstrapVue)
+Vue.use(BootstrapVue);
 Vue.use(firestorePlugin);
 Vue.use(VeeValidate);
 
 // This imports all the layout components such as <b-container>, <b-row>, <b-col>:
-import { LayoutPlugin } from 'bootstrap-vue'
-Vue.use(LayoutPlugin)
+import { LayoutPlugin } from "bootstrap-vue";
+Vue.use(LayoutPlugin);
 
 // This imports <b-modal> as well as the v-b-modal directive as a plugin:
-import { ModalPlugin } from 'bootstrap-vue'
-Vue.use(ModalPlugin)
+import { ModalPlugin } from "bootstrap-vue";
+Vue.use(ModalPlugin);
 
 // This imports <b-card> along with all the <b-card-*> sub-components as a plugin:
-import { CardPlugin } from 'bootstrap-vue'
-Vue.use(CardPlugin)
+import { CardPlugin } from "bootstrap-vue";
+Vue.use(CardPlugin);
 
 // This imports directive v-b-scrollspy as a plugin:
-import { VBScrollspyPlugin } from 'bootstrap-vue'
-Vue.use(VBScrollspyPlugin)
+import { VBScrollspyPlugin } from "bootstrap-vue";
+Vue.use(VBScrollspyPlugin);
 
 // This imports the dropdown and table plugins
-import { DropdownPlugin, TablePlugin } from 'bootstrap-vue'
-Vue.use(DropdownPlugin)
-Vue.use(TablePlugin)
+import { DropdownPlugin, TablePlugin } from "bootstrap-vue";
+Vue.use(DropdownPlugin);
+Vue.use(TablePlugin);
 
-import Vuetify from 'vuetify'
-import 'vuetify/dist/vuetify.min.css'
-Vue.use(Vuetify)
+import Vuetify from "vuetify";
+import "vuetify/dist/vuetify.min.css";
+Vue.use(Vuetify);
 
 export default {
-  name: "edit-librarian",
-  data () {
+  name: "delete-librarian",
+  data() {
     return {
-      search: '',
+      search: "",
       items: [],
-      
-      headers:[
+      headers: [
         {
           text: "Librarian ID",
           value: "librarian_id",
@@ -281,6 +193,12 @@ export default {
           value: "contact",
           align: "left",
           sortable: true
+        },
+        {
+          text: "Action",
+          value: "action",
+          align: "left",
+          sortable: false
         }
       ],
       totalRows: 1,
@@ -289,21 +207,18 @@ export default {
       pageOptions: [5, 10, 15],
       sortBy: null,
       sortDesc: false,
-      sortDirection: 'asc',
+      sortDirection: "asc",
       filter: null,
       selected: [],
-      selectMode: 'single',
-      id:"",
-      name: "",
-      email: "",
-      contact:"",
+      selectMode: "single",
+      role: "",
       valid: true
-    }
+    };
   },
-  firestore () {
+  firestore() {
     return {
       items: db.collection("librarians").orderBy("name")
-    }
+    };
   },
   computed: {
     sortOptions() {
@@ -311,46 +226,39 @@ export default {
       return this.fields
         .filter(f => f.sortable)
         .map(f => {
-          return { text: f.label, value: f.key }
-        })
+          return { text: f.label, value: f.key };
+        });
     },
     rows() {
-      return this.items.length
+      return this.items.length;
     }
   },
   mounted() {
     // Set the initial number of items
-    this.totalRows = this.items.length
+    this.totalRows = this.items.length;
+  },
+  beforeRouteEnter(to, from, next) {
+    next(vm => {
+      vm.getReserve(vm);
+    });
   },
   methods: {
     onFiltered(filteredItems) {
       // Trigger pagination to update the number of buttons/pages due to filtering
-      this.totalRows = filteredItems.length
-      this.currentPage = 1
-    },
-    rowSelected(librarian) {
-      this.id = librarian.id
-      this.librarian_id = librarian.librarian_id
-      this.name = librarian.name
-      this.email = librarian.email
-      this.contact = librarian.contact
-     
-     
-    },
-    updateLibrarian() {
-      db.collection("librarians").doc(this.id).update(
-        {
-          librarian_id: this.librarian_id,
-          name: this.name,
-          email: this.email, 
-          contact: this.contact
-        }
-      )
+      this.totalRows = filteredItems.length;
+      this.currentPage = 1;
     },
     clear() {
       this.$refs.form.reset();
+    },
+    deleteLibrarian(librarian) {
+      if (confirm("Are you sure to remove this record?")) {
+        db.collection("librarians")
+          .doc(librarian.id)
+          .delete();
+      } else {
+      }
     }
-
   }
 };
 </script>
@@ -358,12 +266,28 @@ export default {
 <style scoped>
 div.centre {
   text-align: center;
-  width: 100%;
+  width: 60%;
+  margin-right: 30px;
+}
+
+div.list {
+  text-align: justify;
+  width: 75%;
   margin: auto;
+  margin-bottom: 20px;
 }
 
 .sign-up {
   margin-top: 40px;
+}
+
+input {
+  margin: 10px 0;
+  width: 20%;
+  padding: 15px;
+}
+input[type="radio"] {
+  width: 30px;
 }
 
 .no-spinner::-webkit-outer-spin-button,
@@ -391,17 +315,22 @@ p a {
 }
 
 table {
+  margin-left: 10%;
+  margin-right: 10%;
   border-collapse: collapse;
-  width: 100%;
+  width: 80%;
 }
 
-th, td {
+th,
+td {
   padding: 8px;
   text-align: left;
   border-bottom: 1px solid #ddd;
 }
 
-tr:hover {background-color:#f5f5f5;}
+tr:hover {
+  background-color: #f5f5f5;
+}
 </style>
 
 

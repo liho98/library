@@ -10,6 +10,7 @@
     <div class="centre">
       <v-card>
         <v-card-title>
+          <v-spacer></v-spacer>
           <v-text-field
             v-model="search"
             append-icon="search"
@@ -20,7 +21,12 @@
         </v-card-title>
         <v-data-table :headers="headers" :items="reserve" :loading="loading" :search="search">
           <template v-slot:item.action="{ item }">
-            <v-btn color="primary" small style="text-transform: none" @click.stop="setSeleted(item); dialog = true">Checkout</v-btn>
+            <v-btn
+              color="primary"
+              small
+              style="text-transform: none"
+              @click.stop="setSeleted(item); dialog = true"
+            >Checkout</v-btn>
           </template>
         </v-data-table>
       </v-card>

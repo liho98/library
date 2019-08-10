@@ -4,27 +4,33 @@
       <div class="container" style="padding: 10px 20px;">
         <router-link class="breadcrumb-item" to="/">Home</router-link>
         <!-- <a class="breadcrumb-item" href="index.html">Book</a> -->
-        <span class="breadcrumb-item active">Search Student</span>
+        <span class="breadcrumb-item active">Manage Student</span>
       </div>
     </div>
 
-    <div style="margin-left: 10%; margin-right: 10%">
-      <hr />
-      <h2>Delete Student Page</h2>
-      <hr />
-    </div>
+    <div class="container">
+      <v-card>
+        <v-card-title>
+          Manage Student
+          <v-spacer></v-spacer>
+          <v-text-field
+            v-model="search"
+            append-icon="search"
+            label="Search"
+            single-line
+            hide-details
+          ></v-text-field>
+        </v-card-title>
 
-    <div class="centre">
-      <v-card-title>
-        <v-spacer></v-spacer>
-        <v-text-field v-model="search" append-icon="search" label="Search" single-line hide-details></v-text-field>
-      </v-card-title>
-    </div>
-
-    <div class="list">
-      <v-data-table fixed-header :headers="headers" :items="items" :search="search">
-        <v-progress-linear v-show="progressBar" color="blue" indeterminate></v-progress-linear>
-        <!-- <template v-slot:items="props">
+        <v-data-table
+          fixed-header
+          :headers="headers"
+          :items="items"
+          :search="search"
+          :loading="loading"
+        >
+          <v-progress-linear v-show="progressBar" color="blue" indeterminate></v-progress-linear>
+          <!-- <template v-slot:items="props">
           <tr>
             <td class="text-xs-left">{{ props.item.student_id}}</td>
             <td class="text-xs-left">{{ props.item.name }}</td>
@@ -35,12 +41,71 @@
                 @click="deleteStud(props.item)"
             >delete</v-icon></td>
           </tr>
-        </template>-->
-        <template v-slot:item.action="{ item }">
-          <v-icon small @click="deleteStud(item)">delete</v-icon>
-        </template>
-      </v-data-table>
+          </template>-->
+          <template v-slot:item.action="{ item }">
+            <v-icon small @click="rowSelected(item); dialog = true">edit</v-icon>&nbsp;
+            <v-icon small @click="deleteStud(item)">delete</v-icon>
+          </template>
+        </v-data-table>
+      </v-card>
     </div>
+
+    <v-dialog v-model="dialog" persistent max-width="600px">
+      <v-card>
+        <v-card-title>
+          <span class="headline">Edit Student</span>
+        </v-card-title>
+        <v-card-text>
+          <v-container grid-list-md>
+            <v-layout wrap>
+              <v-flex xs12>
+                <v-text-field
+                  v-model="student_id"
+                  label="Student ID *"
+                  :rules="[v => (v && v.length) >= 1 || 'Required']"
+                  required
+                ></v-text-field>
+              </v-flex>
+              <v-flex xs12>
+                <v-text-field
+                  v-model="name"
+                  label="Name *"
+                  :rules="[v => (v && v.length) >= 1 || 'Required']"
+                  required
+                ></v-text-field>
+              </v-flex>
+              <!-- <v-flex xs12>
+                <v-text-field v-model="email" label="Email*" type="email" required></v-text-field>
+              </v-flex>-->
+              <v-flex xs12>
+                <v-text-field
+                  v-model="contact"
+                  label="Contact"
+                  :rules="[v => (v && v.length) >= 1 || 'Required']"
+                  type="number"
+                ></v-text-field>
+              </v-flex>
+            </v-layout>
+          </v-container>
+          <small>* indicates required field</small>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn
+            color="blue darken-1"
+            style="text-transform: none"
+            text
+            @click="dialog = false"
+          >Close</v-btn>
+          <v-btn
+            color="primary"
+            style="text-transform: none"
+            text
+            @click="updateStudent(); dialog = false"
+          >Save</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
 
     <!-- <b-container> -->
     <!-- User Interface controls -->
@@ -159,11 +224,12 @@ import "vuetify/dist/vuetify.min.css";
 Vue.use(Vuetify);
 
 export default {
-  name: "delete-student",
+  name: "manage-student",
   data() {
     return {
       search: "",
       items: [],
+      loading: true,
       headers: [
         {
           text: "Student ID",
@@ -172,19 +238,19 @@ export default {
           sortable: true
         },
         {
-          text: "Student Name",
+          text: "Name",
           value: "name",
           align: "left",
           sortable: true
         },
         {
-          text: "Student Email",
+          text: "Email",
           value: "email",
           align: "left",
           sortable: true
         },
         {
-          text: "Student Contact",
+          text: "Contact",
           value: "contact",
           align: "left",
           sortable: true
@@ -207,7 +273,12 @@ export default {
       selected: [],
       selectMode: "single",
       role: "",
-      valid: true
+      valid: true,
+      student_id: "",
+      name: "",
+      email: "",
+      contact: "",
+      dialog: false
     };
   },
   firestore() {
@@ -227,6 +298,9 @@ export default {
     rows() {
       return this.items.length;
     }
+  },
+  updated() {
+    this.loading = false;
   },
   mounted() {
     // Set the initial number of items
@@ -253,6 +327,25 @@ export default {
           .delete();
       } else {
       }
+    },
+    rowSelected(student) {
+      this.id = student.id;
+      this.student_id = student.student_id;
+      this.name = student.name;
+      this.email = student.email;
+      this.contact = student.contact;
+    },
+    updateStudent() {
+      db.collection("students")
+        .doc(this.id)
+        .update({
+          student_id: this.student_id,
+          name: this.name,
+          //   email: this.email,
+          contact: this.contact
+        });
+
+      //   this.$refs.form.reset();
     }
   }
 };

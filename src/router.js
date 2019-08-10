@@ -21,6 +21,7 @@ import EditBook from "./views/books/EditBook"
 import EditStudent from "./views/students/EditStudent";
 import DeleteStudent from "./views/students/DeleteStudent";
 import ViewStudent from "./views/students/ViewStudent";
+import ManageStudent from "./views/students/ManageStudent";
 
 // Checkout, Return
 import Checkout from "./views/checkout-return/Checkout";
@@ -29,9 +30,10 @@ import Reserved from "./views/checkout-return/Reserved";
 import CheckoutReturnHistory from "./views/checkout-return/CheckoutReturnHistory";
 
 //Librarian
-import ViewLibrarian from "./views/librarian/ViewLibrarian";
-import DeleteLibrarian from "./views/librarian/DeleteLibrarian";
-import EditLibrarian from "./views/librarian/EditLibrarian";
+import ViewLibrarian from "./views/librarians/ViewLibrarian";
+import DeleteLibrarian from "./views/librarians/DeleteLibrarian";
+import EditLibrarian from "./views/librarians/EditLibrarian";
+import ManageLibrarian from "./views/librarians/ManageLibrarian";
 
 import PersonalDetail from "./views/PersonalDetail";
 
@@ -147,6 +149,17 @@ const router = new Router({
       }
     },
     {
+      path: '/manage-student',
+      name: 'manage-student',
+      component: ManageStudent,
+      meta: {
+        requiresAuth: true,
+        librarianAuth: false,
+        studentAuth: false,
+        adminAuth: true
+      }
+    },
+    {
       path: '/edit-student',
       name: 'edit-student',
       component: EditStudent,
@@ -221,6 +234,17 @@ const router = new Router({
         librarianAuth: false,
         studentAuth: true,
         adminAuth: false
+      }
+    },
+    {
+      path: '/manage-librarian',
+      name: 'manage-librarian',
+      component: ManageLibrarian,
+      meta: {
+        requiresAuth: true,
+        librarianAuth: false,
+        studentAuth: false,
+        adminAuth: true
       }
     },
     {
