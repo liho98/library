@@ -16,6 +16,7 @@ import ViewBookList from "./views/books/ViewBookList";
 import ViewBook from "./views/books/ViewBook";
 import SearchBook from "./views/books/SearchBook"
 import EditBook from "./views/books/EditBook"
+import ManageBook from "./views/books/ManageBook"
 
 // Students
 import EditStudent from "./views/students/EditStudent";
@@ -148,6 +149,18 @@ const router = new Router({
         adminAuth: true
       }
     },
+    {
+      path: '/manage-book',
+      name: 'manage-book',
+      component: ManageBook,
+      meta: {
+        requiresAuth: true,
+        librarianAuth: true,
+        studentAuth: false,
+        adminAuth: true
+      }
+    },
+
     {
       path: '/manage-student',
       name: 'manage-student',

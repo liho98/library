@@ -59,7 +59,7 @@
             <ul class="navbar-nav ml-auto">
               <!-- ---------------------------Student--------------------------------------- -->
 
-              <li class="navbar-item" v-if="role=='students'">
+              <li class="navbar-item" v-if="isLoggedIn">
                 <router-link to="/view-book-list" class="nav-link active">Book List</router-link>
               </li>
               <li class="navbar-item" v-if="role=='students'">
@@ -85,12 +85,11 @@
                   <router-link to="/edit-student" class="dropdown-item">Edit Student</router-link>
                   <router-link to="/delete-student" class="dropdown-item">Delete Student</router-link>
                 </div>
-              </li> -->
+              </li>-->
 
               <li class="navbar-item" v-if="role=='admins'">
                 <router-link to="/manage-student" class="nav-link active">Student</router-link>
               </li>
-
 
               <!-- <li class="navbar-item dropdown" v-if="role=='admins'">
                 <a
@@ -107,15 +106,19 @@
                   <router-link to="/edit-librarian" class="dropdown-item">Edit Librarian</router-link>
                   <router-link to="/delete-librarian" class="dropdown-item">Delete Librarian</router-link>
                 </div>
-              </li> -->
+              </li>-->
 
               <li class="navbar-item" v-if="role=='admins'">
                 <router-link to="/manage-librarian" class="nav-link active">Librarian</router-link>
               </li>
 
-
               <!-- ---------------------------Librarians------------------------------------- -->
-              <li class="navbar-item dropdown" v-if="role=='librarians' || role=='admins'">
+
+              <li class="navbar-item" v-if="role=='librarians' || role=='admins'">
+                <router-link to="/manage-book" class="nav-link active">Book</router-link>
+              </li>
+
+              <!-- <li class="navbar-item dropdown" v-if="role=='librarians' || role=='admins'">
                 <a
                   class="nav-link dropdown-toggle active"
                   href="#"
@@ -127,11 +130,12 @@
                 >Book</a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown" style="margin: 0px">
                   <router-link to="/view-book-list" class="dropdown-item">View Book</router-link>
+                  <router-link to="/manage-book" class="dropdown-item">Manage Book</router-link>
                   <router-link to="/add-book" class="dropdown-item">Add Book</router-link>
                   <router-link to="/edit-book" class="dropdown-item">Edit Book</router-link>
                   <router-link to="/search-book" class="dropdown-item">Search Book</router-link>
                 </div>
-              </li>
+              </li> -->
 
               <li class="navbar-item" v-if="role=='librarians' || role=='admins'">
                 <router-link to="/checkout" class="nav-link active">Checkout</router-link>
@@ -144,9 +148,12 @@
               </li>
 
               <!-- ---------------------------Logged in user------------------------------------- -->
-              
-            <li class="navbar-item" v-if="role=='librarians' || role=='admins'|| role=='students'">
-                <router-link to="/personal-detail" class="nav-link active">Personal Detail</router-link>
+
+              <li
+                class="navbar-item"
+                v-if="role=='librarians' || role=='admins'|| role=='students'"
+              >
+                <router-link to="/personal-detail" class="nav-link active">Your Profile</router-link>
               </li>
               <!-- --------------------------Guest---------------------------------------- -->
               <li class="navbar-item" v-if="!isLoggedIn">
@@ -160,7 +167,7 @@
               </li>
               <!-- <li class="navbar-item" v-if="!isLoggedIn">
                 <router-link to="/register" class="nav-link active">Register</router-link>
-              </li> -->
+              </li>-->
 
               <!-- 
               <div v-if="user != null">
