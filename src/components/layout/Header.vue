@@ -158,9 +158,9 @@
               <li class="navbar-item" v-if="!isLoggedIn">
                 <router-link to="/login" class="nav-link active">Login</router-link>
               </li>
-              <li class="navbar-item" v-if="!isLoggedIn">
+              <!-- <li class="navbar-item" v-if="!isLoggedIn">
                 <router-link to="/register" class="nav-link active">Register</router-link>
-              </li>
+              </li> -->
 
               <!-- 
               <div v-if="user != null">

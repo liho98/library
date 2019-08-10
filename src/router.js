@@ -8,7 +8,7 @@ import FAQ from "./views/FAQ.vue";
 
 // Login, Register
 import Login from "./views/Login.vue";
-import Register from "./views/Register.vue";
+// import Register from "./views/Register.vue";
 
 // Book
 import AddBook from "./views/books/AddBook";
@@ -85,14 +85,14 @@ const router = new Router({
         requiresGuest: true
       }
     },
-    {
-      path: '/register',
-      name: 'register',
-      component: Register,
-      meta: {
-        requiresGuest: true
-      }
-    },
+    // {
+    //   path: '/register',
+    //   name: 'register',
+    //   component: Register,
+    //   meta: {
+    //     requiresGuest: true
+    //   }
+    // },
     {
       path: '/view-book-list',
       name: 'view-book-list',
