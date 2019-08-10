@@ -1,5 +1,10 @@
 <template>
   <div id="delete-student">
+    <v-snackbar v-model="snackbar" :color="color" :timeout="timeout" :top="true">
+      {{ message }}
+      <v-btn dark text @click="snackbar = false" style="text-transform: none">Close</v-btn>
+    </v-snackbar>
+
     <div class="breadcrumb" style="margin-bottom: 20px">
       <div class="container" style="padding: 10px 20px;">
         <router-link class="breadcrumb-item" to="/">Home</router-link>
@@ -43,14 +48,14 @@
           </tr>
           </template>-->
           <template v-slot:item.action="{ item }">
-            <v-icon small @click="rowSelected(item); dialog = true">edit</v-icon>&nbsp;
-            <v-icon small @click="deleteStud(item)">delete</v-icon>
+            <v-icon small @click="rowSelected(item); edit_dialog = true">edit</v-icon>&nbsp;
+            <v-icon small @click="rowSelected(item); delete_dialog = true">delete</v-icon>
           </template>
         </v-data-table>
       </v-card>
     </div>
 
-    <v-dialog v-model="dialog" persistent max-width="600px">
+    <v-dialog v-model="edit_dialog" persistent max-width="600px">
       <v-card>
         <v-card-title>
           <span class="headline">Edit Student</span>
@@ -78,12 +83,7 @@
                 <v-text-field v-model="email" label="Email*" type="email" required></v-text-field>
               </v-flex>-->
               <v-flex xs12>
-                <v-text-field
-                  v-model="contact"
-                  label="Contact"
-                  :rules="[v => (v && v.length) >= 1 || 'Required']"
-                  type="number"
-                ></v-text-field>
+                <v-text-field v-model="contact" label="Contact" type="number"></v-text-field>
               </v-flex>
             </v-layout>
           </v-container>
@@ -95,14 +95,41 @@
             color="blue darken-1"
             style="text-transform: none"
             text
-            @click="dialog = false"
+            @click="edit_dialog = false"
           >Close</v-btn>
           <v-btn
             color="primary"
             style="text-transform: none"
-            text
-            @click="updateStudent(); dialog = false"
+            @click="updateStudent(); edit_dialog = false"
           >Save</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+
+    <v-dialog v-model="delete_dialog" width="500">
+      <!-- <template v-slot:activator="{ on }"></template> -->
+      <v-card>
+        <v-card-title class="headline grey lighten-2" primary-title>Delete Librarian?</v-card-title>
+        <v-card-text style="padding-top: 16px">
+          Are you sure you want to delete student
+          <b>{{name}}</b>
+          ({{student_id}})?
+          <br />You will not able to recover it after deleting.
+        </v-card-text>
+        <v-divider style="margin: 0"></v-divider>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn
+            flat
+            text
+            style="text-transform: none; margin: 0 5px;"
+            @click="delete_dialog = false"
+          >Cancel</v-btn>
+          <v-btn
+            color="error"
+            style="background-color: #2A73C5; text-transform: none; margin: 0"
+            @click="deleteStud(); delete_dialog = false"
+          >Delete</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -189,44 +216,16 @@
 
 <script>
 import db from "./../../components/firestoreInit";
-import Vue from "vue";
-import VeeValidate from "vee-validate";
-import { firestorePlugin } from "vuefire";
-import BootstrapVue from "bootstrap-vue";
-
-Vue.use(BootstrapVue);
-Vue.use(firestorePlugin);
-Vue.use(VeeValidate);
-
-// This imports all the layout components such as <b-container>, <b-row>, <b-col>:
-import { LayoutPlugin } from "bootstrap-vue";
-Vue.use(LayoutPlugin);
-
-// This imports <b-modal> as well as the v-b-modal directive as a plugin:
-import { ModalPlugin } from "bootstrap-vue";
-Vue.use(ModalPlugin);
-
-// This imports <b-card> along with all the <b-card-*> sub-components as a plugin:
-import { CardPlugin } from "bootstrap-vue";
-Vue.use(CardPlugin);
-
-// This imports directive v-b-scrollspy as a plugin:
-import { VBScrollspyPlugin } from "bootstrap-vue";
-Vue.use(VBScrollspyPlugin);
-
-// This imports the dropdown and table plugins
-import { DropdownPlugin, TablePlugin } from "bootstrap-vue";
-Vue.use(DropdownPlugin);
-Vue.use(TablePlugin);
-
-import Vuetify from "vuetify";
-import "vuetify/dist/vuetify.min.css";
-Vue.use(Vuetify);
 
 export default {
   name: "manage-student",
   data() {
     return {
+      snackbar: false,
+      color: "",
+      timeout: 5000, // 5 seconds
+      message: "",
+
       search: "",
       items: [],
       loading: true,
@@ -278,7 +277,8 @@ export default {
       name: "",
       email: "",
       contact: "",
-      dialog: false
+      edit_dialog: false,
+      delete_dialog: false
     };
   },
   firestore() {
@@ -320,13 +320,14 @@ export default {
     clear() {
       this.$refs.form.reset();
     },
-    deleteStud(student) {
-      if (confirm("Are you sure to remove this record?")) {
-        db.collection("students")
-          .doc(student.id)
-          .delete();
-      } else {
-      }
+    deleteStud() {
+      db.collection("students")
+        .doc(this.id)
+        .delete();
+
+      this.snackbar = true;
+      this.message = "Delete student successfully";
+      this.color = "success";
     },
     rowSelected(student) {
       this.id = student.id;
@@ -345,6 +346,9 @@ export default {
           contact: this.contact
         });
 
+      this.snackbar = true;
+      this.message = "Update student successfully";
+      this.color = "success";
       //   this.$refs.form.reset();
     }
   }
