@@ -66,7 +66,13 @@
                 <router-link
                   to="/checkout-return-history"
                   class="nav-link active"
-                >Your Borrowed Book</router-link>
+                >Borrowed &amp; Returned Book</router-link>
+              </li>
+              <li class="navbar-item" v-if="role=='students'">
+                <router-link
+                  to="/reserved-history"
+                  class="nav-link active"
+                >Reserved Book</router-link>
               </li>
 
               <!-- ---------------------------Admins------------------------------------- -->

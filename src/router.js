@@ -29,6 +29,7 @@ import Checkout from "./views/checkout-return/Checkout";
 import Return from "./views/checkout-return/Return";
 import Reserved from "./views/checkout-return/Reserved";
 import CheckoutReturnHistory from "./views/checkout-return/CheckoutReturnHistory";
+import ReservedHistory from "./views/checkout-return/ReservedHistory";
 
 //Librarian
 import ViewLibrarian from "./views/librarians/ViewLibrarian";
@@ -248,7 +249,18 @@ const router = new Router({
         studentAuth: true,
         adminAuth: false
       }
+    },    {
+      path: '/reserved-history',
+      name: 'reserved-history',
+      component: ReservedHistory,
+      meta: {
+        requiresAuth: true,
+        librarianAuth: false,
+        studentAuth: true,
+        adminAuth: false
+      }
     },
+
     {
       path: '/manage-librarian',
       name: 'manage-librarian',
