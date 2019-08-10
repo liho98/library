@@ -82,10 +82,7 @@
                   style="text-transform: capitalize;"
                 >{{copy.status}}</td>
 
-                <td
-                  class="col-3 text-center"
-                  style="padding: 0px"
-                >
+                <td class="col-3 text-center" style="padding: 0px">
                   <!-- <v-btn
                     small
                     color="primary"
@@ -98,7 +95,7 @@
                     color="primary"
                     style="background-color: #2A73C5; text-transform: none;"
                     @click.stop="setCopyID(copy.id); dialog = true"
-                  v-if="role === 'students' && copy.status === 'available' || copy.status === 'returned'"
+                    v-if="role === 'students' && copy.status === 'available' || copy.status === 'returned'"
                   >Reserve</v-btn>
                 </td>
               </tr>
@@ -263,6 +260,7 @@ export default {
         });
     },
     fetchData() {
+      this.$store.commit("startLoading");
       db.collection("books")
         .doc(this.$route.params.book_id)
         .get()
@@ -297,6 +295,9 @@ export default {
           });
         });
     }
+  },
+  updated() {
+    this.$store.commit("stopLoading");
   }
 };
 </script>

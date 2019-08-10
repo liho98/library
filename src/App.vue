@@ -1,5 +1,6 @@
 <template>
   <v-app>
+    <v-progress-linear indeterminate :active="isLoading"></v-progress-linear>
     <Header />
     <router-view></router-view>
     <Footer />
@@ -15,10 +16,14 @@ export default {
   components: {
     Header,
     Footer
+  },
+  computed: {
+    isLoading () {
+      return this.$store.state.loading;
+    }
   }
 };
 </script>
 
 <style>
-
 </style>
