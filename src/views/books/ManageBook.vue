@@ -360,6 +360,7 @@
 <script>
 import db from "./../../components/firestoreInit";
 import FileUploader from "./../../components/FileUploader";
+import secondaryFirebase from "./../../components/firebaseSecondary";
 
 export default {
   name: "manage-book",
@@ -634,10 +635,6 @@ export default {
         });
     },
     signUp() {
-      var secondaryFirebase = firebase.initializeApp(
-        firebaseConfig,
-        "Secondary"
-      );
 
       if (this.name && this.email && this.librarian_id && this.password) {
         secondaryFirebase

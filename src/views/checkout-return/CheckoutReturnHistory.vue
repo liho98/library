@@ -154,7 +154,10 @@ export default {
           // this.fine = this.fine.toFixed(2);
 
           this.checkout.push(data); // books will now equal to data
+          
         });
+        
+        this.loading = false;
 
         Object.keys(this.checkout).forEach(key => {
           db.collection("return")

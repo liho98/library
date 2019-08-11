@@ -297,6 +297,7 @@
 import db from "./../../components/firestoreInit";
 import firebase from "firebase";
 import firebaseConfig from "./../../components/firebaseConfig";
+import secondaryFirebase from "./../../components/firebaseSecondary";
 
 export default {
   name: "manage-student",
@@ -401,7 +402,19 @@ export default {
     deleteStud() {
       db.collection("students")
         .doc(this.id)
-        .delete();
+        .delete()
+        .then(() => {
+secondaryFirebase.auth().deleteUser(this.id)
+  .then(function() {
+    console.log('Successfully deleted user');
+  })
+  .catch(function(error) {
+    console.log('Error deleting user:', error);
+  });
+        })
+        .catch(error => {
+          console.error("Error deleting user: ", error);
+        });
 
       this.snackbar = true;
       this.message = "Delete student successfully";
@@ -455,10 +468,6 @@ export default {
         });
     },
     signUp() {
-      var secondaryFirebase = firebase.initializeApp(
-        firebaseConfig,
-        "Secondary"
-      );
 
       if (this.name && this.email && this.student_id && this.password) {
         secondaryFirebase

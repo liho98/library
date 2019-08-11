@@ -299,8 +299,10 @@
 import db from "./../../components/firestoreInit";
 import firebase from "firebase";
 import firebaseConfig from "./../../components/firebaseConfig";
+import secondaryFirebase from "./../../components/firebaseSecondary";
 
 export default {
+  
   name: "manage-student",
   data() {
     return {
@@ -391,6 +393,7 @@ export default {
   mounted() {
     // Set the initial number of items
     this.totalRows = this.items.length;
+
   },
   // beforeRouteEnter(to, from, next) {
   //   next(vm => {
@@ -474,14 +477,8 @@ export default {
         });
     },
     signUp() {
-      var secondaryFirebase = firebase.initializeApp(
-        firebaseConfig,
-        "Secondary"
-      );
-
       if (this.name && this.email && this.librarian_id && this.password) {
-        secondaryFirebase
-          .auth()
+        secondaryFirebase.auth()
           .createUserWithEmailAndPassword(this.email, this.password)
           .then(
             () => {

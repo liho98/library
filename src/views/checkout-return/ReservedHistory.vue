@@ -27,6 +27,11 @@
           :items="reserve"
           :search="search"
           :loading="loading"
+          footer-props="{
+            prevIcon: 'fa fa-angle-left',
+            nextIcon: 'fa fa-angle-right'
+          }"
+          height="530"
         >
           <!-- :sort-by="borrowed_date"
           :sort-desc=true-->
@@ -146,8 +151,10 @@ export default {
             borrowed_date: null,
             borrowed_date_str: null,
             book_title: null // very important
-          };
 
+            
+          };
+        
           // // get days late
           // const diffTime = Math.abs(
           //   this.return_date.getTime() - this.due_date.getTime()
@@ -157,7 +164,10 @@ export default {
           // this.fine = this.fine.toFixed(2);
 
           this.reserve.push(data); // books will now equal to data
+          
         });
+
+        this.loading = false;
 
         Object.keys(this.reserve).forEach(key => {
           db.collection("books")
