@@ -182,6 +182,12 @@ export default {
         );
     },
     sendEmail() {
+      var actionCodeSettings = {
+        // After password reset, the user will be give the ability to go back
+         // to this page.
+       url: 'https://library-system-1998.firebaseapp.com/#/login',
+       handleCodeInApp: false
+      };
       var auth = firebase.auth();
       var emailAddress = this.forgot_pass_email;
       if (this.forgot_pass_email == "") {
@@ -192,7 +198,7 @@ export default {
         // alert("Please enter an email first!");
       }
       auth
-        .sendPasswordResetEmail(emailAddress)
+        .sendPasswordResetEmail(emailAddress,actionCodeSettings)
         .then(() => {
             this.snackbar = true;
             this.message = "Email has sent to " + this.forgot_pass_email;
