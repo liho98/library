@@ -42,7 +42,11 @@
       <div class="container">
         <nav class="navbar navbar-expand-lg navbar-light">
           <router-link to="/" class="navbar-brand" style="margin-right: 0px">
-            <img src="images/logo.png" alt="logo" style="width: 150px" />
+            <img src="../../assets/logo.png" alt="logo" style="width: 50px" />
+
+            <!-- <img src="images/logo.png" alt="logo" style="width: 150px" /> -->
+
+            <span class="logoname">Taruc Library</span>
           </router-link>
           <button
             class="navbar-toggler"
@@ -270,5 +274,9 @@ export default {
 <style scoped>
 .dropdown:hover > .dropdown-menu {
   display: block;
+}
+.logoname{
+    margin-left: 8px;
+    font-weight: 300;
 }
 </style>

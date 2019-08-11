@@ -117,8 +117,7 @@ header .main-menu {
   header .main-menu .navbar {
     padding: 0; }
   header .main-menu .navbar-brand {
-    padding: 0;
-    margin-top: -10px; }
+    padding: 0;}
   header .main-menu .navbar-light .navbar-nav .navbar-item {
     padding: 0 15px;
     position: relative; }

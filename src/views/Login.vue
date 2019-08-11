@@ -64,7 +64,7 @@
 
         <br />
         <br />Forget your password?
-        <a @click="dialog = true">Click here</a>
+        <a @click="dialog = true" class="clickhere">Click here</a>
       </p>
       <p>
         <b>
@@ -243,5 +243,9 @@ p {
 p a {
   text-decoration: underline;
   cursor: pointer;
+}
+.clickhere{
+    text-decoration: underline!important;
+    color: #1976d2!important;
 }
 </style>

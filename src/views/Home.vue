@@ -27,7 +27,7 @@
                 <div class="title">
                   <h3>welcome to Library System</h3>
                   <h5>Discover the best books online with us</h5>
-                  <a href="#" class="btn">view books</a>
+                  <router-link to="/view-book-list" class="btn">view books</router-link>
                 </div>
               </div>
             </div>
@@ -39,7 +39,7 @@
                 <div class="title">
                   <h3>welcome to library system</h3>
                   <h5>Discover the best books online with us</h5>
-                  <a href="#" class="btn">view books</a>
+                  <router-link to="/view-book-list" class="btn">view books</router-link>
                 </div>
               </div>
             </div>
@@ -51,7 +51,7 @@
                 <div class="title">
                   <h3>welcome to library system</h3>
                   <h5>Discover the best books online with us</h5>
-                  <a href="#" class="btn">view books</a>
+                  <router-link to="/view-book-list" class="btn">view books</router-link>
                 </div>
               </div>
             </div>
@@ -71,15 +71,15 @@
               <img src="images/img1.jpg" alt="img" />
               <h3>how to be a bwase</h3>
               <h6>
-                <span class="price">$49</span> /
-                <a href="#">Borrow Now</a>
+                <span class="price"></span> 
+                <router-link to="/view-book-list">Borrow Now</router-link>
               </h6>
               <div class="hover">
-                <a href="product-single.html">
+                <router-link to="/view-book-list">
                   <span>
                     <i class="fas fa-long-arrow-alt-right" aria-hidden="true"></i>
                   </span>
-                </a>
+                </router-link>
               </div>
             </div>
           </div>
@@ -88,16 +88,16 @@
               <img src="images/img2.jpg" alt="img" />
               <h3>How to write a book...</h3>
               <h6>
-                <span class="price">$19</span> /
-                <a href="#">Borrow Now</a>
+                <span class="price"></span> 
+                <router-link to="/view-book-list">Borrow Now</router-link>
               </h6>
-              <span class="sale">Sale !</span>
+              <!-- <span class="sale">Sale !</span> -->
               <div class="hover">
-                <a href="product-single.html">
+                <router-link to="/view-book-list">
                   <span>
                     <i class="fas fa-long-arrow-alt-right" aria-hidden="true"></i>
                   </span>
-                </a>
+                </router-link>
               </div>
             </div>
           </div>
@@ -106,15 +106,15 @@
               <img src="images/img3.jpg" alt="img" />
               <h3>7-day self publish...</h3>
               <h6>
-                <span class="price">$49</span> /
-                <a href="#">Borrow Now</a>
+                <span class="price"></span> 
+                <router-link to="/view-book-list">Borrow Now</router-link>
               </h6>
               <div class="hover">
-                <a href="product-single.html">
+                <router-link to="/view-book-list">
                   <span>
                     <i class="fas fa-long-arrow-alt-right" aria-hidden="true"></i>
                   </span>
-                </a>
+                </router-link>
               </div>
             </div>
           </div>
@@ -123,15 +123,15 @@
               <img src="images/img4.jpg" alt="img" />
               <h3>wendy doniger</h3>
               <h6>
-                <span class="price">$49</span> /
-                <a href="#">Borrow Now</a>
+                <span class="price"></span> 
+                <router-link to="/view-book-list">Borrow Now</router-link>
               </h6>
               <div class="hover">
-                <a href="product-single.html">
+                <router-link to="/view-book-list">
                   <span>
                     <i class="fas fa-long-arrow-alt-right" aria-hidden="true"></i>
                   </span>
-                </a>
+                </router-link>
               </div>
             </div>
           </div>
@@ -147,8 +147,8 @@
         <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's printer took a galley of type and Scrambled it to make a type and typesetting industry. Lorem Ipsum has been the book.</p>
         <p>It has survived not only fiveLorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's printer took a galley of type and</p>
         <div class="btn-sec">
-          <a href="shop.html" class="btn yellow">shop books</a>
-          <a href="login.html" class="btn black">subscriptions</a>
+          <router-link to="/view-book-list" class="btn yellow">browse books</router-link>
+          <router-link to="/view-book-list" class="btn black">borrow</router-link>
         </div>
       </div>
     </section>
@@ -163,11 +163,11 @@
             <div class="item">
               <img src="images/r1.jpg" alt="img" />
               <h3>
-                <a href="#">Keepers of the kalachakara</a>
+                <router-link to="/view-book-list">Keepers of the kalachakara</router-link>
               </h3>
               <h6>
-                <span class="price">$19</span> /
-                <a href="#">Borrow Now</a>
+                <span class="price"></span> 
+                <router-link to="/view-book-list">Borrow Now</router-link>
               </h6>
             </div>
           </div>
@@ -175,11 +175,11 @@
             <div class="item">
               <img src="images/r2.jpg" alt="img" />
               <h3>
-                <a href="#">Keepers of the kalachakara</a>
+                <router-link to="/view-book-list">Keepers of the kalachakara</router-link>
               </h3>
               <h6>
-                <span class="price">$19</span> /
-                <a href="#">Borrow Now</a>
+                <span class="price"></span> 
+                <router-link to="/view-book-list">Borrow Now</router-link>
               </h6>
             </div>
           </div>
@@ -187,11 +187,11 @@
             <div class="item">
               <img src="images/r3.jpg" alt="img" />
               <h3>
-                <a href="#">Keepers of the kalachakara</a>
+                <router-link to="/view-book-list">Keepers of the kalachakara</router-link>
               </h3>
               <h6>
-                <span class="price">$19</span> /
-                <a href="#">Borrow Now</a>
+                <span class="price"></span> 
+                <router-link to="/view-book-list">Borrow Now</router-link>
               </h6>
             </div>
           </div>
@@ -199,11 +199,11 @@
             <div class="item">
               <img src="images/r4.jpg" alt="img" />
               <h3>
-                <a href="#">Keepers of the kalachakara</a>
+                <router-link to="/view-book-list">Keepers of the kalachakara</router-link>
               </h3>
               <h6>
-                <span class="price">$19</span> /
-                <a href="#">Borrow Now</a>
+                <span class="price"></span> 
+                <router-link to="/view-book-list">Borrow Now</router-link>
               </h6>
             </div>
           </div>
@@ -211,11 +211,11 @@
             <div class="item">
               <img src="images/r5.jpg" alt="img" />
               <h3>
-                <a href="#">Keepers of the kalachakara</a>
+                <router-link to="/view-book-list">Keepers of the kalachakara</router-link>
               </h3>
               <h6>
-                <span class="price">$19</span> /
-                <a href="#">Borrow Now</a>
+                <span class="price"></span> 
+                <router-link to="/view-book-list">Borrow Now</router-link>
               </h6>
             </div>
           </div>
@@ -223,11 +223,11 @@
             <div class="item">
               <img src="images/r1.jpg" alt="img" />
               <h3>
-                <a href="#">Keepers of the kalachakara</a>
+                <router-link to="/view-book-list">Keepers of the kalachakara</router-link>
               </h3>
               <h6>
-                <span class="price">$19</span> /
-                <a href="#">Borrow Now</a>
+                <span class="price"></span> 
+                <router-link to="/view-book-list">Borrow Now</router-link>
               </h6>
             </div>
           </div>
@@ -235,11 +235,11 @@
             <div class="item">
               <img src="images/r2.jpg" alt="img" />
               <h3>
-                <a href="#">Keepers of the kalachakara</a>
+                <router-link to="/view-book-list">Keepers of the kalachakara</router-link>
               </h3>
               <h6>
-                <span class="price">$19</span> /
-                <a href="#">Borrow Now</a>
+                <span class="price"></span> 
+                <router-link to="/view-book-list">Borrow Now</router-link>
               </h6>
             </div>
           </div>
@@ -247,11 +247,11 @@
             <div class="item">
               <img src="images/r3.jpg" alt="img" />
               <h3>
-                <a href="#">Keepers of the kalachakara</a>
+                <router-link to="/view-book-list">Keepers of the kalachakara</router-link>
               </h3>
               <h6>
-                <span class="price">$19</span> /
-                <a href="#">Borrow Now</a>
+                <span class="price"></span> 
+                <router-link to="/view-book-list">Borrow Now</router-link>
               </h6>
             </div>
           </div>
@@ -259,11 +259,11 @@
             <div class="item">
               <img src="images/r4.jpg" alt="img" />
               <h3>
-                <a href="#">Keepers of the kalachakara</a>
+                <router-link to="/view-book-list">Keepers of the kalachakara</router-link>
               </h3>
               <h6>
-                <span class="price">$19</span> /
-                <a href="#">Borrow Now</a>
+                <span class="price"></span> 
+                <router-link to="/view-book-list">Borrow Now</router-link>
               </h6>
             </div>
           </div>
@@ -271,17 +271,17 @@
             <div class="item">
               <img src="images/r5.jpg" alt="img" />
               <h3>
-                <a href="#">Keepers of the kalachakara</a>
+                <router-link to="/view-book-list">Keepers of the kalachakara</router-link>
               </h3>
               <h6>
-                <span class="price">$19</span> /
-                <a href="#">Borrow Now</a>
+                <span class="price"></span> 
+                <router-link to="/view-book-list">Borrow Now</router-link>
               </h6>
             </div>
           </div>
         </div>
         <div class="btn-sec">
-          <a href="#" class="btn gray-btn">view all books</a>
+          <router-link to="/view-book-list" class="btn gray-btn">view all books</router-link>
         </div>
       </div>
     </section>
@@ -290,10 +290,10 @@
         <ul>
           <li>
             <span class="icon">
-              <i class="fa fa-shopping-cart" aria-hidden="true"></i>
+              <i class="fas fa-brain"></i>
             </span>
-            <h3>SAFE SHOPPING</h3>
-            <h5>Safe Shopping Guarantee</h5>
+            <h3>AI-Written Book</h3>
+            <h5>Articial Intelligence Learning</h5>
             <h6>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's...</h6>
           </li>
           <li>
@@ -321,12 +321,11 @@
         <div class="row">
           <div class="col-md-6">
             <div class="detail">
-              <h3>Top 50% OFF on Selected</h3>
+              <h3>Donate books</h3>
               <h6>
-                We are now offering some good discount
-                on selected books go and shop them
+Our library is organizing an event of donation books, and book donors can get a soft skill point.
               </h6>
-              <a href="products.html" class="btn blue-btn">view all books</a>
+              <router-link to="/view-book-list" class="btn" style="color:black">view event</router-link>
               <span class="icon-point percentage">
                 <img src="images/precentagae.png" alt />
               </span>
@@ -334,12 +333,11 @@
           </div>
           <div class="col-md-6">
             <div class="detail">
-              <h3>Shop $ 500 Above and Get Extra!</h3>
+              <h3>Writing storybook competition</h3>
               <h6>
-                We are now offering some good discount
-                on selected books go and shop them
+Our library is organizing an event to write a storybook competition, and writers can get a soft skill point.
               </h6>
-              <a href="products.html" class="btn blue-btn">view all books</a>
+              <router-link to="/view-book-list" class="btn" style="color:black">participate</router-link>
               <span class="icon-point amount">
                 <img src="images/amount.png" alt />
               </span>
@@ -355,28 +353,28 @@
             <h3>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's printer took a galley of type and Scrambled it to make a type and typesetting industry. been the book</h3>
             <div class="box-user">
               <h4 class="author">Susane Mathew</h4>
-              <span class="country">Australia</span>
+              <span class="country">Malaysia</span>
             </div>
           </div>
           <div class="item">
             <h3>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's printer took a galley of type and Scrambled it to make a type and typesetting industry. been the book</h3>
             <div class="box-user">
               <h4 class="author">Susane Mathew</h4>
-              <span class="country">Australia</span>
+              <span class="country">Malaysia</span>
             </div>
           </div>
           <div class="item">
             <h3>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's printer took a galley of type and Scrambled it to make a type and typesetting industry. been the book</h3>
             <div class="box-user">
               <h4 class="author">Susane Mathew</h4>
-              <span class="country">Australia</span>
+              <span class="country">Malaysia</span>
             </div>
           </div>
           <div class="item">
             <h3>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's printer took a galley of type and Scrambled it to make a type and typesetting industry. been the book</h3>
             <div class="box-user">
               <h4 class="author">Susane Mathew</h4>
-              <span class="country">Australia</span>
+              <span class="country">Malaysia</span>
             </div>
           </div>
         </div>
