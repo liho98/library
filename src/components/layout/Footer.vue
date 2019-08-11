@@ -1,5 +1,6 @@
 <template>
-  <footer>
+<v-footer padless>
+  <footer style="padding-top:10px">
     <div class="container">
       <div class="row">
         <div class="col-md-4">
@@ -81,7 +82,7 @@ Library, TARUC, 53100 Kuala Lumpur, Federal Territory of Kuala Lumpur
         </div>
       </div>
     </div>
-    <div class="copy-right">
+    <div class="copy-right" style="margin-top:0;padding:0">
       <div class="container">
         <div class="row">
           <div class="col-md-6">
@@ -110,6 +111,7 @@ Library, TARUC, 53100 Kuala Lumpur, Federal Territory of Kuala Lumpur
       </div>
     </div>
   </footer>
+  </v-footer>
 </template>
 
 <script>

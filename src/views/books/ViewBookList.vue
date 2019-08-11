@@ -11,6 +11,7 @@
 
     <v-container fluid grid-list-md>
       <v-data-iterator
+        light
         :items="books"
         :items-per-page.sync="itemsPerPage"
         :page="page"
@@ -21,7 +22,7 @@
         hide-default-footer
       >
         <template v-slot:header>
-          <v-toolbar dark color="blue darken-3" class="mb-1">
+          <v-toolbar light class="mb-1">
             <v-text-field
               v-model="search"
               clearable
@@ -52,8 +53,8 @@
           <v-layout wrap>
             <v-flex v-for="book in props.items" :key="book.title" xs12 sm4 md3 lg2>
               <v-card height="100%" v-bind:to="{name: 'view-book', params: {book_id: book.id}}">
-                <v-img width="100%" v-bind:src="book.download_url" align="center"></v-img>
-                <v-card-title style="font-size: large">{{ book.title }}</v-card-title>
+                <v-img contain height="70%" style="box-shadow: 0px 2px 10px 0px #555555;" v-bind:src="book.download_url" align="center"></v-img>
+                <v-card-title style="font-size: large;">{{ book.title }}</v-card-title>
               </v-card>
             </v-flex>
           </v-layout>
@@ -61,7 +62,7 @@
 
         <template v-slot:footer>
           <v-layout mt-2 wrap align-center justify-center>
-            <span class="grey--text">Items per page</span>
+            <span class="grey--text">Books per page</span>
             <v-menu offset-y>
               <template v-slot:activator="{ on }">
                 <v-btn dark text color="primary" class="ml-2" v-on="on">
@@ -83,10 +84,10 @@
             <v-spacer></v-spacer>
 
             <span class="mr-4 grey--text">Page {{ page }} of {{ numberOfPages }}</span>
-            <v-btn fab dark color="blue darken-3" class="mr-1" @click="formerPage">
+            <v-btn fab light class="mr-1" @click="formerPage">
               <v-icon>keyboard_arrow_left</v-icon>
             </v-btn>
-            <v-btn fab dark color="blue darken-3" class="ml-1" @click="nextPage">
+            <v-btn fab light class="ml-1" @click="nextPage">
               <v-icon>keyboard_arrow_right</v-icon>
             </v-btn>
           </v-layout>

@@ -27,7 +27,7 @@
           ></v-text-field>
         </v-card-title>
         <v-data-table fixed-header :headers="headers" :items="items" :search="search">
-          <v-progress-linear v-show="progressBar" color="blue" indeterminate></v-progress-linear>
+          <v-progress-linear v-show="progressBar" color="success" indeterminate></v-progress-linear>
           <!-- <template v-slot:items="props">
           <tr>
             <td class="text-xs-left">{{ props.item.librarian_id}}</td>

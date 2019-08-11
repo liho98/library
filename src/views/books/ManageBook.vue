@@ -19,7 +19,7 @@
           Manage Book
           <v-btn
             @click="add_dialog = true"
-            color="success"
+            color="primary"
             style="margin: 0 15px; text-transform: none"
           >
             <v-icon>add</v-icon>Book
@@ -40,6 +40,11 @@
           :items="items"
           :search="search"
           :loading="loading"
+          :footer-props="{
+            prevIcon: 'fa fa-angle-left',
+            nextIcon: 'fa fa-angle-right'
+          }"
+          :height="530"
         >
           <!-- <template v-slot:items="props">
           <tr>
@@ -61,7 +66,7 @@
       </v-card>
     </div>
 
-    <v-dialog v-model="add_dialog" persistent max-width="600px">
+    <v-dialog scrollable v-model="add_dialog" persistent max-width="600px">
       <v-card>
         <v-card-title>
           <span class="headline">Add Book</span>
@@ -133,7 +138,7 @@
               </v-flex>
             </v-layout>
           </v-container>
-          <small>*indicates required field</small>
+          <small style="margin-top: 15px!important;float: right!important;margin-bottom: -15px!important;">* indicates required field</small>
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
@@ -144,7 +149,7 @@
             @click="add_dialog = false"
           >Close</v-btn>
           <v-btn
-            color="success"
+            color="primary"
             style="text-transform: none"
             @click="addBook(); add_dialog = false"
           >Add</v-btn>
@@ -152,7 +157,7 @@
       </v-card>
     </v-dialog>
 
-    <v-dialog v-model="edit_dialog" persistent max-width="600px">
+    <v-dialog scrollable v-model="edit_dialog" persistent max-width="600px">
       <v-card>
         <v-card-title>
           <span class="headline">Edit Book</span>
@@ -226,7 +231,7 @@
             </v-layout>
           </v-container>
 
-          <small>*indicates required field</small>
+          <small style="margin-top: 15px!important;float: right!important;margin-bottom: -15px!important;">* indicates required field</small>
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
@@ -531,7 +536,7 @@ export default {
 
             this.snackbar = true;
             this.message = "Add book successfully";
-            this.color = "success";
+            this.color = "primary";
 
             // console.log("Book added");
             // alert("Book added!");
@@ -588,7 +593,7 @@ export default {
 
       this.snackbar = true;
       this.message = "Update book successfully";
-      this.color = "success";
+      this.color = "primary";
     },
     deleteBook() {
       //   if (confirm("Are you sure to remove this record?")) {
@@ -598,7 +603,7 @@ export default {
 
       this.snackbar = true;
       this.message = "Delete book successfully";
-      this.color = "success";
+      this.color = "primary";
 
       //   } else {
       //   }
@@ -618,7 +623,7 @@ export default {
         .then(() => {
           this.snackbar = true;
           this.message = "Add librarian successfully";
-          this.color = "success";
+          this.color = "primary";
 
           // console.log("User added: ");
           // alert("Your account has been created!");
@@ -736,6 +741,12 @@ td {
 tr:hover {
   background-color: #f5f5f5;
 }
+
 </style>
 
 
+<style>
+.v-dialog--scrollable{
+  overflow-x:hidden!important;
+}
+</style>

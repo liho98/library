@@ -287,7 +287,7 @@ export default {
 
           this.snackbar = true;
           this.message = "Return book successfully";
-          this.color = "success";
+          this.color = "primary";
         })
         .catch(error => {
           console.error("Error checking out book: ", error);

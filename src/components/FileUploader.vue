@@ -1,8 +1,8 @@
 <template>
   <div wid>
-    <v-btn @click.native="selectFile" v-if="!uploadEnd && !uploading" style="text-transform: none; min-height: 50px;">
+    <v-btn outlined @click.native="selectFile" v-if="!uploadEnd && !uploading" style="width:100%;text-transform: none; min-height: 50px;">
+      <v-icon left size="18" class="mr-5" aria-hidden="true">add_a_photo</v-icon>
       Upload Book Cover Image (Optional)
-      <v-icon right aria-hidden="true">add_a_photo</v-icon>
     </v-btn>
     <input
       id="files"
@@ -19,7 +19,7 @@
       :width="15"
       :rotate="360"
       :value="progressUpload"
-      color="primary"
+      color="success"
     >{{ progressUpload }}%</v-progress-circular>
     <img v-if="uploadEnd" :src="downloadURL" width="20%" style="padding-bottom: 10px"/>
     <div v-if="uploadEnd">

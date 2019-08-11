@@ -39,6 +39,7 @@ import ManageLibrarian from "./views/librarians/ManageLibrarian";
 
 import PersonalDetail from "./views/PersonalDetail";
 
+
 Vue.use(Router);
 
 const router = new Router({

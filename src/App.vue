@@ -1,8 +1,10 @@
 <template>
   <v-app>
-    <v-progress-linear indeterminate :active="isLoading"></v-progress-linear>
+    <v-progress-linear indeterminate :active="isLoading" color="primary"></v-progress-linear>
     <Header />
+    <v-content>
     <router-view></router-view>
+    </v-content>
     <Footer />
   </v-app>
 </template>

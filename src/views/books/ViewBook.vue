@@ -283,7 +283,7 @@ export default {
 
           this.snackbar = true;
           this.message = "Reserve book successfully";
-          this.color = "success";
+          this.color = "primary";
         })
         .catch(error => {
           console.error("Error reserving out book: ", error);

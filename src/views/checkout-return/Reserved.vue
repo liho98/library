@@ -31,6 +31,11 @@
           :items="reserve"
           :loading="loading"
           :search="search"
+          :footer-props="{
+            prevIcon: 'fa fa-angle-left',
+            nextIcon: 'fa fa-angle-right'
+          }"
+          :height="530"
         >
           <template v-slot:item.action="{ item }">
             <v-btn
@@ -326,7 +331,7 @@ export default {
 
           this.snackbar = true;
           this.message = "Checkout reserved book successfully";
-          this.color = "success";
+          this.color = "primary";
         })
         .catch(error => {
           console.error("Error checking out book: ", error);

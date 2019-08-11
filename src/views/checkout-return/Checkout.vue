@@ -242,7 +242,7 @@ export default {
 
           this.snackbar = true;
           this.message = "Checkout book successfully";
-          this.color = "success";
+          this.color = "primary";
           // this.$router.go({ path: this.path });
         })
         .catch(error => {

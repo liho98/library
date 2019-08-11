@@ -33,7 +33,7 @@
         :items="items"
         :search="search">
 
-        <v-progress-linear v-show="progressBar" color="blue" indeterminate></v-progress-linear>
+        <v-progress-linear v-show="progressBar" color="success" indeterminate></v-progress-linear>
         <template v-slot:items="props">
           <tr>
             <!-- <td>{{ props.item.title }}</td> -->

@@ -19,7 +19,7 @@
           Manage Librarian
           <v-btn
             @click="add_dialog = true"
-            color="success"
+            color="primary"
             style="margin: 0 15px; text-transform: none"
           >
             <v-icon>add</v-icon>Librarian
@@ -40,6 +40,11 @@
           :items="items"
           :search="search"
           :loading="loading"
+          :footer-props="{
+            prevIcon: 'fa fa-angle-left',
+            nextIcon: 'fa fa-angle-right'
+          }"
+          :height="530"
         >
           <!-- <template v-slot:items="props">
           <tr>
@@ -110,8 +115,9 @@
               </v-flex>
             </v-layout>
           </v-container>
-          <small>*indicates required field</small>
+          <small style="float:right;display:block;margin-right:15px">* indicates required field</small>
         </v-card-text>
+        <br/>
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn
@@ -121,7 +127,7 @@
             @click="add_dialog = false"
           >Close</v-btn>
           <v-btn
-            color="success"
+            color="primary"
             style="text-transform: none"
             @click="signUp(); add_dialog = false"
           >Add</v-btn>
@@ -161,8 +167,9 @@
               </v-flex>
             </v-layout>
           </v-container>
-          <small>*indicates required field</small>
+          <small style="float:right;display:block;margin-right:15px">* indicates required field</small>
         </v-card-text>
+        <br/>
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn
@@ -426,7 +433,7 @@ export default {
 
       this.snackbar = true;
       this.message = "Update librarian successfully";
-      this.color = "success";
+      this.color = "primary";
     },
     deleteLibrarian() {
       //   if (confirm("Are you sure to remove this record?")) {
@@ -436,7 +443,7 @@ export default {
 
       this.snackbar = true;
       this.message = "Delete librarian successfully";
-      this.color = "success";
+      this.color = "primary";
 
       //   } else {
       //   }
@@ -456,7 +463,7 @@ export default {
         .then(() => {
           this.snackbar = true;
           this.message = "Add librarian successfully";
-          this.color = "success";
+          this.color = "primary";
 
           // console.log("User added: ");
           // alert("Your account has been created!");

@@ -42,27 +42,27 @@
     <v-dialog v-model="dialog" width="500">
       <!-- <template v-slot:activator="{ on }"></template> -->
       <v-card>
-        <v-card-title class="headline grey lighten-2" primary-title>Change Email</v-card-title>
+        <v-card-title class="headline grey lighten-2 mb-10" primary-title>Change Email</v-card-title>
         <v-card-text>
-          <v-layout row>
-            <v-flex xs4 text-xs-right>Current Email</v-flex>
-            <v-flex xs8>
-              <v-text-field type="text" v-model="currentEmail" readonly="true"></v-text-field>
+          <v-layout row justify-center>
+            <v-flex xs11>
+              <v-text-field type="text" v-model="currentEmail" outlined label="Current Email"  disabled readonly></v-text-field>
             </v-flex>
           </v-layout>
-          <v-layout row>
-            <v-flex xs4 text-xs-right>New Email</v-flex>
-            <v-flex xs8>
+          <v-layout row justify-center>
+            <v-flex xs11>
               <v-text-field
                 type="text"
                 v-model="latestEmail"
+                label="New Email"
+                outlined
                 :rules="[v => (v && v.length) >= 1 || 'Required']"
                 required
               ></v-text-field>
             </v-flex>
           </v-layout>
-        </v-card-text>
-        <v-divider></v-divider>
+
+        <v-divider style="margin-bottom:0"></v-divider>
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn flat text style="text-transform: none;" @click="dialog = false">Cancel</v-btn>
@@ -72,32 +72,33 @@
             @click="updateEmail"
           >Change</v-btn>
         </v-card-actions>
+
+        </v-card-text>
+
       </v-card>
     </v-dialog>
     <v-dialog v-model="dialog1" width="500">
       <!-- <template v-slot:activator="{ on }"></template> -->
       <v-card>
-        <v-card-title class="headline grey lighten-2" primary-title>Change Contact</v-card-title>
+        <v-card-title class="headline grey lighten-2 mb-10" primary-title>Change Contact</v-card-title>
         <v-card-text>
-          <v-layout row>
-            <v-flex xs4 text-xs-right>Current Contact</v-flex>
-            <v-flex xs8>
-              <v-text-field type="text" v-model="currentContact" readonly="true"></v-text-field>
+          <v-layout row justify-center>
+            <v-flex xs11>
+              <v-text-field type="text" v-model="currentContact" outlined label="Current Phone no."  disabled  readonly="true"></v-text-field>
             </v-flex>
           </v-layout>
-          <v-layout row>
-            <v-flex xs4 text-xs-right>New Contact</v-flex>
-            <v-flex xs8>
+          <v-layout row justify-center>
+            <v-flex xs11>
               <v-text-field
                 type="text"
                 v-model="latestContact"
+                outlined label="New Phone no."
                 :rules="[v => (v && v.length) >= 1 || 'Required']"
                 required
               ></v-text-field>
             </v-flex>
           </v-layout>
-        </v-card-text>
-        <v-divider></v-divider>
+        <v-divider style="margin-bottom:0"></v-divider>
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn flat text style="text-transform: none;" @click="dialog1 = false">Cancel</v-btn>
@@ -107,6 +108,9 @@
             @click="updateContact"
           >Change</v-btn>
         </v-card-actions>
+
+        </v-card-text>
+
       </v-card>
     </v-dialog>
   </div>

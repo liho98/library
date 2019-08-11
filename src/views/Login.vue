@@ -202,7 +202,7 @@ export default {
         .then(() => {
             this.snackbar = true;
             this.message = "Email has sent to " + this.forgot_pass_email;
-            this.color = "success";
+            this.color = "primary";
 
           // alert("Email has sent to " + this.email);
         })

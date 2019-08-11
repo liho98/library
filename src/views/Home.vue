@@ -15,7 +15,7 @@
                 <div class="title">
                   <h3>welcome to library system</h3>
                   <h5>Discover the best books online with us</h5>
-                  <router-link to="/view-book-list" class="btn">view books</router-link>
+                  <router-link to="/view-book-list" class="btn" style="color:black">view books</router-link>
                 </div>
               </div>
             </div>
@@ -27,7 +27,7 @@
                 <div class="title">
                   <h3>welcome to Library System</h3>
                   <h5>Discover the best books online with us</h5>
-                  <router-link to="/view-book-list" class="btn">view books</router-link>
+                  <router-link to="/view-book-list" class="btn" style="color:black">view books</router-link>
                 </div>
               </div>
             </div>
@@ -39,7 +39,7 @@
                 <div class="title">
                   <h3>welcome to library system</h3>
                   <h5>Discover the best books online with us</h5>
-                  <router-link to="/view-book-list" class="btn">view books</router-link>
+                  <router-link to="/view-book-list" class="btn" style="color:black">view books</router-link>
                 </div>
               </div>
             </div>
@@ -51,7 +51,7 @@
                 <div class="title">
                   <h3>welcome to library system</h3>
                   <h5>Discover the best books online with us</h5>
-                  <router-link to="/view-book-list" class="btn">view books</router-link>
+                  <router-link to="/view-book-list" class="btn" style="color:black">view books</router-link>
                 </div>
               </div>
             </div>
