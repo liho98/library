@@ -48,12 +48,18 @@
                 <v-card-title style="font-size: large">{{ book.title }}</v-card-title>
               </v-card>
             </div>
-          </div> -->
+          </div>-->
 
           <v-layout wrap>
             <v-flex v-for="book in props.items" :key="book.title" xs12 sm4 md3 lg2>
               <v-card height="100%" v-bind:to="{name: 'view-book', params: {book_id: book.id}}">
-                <v-img contain height="70%" style="box-shadow: 0px 2px 10px 0px #555555;" v-bind:src="book.download_url" align="center"></v-img>
+                <v-img
+                  contain
+                  height="70%"
+                  style="box-shadow: 0px 2px 10px 0px #555555;"
+                  v-bind:src="book.download_url"
+                  align="center"
+                ></v-img>
                 <v-card-title style="font-size: large;">{{ book.title }}</v-card-title>
               </v-card>
             </v-flex>
@@ -136,6 +142,9 @@ export default {
   },
   created() {
     this.$store.commit("startLoading");
+    this.$store.commit("changePage", [
+      { text: "Book List", disabled: false, to: "/view-book-list" }
+    ]);
   },
   updated() {
     this.$store.commit("stopLoading");

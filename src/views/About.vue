@@ -1,11 +1,11 @@
 <template>
   <div class="about">
-    <div class="breadcrumb" style="margin-bottom: 20px">
+    <div style="margin-bottom: 20px">
       <div class="container" style="padding: 10px 20px;">
-        <span class="breadcrumb-item active">About</span>
+        <!-- <span class="breadcrumb-item active">About</span> -->
       </div>
     </div>
-    <div class="centre">
+    <div class="centre" style="max-width: 1264px;width: 100%;">
       <h4>About Library System</h4>
       <br />Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla venenatis arcu eu nulla sollicitudin,
       nec porttitor nulla egestas. Morbi vel velit efficitur, faucibus dolor in, dapibus sem. Integer ut
@@ -24,7 +24,16 @@
 
 <script>
 export default {
-  name: "about"
+  name: "about",
+  created() {
+    this.$store.commit("startLoading");
+    this.$store.commit("changePage", [
+      { text: "About", disabled: false, to: "/about" }
+    ]);
+  },
+  mounted() {
+    this.$store.commit("stopLoading");
+  }
 };
 </script>
 

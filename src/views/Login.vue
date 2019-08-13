@@ -1,14 +1,14 @@
 <template>
   <div id="login">
-        <v-snackbar v-model="snackbar" :color="color" :timeout="timeout" :top="true">
+    <v-snackbar v-model="snackbar" :color="color" :timeout="timeout" :top="true" right>
       {{ message }}
       <v-btn dark text @click="snackbar = false" style="text-transform: none">Close</v-btn>
     </v-snackbar>
 
-    <div class="breadcrumb">
+    <div>
       <div class="container" style="padding: 10px 20px;">
         <!-- <a class="breadcrumb-item" href="index.html">Home</a> -->
-        <span class="breadcrumb-item active">Login</span>
+        <!-- <span class="breadcrumb-item active">Login</span> -->
       </div>
     </div>
 
@@ -75,7 +75,6 @@
       </p>
     </div>
 
-
     <v-dialog v-model="dialog" width="600">
       <v-card>
         <v-card-title>
@@ -98,16 +97,16 @@
           <small>Reset password email will be send to your email</small>
         </v-card-text>
         <v-card-actions>
-        <v-divider style="margin: 0"></v-divider>
+          <v-divider style="margin: 0"></v-divider>
           <v-btn
-          large
+            large
             color="blue darken-1"
             style="text-transform: none; margin: 0 5px;"
             text
             @click="dialog = false"
           >Close</v-btn>
           <v-btn
-          large
+            large
             color="primary"
             style="text-transform: none; width: fit-content; margin: 0 5px;"
             @click="sendEmail(); dialog = false"
@@ -150,13 +149,17 @@ import firebase from "firebase";
 
 export default {
   name: "login",
+  created() {
+    this.$store.commit("changePage", [
+      { text: "Login", disabled: false, to: "/login" }
+    ]);
+  },
   data() {
     return {
       snackbar: false,
       color: "",
       timeout: 5000, // 5 seconds
       message: "",
-
 
       email: "",
       password: "",
@@ -167,6 +170,7 @@ export default {
   },
   methods: {
     login() {
+      this.$store.commit("startLoading");
       // this.$router.replace('home');
       firebase
         .auth()
@@ -177,32 +181,35 @@ export default {
             this.$router.go("/");
           },
           err => {
+            this.$store.commit("stopLoading");
             alert("Oops. " + err.message);
           }
         );
     },
     sendEmail() {
+      this.$store.commit("startLoading");
       var actionCodeSettings = {
         // After password reset, the user will be give the ability to go back
-         // to this page.
-       url: 'https://library-system-1998.firebaseapp.com/#/login',
-       handleCodeInApp: false
+        // to this page.
+        url: "https://library-system-1998.firebaseapp.com/#/login",
+        handleCodeInApp: false
       };
       var auth = firebase.auth();
       var emailAddress = this.forgot_pass_email;
       if (this.forgot_pass_email == "") {
-            this.snackbar = true;
-            this.message = "Please enter an email first!";
-            this.color = "error";
+        this.snackbar = true;
+        this.message = "Please enter an email first!";
+        this.color = "error";
 
         // alert("Please enter an email first!");
       }
       auth
-        .sendPasswordResetEmail(emailAddress,actionCodeSettings)
+        .sendPasswordResetEmail(emailAddress, actionCodeSettings)
         .then(() => {
-            this.snackbar = true;
-            this.message = "Email has sent to " + this.forgot_pass_email;
-            this.color = "primary";
+          this.snackbar = true;
+          this.message = "Email has sent to " + this.forgot_pass_email;
+          this.color = "primary";
+          this.$store.commit("stopLoading");
 
           // alert("Email has sent to " + this.email);
         })
@@ -244,8 +251,8 @@ p a {
   text-decoration: underline;
   cursor: pointer;
 }
-.clickhere{
-    text-decoration: underline!important;
-    color: #1976d2!important;
+.clickhere {
+  text-decoration: underline !important;
+  color: #1976d2 !important;
 }
 </style>

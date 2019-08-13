@@ -34,7 +34,12 @@
         </b-col>
 
         <b-col md="6" class="my-1">
-          <b-form-group label-cols-sm="3" label="Sort direction" class="mb-0" style="text-align: right">
+          <b-form-group
+            label-cols-sm="3"
+            label="Sort direction"
+            class="mb-0"
+            style="text-align: right"
+          >
             <b-form-select v-model="sortDirection">
               <option value="asc">Asc</option>
               <option value="desc">Desc</option>

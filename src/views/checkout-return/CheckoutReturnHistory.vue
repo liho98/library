@@ -1,11 +1,11 @@
 <template>
   <div class="checkout">
-    <div class="breadcrumb" style="margin-bottom: 0px">
+    <!-- <div class="breadcrumb" style="margin-bottom: 0px">
       <div class="container" style="padding: 10px 20px;">
         <router-link class="breadcrumb-item" to="/">Home</router-link>
         <span class="breadcrumb-item active">Your Borrowed Book</span>
       </div>
-    </div>
+    </div>-->
     <div class="container">
       <v-card>
         <v-card-title>
@@ -27,6 +27,11 @@
           :items="checkout"
           :search="search"
           :loading="loading"
+          footer-props="{
+            prevIcon: 'fa fa-angle-left',
+            nextIcon: 'fa fa-angle-right'
+          }"
+          height="530"
         >
           <!-- :sort-by="borrowed_date"
           :sort-desc=true-->
@@ -120,6 +125,15 @@ export default {
   },
 
   created() {
+    this.$store.commit("startLoading");
+    this.$store.commit("changePage", [
+      {
+        text: "Your Borrowed Book",
+        disabled: false,
+        to: "/checkout-return-history"
+      }
+    ]);
+
     db.collection("checkout")
       .where("student_did", "==", String(localStorage.userId))
       .get()
@@ -154,9 +168,8 @@ export default {
           // this.fine = this.fine.toFixed(2);
 
           this.checkout.push(data); // books will now equal to data
-          
         });
-        
+
         this.loading = false;
 
         Object.keys(this.checkout).forEach(key => {
@@ -316,6 +329,10 @@ export default {
     //       this.students.push(data) // books will now equal to data
     //     });
     //   });
+  },
+  updated() {
+    this.loading = false;
+    this.$store.commit("stopLoading");
   },
   methods: {
     fetchData() {

@@ -17,22 +17,12 @@
     <div class="centre">
       <v-card-title>
         <v-spacer></v-spacer>
-          <v-text-field
-            v-model="search"
-            append-icon="search"
-            label="Search"
-            single-line
-            hide-details
-          ></v-text-field>
+        <v-text-field v-model="search" append-icon="search" label="Search" single-line hide-details></v-text-field>
       </v-card-title>
     </div>
 
     <div class="list">
-      <v-data-table fixed-header
-        :headers="headers"
-        :items="items"
-        :search="search">
-
+      <v-data-table fixed-header :headers="headers" :items="items" :search="search">
         <v-progress-linear v-show="progressBar" color="success" indeterminate></v-progress-linear>
         <template v-slot:items="props">
           <tr>
@@ -47,8 +37,8 @@
     </div>
 
     <!-- <b-container> -->
-      <!-- User Interface controls -->
-      <!-- <b-row>
+    <!-- User Interface controls -->
+    <!-- <b-row>
         <b-col md="6" class="my-1">
           <b-form-group label-cols-sm="3" label="Filter" class="mb-0">
             <b-input-group>
@@ -89,10 +79,10 @@
             <b-form-select v-model="perPage" :options="pageOptions"></b-form-select>
           </b-form-group>
         </b-col>
-      </b-row> -->
+    </b-row>-->
 
-      <!-- Main table element -->
-      <!-- <b-table
+    <!-- Main table element -->
+    <!-- <b-table
         show-empty
         stacked="md"
         selectable
@@ -122,7 +112,7 @@
           aria-controls="my-0"
         ></b-pagination>
       </b-row>
-    </b-container> -->
+    </b-container>-->
   </div>
 </template>
 
@@ -166,9 +156,9 @@ export default {
   name: "view-student",
   data() {
     return {
-      search: '',
+      search: "",
       items: [],
-      headers:[
+      headers: [
         {
           text: "Student ID",
           value: "student_id",
@@ -187,7 +177,7 @@ export default {
           align: "left",
           sortable: true
         },
-         {
+        {
           text: "Student Contact",
           value: "contact",
           align: "left",
@@ -244,9 +234,7 @@ export default {
     clear() {
       this.$refs.form.reset();
     },
-    getStudent(){
-
-    }
+    getStudent() {}
   }
 };
 </script>
@@ -319,8 +307,6 @@ td {
 tr:hover {
   background-color: #f5f5f5;
 }
-
-
 </style>
 
 

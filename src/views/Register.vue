@@ -152,7 +152,7 @@ export default {
       email: "",
       password: "",
       uid: "",
-      contact:""
+      contact: ""
     };
   },
   methods: {
@@ -174,7 +174,13 @@ export default {
       } else {
         db.collection("librarians")
           .doc(uid)
-          .set({ name, librarian_id: id, email, contact, created_at: createdAt })
+          .set({
+            name,
+            librarian_id: id,
+            email,
+            contact,
+            created_at: createdAt
+          })
           .then(() => {
             console.log("User added: ");
             alert("Your account has been created!");
@@ -186,7 +192,14 @@ export default {
       }
     },
     signUp() {
-      if (this.role && this.name && this.email && this.id && this.password && this.contact) {
+      if (
+        this.role &&
+        this.name &&
+        this.email &&
+        this.id &&
+        this.password &&
+        this.contact
+      ) {
         firebase
           .auth()
           .createUserWithEmailAndPassword(this.email, this.password)
@@ -201,7 +214,14 @@ export default {
                 photoURL: this.role
               });
 
-              this.addUser(uid, this.id, this.name, this.email, this.role, this.contact);
+              this.addUser(
+                uid,
+                this.id,
+                this.name,
+                this.email,
+                this.role,
+                this.contact
+              );
             },
             err => {
               alert("Oops. " + err.message);

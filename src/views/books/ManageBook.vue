@@ -1,17 +1,9 @@
 <template>
   <div id="manage-book">
-    <v-snackbar v-model="snackbar" :color="color" :timeout="timeout" :top="true">
+    <v-snackbar v-model="snackbar" :color="color" :timeout="timeout" :top="true" right>
       {{ message }}
       <v-btn dark text @click="snackbar = false" style="text-transform: none">Close</v-btn>
     </v-snackbar>
-
-    <div class="breadcrumb" style="margin-bottom: 0px">
-      <div class="container" style="padding: 10px 20px;">
-        <router-link class="breadcrumb-item" to="/">Home</router-link>
-        <!-- <a class="breadcrumb-item" href="index.html">Book</a> -->
-        <span class="breadcrumb-item active">Manage Book</span>
-      </div>
-    </div>
 
     <div class="container">
       <v-card>
@@ -138,7 +130,9 @@
               </v-flex>
             </v-layout>
           </v-container>
-          <small style="margin-top: 15px!important;float: right!important;margin-bottom: -15px!important;">* indicates required field</small>
+          <small
+            style="margin-top: 15px!important;float: right!important;margin-bottom: -15px!important;"
+          >* indicates required field</small>
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
@@ -231,7 +225,9 @@
             </v-layout>
           </v-container>
 
-          <small style="margin-top: 15px!important;float: right!important;margin-bottom: -15px!important;">* indicates required field</small>
+          <small
+            style="margin-top: 15px!important;float: right!important;margin-bottom: -15px!important;"
+          >* indicates required field</small>
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
@@ -367,6 +363,12 @@ export default {
   components: {
     "app-file-uploader": FileUploader
   },
+  created() {
+    this.$store.commit("startLoading");
+    this.$store.commit("changePage", [
+      { text: "Manage Book", disabled: false, to: "/manage-book" }
+    ]);
+  },
   data() {
     return {
       snackbar: false,
@@ -479,6 +481,7 @@ export default {
   },
   updated() {
     this.loading = false;
+    this.$store.commit("stopLoading");
   },
   mounted() {
     // Set the initial number of items
@@ -635,7 +638,6 @@ export default {
         });
     },
     signUp() {
-
       if (this.name && this.email && this.librarian_id && this.password) {
         secondaryFirebase
           .auth()
@@ -738,12 +740,11 @@ td {
 tr:hover {
   background-color: #f5f5f5;
 }
-
 </style>
 
 
 <style>
-.v-dialog--scrollable{
-  overflow-x:hidden!important;
+.v-dialog--scrollable {
+  overflow-x: hidden !important;
 }
 </style>

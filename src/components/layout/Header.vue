@@ -73,10 +73,7 @@
                 >Borrowed &amp; Returned Book</router-link>
               </li>
               <li class="navbar-item" v-if="role=='students'">
-                <router-link
-                  to="/reserved-history"
-                  class="nav-link active"
-                >Reserved Book</router-link>
+                <router-link to="/reserved-history" class="nav-link active">Reserved Book</router-link>
               </li>
 
               <!-- ---------------------------Admins------------------------------------- -->
@@ -145,7 +142,7 @@
                   <router-link to="/edit-book" class="dropdown-item">Edit Book</router-link>
                   <router-link to="/search-book" class="dropdown-item">Search Book</router-link>
                 </div>
-              </li> -->
+              </li>-->
 
               <li class="navbar-item" v-if="role=='librarians' || role=='admins'">
                 <router-link to="/checkout" class="nav-link active">Checkout</router-link>
@@ -275,8 +272,8 @@ export default {
 .dropdown:hover > .dropdown-menu {
   display: block;
 }
-.logoname{
-    margin-left: 8px;
-    font-weight: 300;
+.logoname {
+  margin-left: 8px;
+  font-weight: 300;
 }
 </style>

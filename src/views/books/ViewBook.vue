@@ -1,17 +1,10 @@
 <template>
   <div id="view-book">
-    <v-snackbar v-model="snackbar" :color="color" :timeout="timeout" :top="true">
+    <v-snackbar v-model="snackbar" :color="color" :timeout="timeout" :top="true" right>
       {{ message }}
       <v-btn dark text @click="snackbar = false" style="text-transform: none">Close</v-btn>
     </v-snackbar>
 
-    <div class="breadcrumb" style="margin-bottom: 20px">
-      <div class="container" style="padding: 10px 20px;">
-        <router-link class="breadcrumb-item" to="/">Home</router-link>
-        <router-link class="breadcrumb-item" to="/view-book-list">Book List</router-link>
-        <span class="breadcrumb-item active">{{ this.title }}</span>
-      </div>
-    </div>
     <div class="container" style="padding-top: 0px">
       <div class="row" style="padding-bottom: 15px">
         <div class="col-md-12" style="width:100%; height:100%">

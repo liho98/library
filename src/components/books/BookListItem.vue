@@ -1,8 +1,18 @@
 <template>
   <div id="book-list-item" class="col-lg-2 col-md-3 col-sm-4">
     <div class="item">
-      <router-link tag="img" class="item" v-bind:to="{name: 'view-book', params: {book_id: book.id}}" v-bind:src="this.url"/>
-      <router-link tag="h3" v-bind:to="{name: 'view-book', params: {book_id: book.id}}" v-bind:src="this.url" align="center">
+      <router-link
+        tag="img"
+        class="item"
+        v-bind:to="{name: 'view-book', params: {book_id: book.id}}"
+        v-bind:src="this.url"
+      />
+      <router-link
+        tag="h3"
+        v-bind:to="{name: 'view-book', params: {book_id: book.id}}"
+        v-bind:src="this.url"
+        align="center"
+      >
         <a>{{book.title}}</a>
       </router-link>
     </div>

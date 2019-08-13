@@ -1,17 +1,9 @@
 <template>
   <div id="delete-student">
-    <v-snackbar v-model="snackbar" :color="color" :timeout="timeout" :top="true">
+    <v-snackbar v-model="snackbar" :color="color" :timeout="timeout" :top="true" right>
       {{ message }}
       <v-btn dark text @click="snackbar = false" style="text-transform: none">Close</v-btn>
     </v-snackbar>
-
-    <div class="breadcrumb" style="margin-bottom: 0px">
-      <div class="container" style="padding: 10px 20px;">
-        <router-link class="breadcrumb-item" to="/">Home</router-link>
-        <!-- <a class="breadcrumb-item" href="index.html">Book</a> -->
-        <span class="breadcrumb-item active">Manage Librarian</span>
-      </div>
-    </div>
 
     <div class="container">
       <v-card>
@@ -107,17 +99,13 @@
                 ></v-text-field>
               </v-flex>
               <v-flex xs12>
-                <v-text-field
-                  v-model="contact"
-                  label="Contact"
-                  type="number"
-                ></v-text-field>
+                <v-text-field v-model="contact" label="Contact" type="number"></v-text-field>
               </v-flex>
             </v-layout>
           </v-container>
           <small style="float:right;display:block;margin-right:15px">* indicates required field</small>
         </v-card-text>
-        <br/>
+        <br />
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn
@@ -169,7 +157,7 @@
           </v-container>
           <small style="float:right;display:block;margin-right:15px">* indicates required field</small>
         </v-card-text>
-        <br/>
+        <br />
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn
@@ -302,8 +290,13 @@ import firebaseConfig from "./../../components/firebaseConfig";
 import secondaryFirebase from "./../../components/firebaseSecondary";
 
 export default {
-  
-  name: "manage-student",
+  created() {
+    this.$store.commit("startLoading");
+    this.$store.commit("changePage", [
+      { text: "Manage Librarian", disabled: false, to: "/manage-librarian" }
+    ]);
+  },
+
   data() {
     return {
       snackbar: false,
@@ -389,11 +382,11 @@ export default {
   },
   updated() {
     this.loading = false;
+    this.$store.commit("stopLoading");
   },
   mounted() {
     // Set the initial number of items
     this.totalRows = this.items.length;
-
   },
   // beforeRouteEnter(to, from, next) {
   //   next(vm => {
@@ -414,6 +407,10 @@ export default {
         db.collection("students")
           .doc(student.id)
           .delete();
+
+        this.snackbar = true;
+        this.message = "Delete successfully";
+        this.color = "primary";
       } else {
       }
     },
@@ -478,7 +475,8 @@ export default {
     },
     signUp() {
       if (this.name && this.email && this.librarian_id && this.password) {
-        secondaryFirebase.auth()
+        secondaryFirebase
+          .auth()
           .createUserWithEmailAndPassword(this.email, this.password)
           .then(
             () => {

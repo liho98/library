@@ -10,6 +10,9 @@ import FAQ from "./views/FAQ.vue";
 import Login from "./views/Login.vue";
 // import Register from "./views/Register.vue";
 
+// Admin
+import Dashboard from "./views/admin/dashboard";
+
 // Book
 import AddBook from "./views/books/AddBook";
 import ViewBookList from "./views/books/ViewBookList";
@@ -63,17 +66,17 @@ const router = new Router({
       path: "/about",
       name: "about",
       component: About,
-      // meta: {
-      //   requiresGuest: true,
-      // }
+      meta: {
+        noAuth: true
+      }
     },
     {
       path: "/faq",
       name: "faq",
       component: FAQ,
-      // meta: {
-      //   requiresGuest: true,
-      // }
+      meta: {
+        noAuth: true
+      }
     },
 
     // {
@@ -318,6 +321,18 @@ const router = new Router({
         adminAuth: true
       }
    },
+   {
+    path: '/dashboard',
+     name: 'dashboard',
+     component: Dashboard,
+     meta: {
+       requiresAuth: true,
+       librarianAuth: true,
+       studentAuth: true,
+       adminAuth: true
+     }
+  },
+
  ]
 });
 

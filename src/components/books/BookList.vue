@@ -85,7 +85,7 @@
                 <v-list-item-title>{{ number }}</v-list-item-title>
               </v-list-item>
             </v-list>
-          </v-menu> -->
+          </v-menu>-->
 
           <v-spacer></v-spacer>
 
@@ -115,7 +115,7 @@ export default {
       page: 1,
       itemsPerPage: 9,
       sortBy: "title",
-      keys: [],
+      keys: []
     };
   },
   props: ["books"],
@@ -147,5 +147,5 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 </style>

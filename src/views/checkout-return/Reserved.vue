@@ -1,17 +1,12 @@
 <template>
   <div class="checkout">
-    <v-snackbar v-model="snackbar" :color="color" :timeout="timeout" :top="true">
+    <v-snackbar v-model="snackbar" :color="color" :timeout="timeout" :top="true" right>
       {{ message }}
       <v-btn dark text @click="snackbar = false" style="text-transform: none">Close</v-btn>
     </v-snackbar>
 
     <!-- <app-progress-circular :value="loading"></app-progress-circular> -->
-    <div class="breadcrumb" style="margin-bottom: 0">
-      <div class="container" style="padding: 10px 20px;">
-        <router-link class="breadcrumb-item" to="/">Home</router-link>
-        <span class="breadcrumb-item active">Reserved</span>
-      </div>
-    </div>
+
     <div class="container">
       <v-card>
         <v-card-title>
@@ -133,6 +128,11 @@ export default {
   },
 
   created() {
+    this.$store.commit("startLoading");
+    this.$store.commit("changePage", [
+      { text: "Reserve", disabled: false, to: "/reserved" }
+    ]);
+
     // db.collection("checkout")
     //   .where("student_did", "==", String(localStorage.userId))
     //   .get()
@@ -217,6 +217,7 @@ export default {
 
   updated() {
     this.loading = false;
+    this.$store.commit("stopLoading");
   },
   beforeRouteEnter(to, from, next) {
     next(vm => {

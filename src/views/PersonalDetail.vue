@@ -1,10 +1,10 @@
 <template>
   <div id="personal-detail">
-    <div class="breadcrumb" style="margin-bottom: 20px">
+    <div style="margin-bottom: 20px">
       <div class="container" style="padding: 10px 20px;">
-        <router-link class="breadcrumb-item" to="/">Home</router-link>
+        <!-- <router-link class="breadcrumb-item" to="/">Home</router-link> -->
 
-        <span class="breadcrumb-item active">Personal Detail</span>
+        <!-- <span class="breadcrumb-item active">Personal Detail</span> -->
       </div>
     </div>
     <div class="centre">
@@ -46,7 +46,14 @@
         <v-card-text>
           <v-layout row justify-center>
             <v-flex xs11>
-              <v-text-field type="text" v-model="currentEmail" outlined label="Current Email"  disabled readonly></v-text-field>
+              <v-text-field
+                type="text"
+                v-model="currentEmail"
+                outlined
+                label="Current Email"
+                disabled
+                readonly
+              ></v-text-field>
             </v-flex>
           </v-layout>
           <v-layout row justify-center>
@@ -62,19 +69,17 @@
             </v-flex>
           </v-layout>
 
-        <v-divider style="margin-bottom:0"></v-divider>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn flat text style="text-transform: none;" @click="dialog = false">Cancel</v-btn>
-          <v-btn
-            color="primary"
-            style="background-color: #2A73C5; text-transform: none;"
-            @click="updateEmail"
-          >Change</v-btn>
-        </v-card-actions>
-
+          <v-divider style="margin-bottom:0"></v-divider>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn flat text style="text-transform: none;" @click="dialog = false">Cancel</v-btn>
+            <v-btn
+              color="primary"
+              style="background-color: #2A73C5; text-transform: none;"
+              @click="updateEmail"
+            >Change</v-btn>
+          </v-card-actions>
         </v-card-text>
-
       </v-card>
     </v-dialog>
     <v-dialog v-model="dialog1" width="500">
@@ -84,7 +89,14 @@
         <v-card-text>
           <v-layout row justify-center>
             <v-flex xs11>
-              <v-text-field type="text" v-model="currentContact" outlined label="Current Phone no."  disabled  readonly="true"></v-text-field>
+              <v-text-field
+                type="text"
+                v-model="currentContact"
+                outlined
+                label="Current Phone no."
+                disabled
+                readonly="true"
+              ></v-text-field>
             </v-flex>
           </v-layout>
           <v-layout row justify-center>
@@ -92,25 +104,24 @@
               <v-text-field
                 type="text"
                 v-model="latestContact"
-                outlined label="New Phone no."
+                outlined
+                label="New Phone no."
                 :rules="[v => (v && v.length) >= 1 || 'Required']"
                 required
               ></v-text-field>
             </v-flex>
           </v-layout>
-        <v-divider style="margin-bottom:0"></v-divider>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn flat text style="text-transform: none;" @click="dialog1 = false">Cancel</v-btn>
-          <v-btn
-            color="primary"
-            style="background-color: #2A73C5; text-transform: none;"
-            @click="updateContact"
-          >Change</v-btn>
-        </v-card-actions>
-
+          <v-divider style="margin-bottom:0"></v-divider>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn flat text style="text-transform: none;" @click="dialog1 = false">Cancel</v-btn>
+            <v-btn
+              color="primary"
+              style="background-color: #2A73C5; text-transform: none;"
+              @click="updateContact"
+            >Change</v-btn>
+          </v-card-actions>
         </v-card-text>
-
       </v-card>
     </v-dialog>
   </div>
@@ -136,7 +147,15 @@ export default {
       currentContact: ""
     };
   },
+  updated() {
+    this.$store.commit("stopLoading");
+  },
   created() {
+    this.$store.commit("startLoading");
+    this.$store.commit("changePage", [
+      { text: "Profile", disabled: false, to: "/personal-detail" }
+    ]);
+
     if (firebase.auth().currentUser) {
       var currentUser = firebase.auth().currentUser;
       this.role = currentUser.photoURL;

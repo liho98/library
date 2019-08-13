@@ -15,7 +15,11 @@
                 <div class="title">
                   <h3>welcome to library system</h3>
                   <h5>Discover the best books online with us</h5>
-                  <router-link to="/view-book-list" class="btn" style="color:black">view books</router-link>
+                  <router-link
+                    to="/view-book-list"
+                    class="btn green"
+                    style="color:white;"
+                  >view books</router-link>
                 </div>
               </div>
             </div>
@@ -27,7 +31,11 @@
                 <div class="title">
                   <h3>welcome to Library System</h3>
                   <h5>Discover the best books online with us</h5>
-                  <router-link to="/view-book-list" class="btn" style="color:black">view books</router-link>
+                  <router-link
+                    to="/view-book-list"
+                    class="btn green"
+                    style="color:white;"
+                  >view books</router-link>
                 </div>
               </div>
             </div>
@@ -39,7 +47,11 @@
                 <div class="title">
                   <h3>welcome to library system</h3>
                   <h5>Discover the best books online with us</h5>
-                  <router-link to="/view-book-list" class="btn" style="color:black">view books</router-link>
+                  <router-link
+                    to="/view-book-list"
+                    class="btn green"
+                    style="color:white;"
+                  >view books</router-link>
                 </div>
               </div>
             </div>
@@ -51,7 +63,11 @@
                 <div class="title">
                   <h3>welcome to library system</h3>
                   <h5>Discover the best books online with us</h5>
-                  <router-link to="/view-book-list" class="btn" style="color:black">view books</router-link>
+                  <router-link
+                    to="/view-book-list"
+                    class="btn green"
+                    style="color:white;"
+                  >view books</router-link>
                 </div>
               </div>
             </div>
@@ -71,7 +87,7 @@
               <img src="images/img1.jpg" alt="img" />
               <h3>how to be a bwase</h3>
               <h6>
-                <span class="price"></span> 
+                <span class="price"></span>
                 <router-link to="/view-book-list">Borrow Now</router-link>
               </h6>
               <div class="hover">
@@ -88,7 +104,7 @@
               <img src="images/img2.jpg" alt="img" />
               <h3>How to write a book...</h3>
               <h6>
-                <span class="price"></span> 
+                <span class="price"></span>
                 <router-link to="/view-book-list">Borrow Now</router-link>
               </h6>
               <!-- <span class="sale">Sale !</span> -->
@@ -106,7 +122,7 @@
               <img src="images/img3.jpg" alt="img" />
               <h3>7-day self publish...</h3>
               <h6>
-                <span class="price"></span> 
+                <span class="price"></span>
                 <router-link to="/view-book-list">Borrow Now</router-link>
               </h6>
               <div class="hover">
@@ -123,7 +139,7 @@
               <img src="images/img4.jpg" alt="img" />
               <h3>wendy doniger</h3>
               <h6>
-                <span class="price"></span> 
+                <span class="price"></span>
                 <router-link to="/view-book-list">Borrow Now</router-link>
               </h6>
               <div class="hover">
@@ -147,15 +163,15 @@
         <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's printer took a galley of type and Scrambled it to make a type and typesetting industry. Lorem Ipsum has been the book.</p>
         <p>It has survived not only fiveLorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's printer took a galley of type and</p>
         <div class="btn-sec">
-          <router-link to="/view-book-list" class="btn yellow">browse books</router-link>
-          <router-link to="/view-book-list" class="btn black">borrow</router-link>
+          <router-link to="/view-book-list" class="btn green" style="color:white">browse books</router-link>
+          <router-link to="/view-book-list" class="btn green" style="color:white">borrow</router-link>
         </div>
       </div>
     </section>
     <section class="recent-book-sec">
       <div class="container">
         <div class="title">
-          <h2>highly recommendes books</h2>
+          <h2>Popular books</h2>
           <hr />
         </div>
         <div class="row">
@@ -166,7 +182,7 @@
                 <router-link to="/view-book-list">Keepers of the kalachakara</router-link>
               </h3>
               <h6>
-                <span class="price"></span> 
+                <span class="price"></span>
                 <router-link to="/view-book-list">Borrow Now</router-link>
               </h6>
             </div>
@@ -178,7 +194,7 @@
                 <router-link to="/view-book-list">Keepers of the kalachakara</router-link>
               </h3>
               <h6>
-                <span class="price"></span> 
+                <span class="price"></span>
                 <router-link to="/view-book-list">Borrow Now</router-link>
               </h6>
             </div>
@@ -190,7 +206,7 @@
                 <router-link to="/view-book-list">Keepers of the kalachakara</router-link>
               </h3>
               <h6>
-                <span class="price"></span> 
+                <span class="price"></span>
                 <router-link to="/view-book-list">Borrow Now</router-link>
               </h6>
             </div>
@@ -202,7 +218,7 @@
                 <router-link to="/view-book-list">Keepers of the kalachakara</router-link>
               </h3>
               <h6>
-                <span class="price"></span> 
+                <span class="price"></span>
                 <router-link to="/view-book-list">Borrow Now</router-link>
               </h6>
             </div>
@@ -214,7 +230,7 @@
                 <router-link to="/view-book-list">Keepers of the kalachakara</router-link>
               </h3>
               <h6>
-                <span class="price"></span> 
+                <span class="price"></span>
                 <router-link to="/view-book-list">Borrow Now</router-link>
               </h6>
             </div>
@@ -226,7 +242,7 @@
                 <router-link to="/view-book-list">Keepers of the kalachakara</router-link>
               </h3>
               <h6>
-                <span class="price"></span> 
+                <span class="price"></span>
                 <router-link to="/view-book-list">Borrow Now</router-link>
               </h6>
             </div>
@@ -238,7 +254,7 @@
                 <router-link to="/view-book-list">Keepers of the kalachakara</router-link>
               </h3>
               <h6>
-                <span class="price"></span> 
+                <span class="price"></span>
                 <router-link to="/view-book-list">Borrow Now</router-link>
               </h6>
             </div>
@@ -250,7 +266,7 @@
                 <router-link to="/view-book-list">Keepers of the kalachakara</router-link>
               </h3>
               <h6>
-                <span class="price"></span> 
+                <span class="price"></span>
                 <router-link to="/view-book-list">Borrow Now</router-link>
               </h6>
             </div>
@@ -262,7 +278,7 @@
                 <router-link to="/view-book-list">Keepers of the kalachakara</router-link>
               </h3>
               <h6>
-                <span class="price"></span> 
+                <span class="price"></span>
                 <router-link to="/view-book-list">Borrow Now</router-link>
               </h6>
             </div>
@@ -274,14 +290,14 @@
                 <router-link to="/view-book-list">Keepers of the kalachakara</router-link>
               </h3>
               <h6>
-                <span class="price"></span> 
+                <span class="price"></span>
                 <router-link to="/view-book-list">Borrow Now</router-link>
               </h6>
             </div>
           </div>
         </div>
         <div class="btn-sec">
-          <router-link to="/view-book-list" class="btn gray-btn">view all books</router-link>
+          <router-link to="/view-book-list" class="btn green" style="color:white">view all books</router-link>
         </div>
       </div>
     </section>
@@ -322,10 +338,8 @@
           <div class="col-md-6">
             <div class="detail">
               <h3>Donate books</h3>
-              <h6>
-Our library is organizing an event of donation books, and book donors can get a soft skill point.
-              </h6>
-              <router-link to="/view-book-list" class="btn" style="color:black">view event</router-link>
+              <h6>Our library is organizing an event of donation books, and book donors can get a soft skill point.</h6>
+              <router-link to="/view-book-list" class="btn green" style="color:white">view event</router-link>
               <span class="icon-point percentage">
                 <img src="images/precentagae.png" alt />
               </span>
@@ -334,10 +348,8 @@ Our library is organizing an event of donation books, and book donors can get a 
           <div class="col-md-6">
             <div class="detail">
               <h3>Writing storybook competition</h3>
-              <h6>
-Our library is organizing an event to write a storybook competition, and writers can get a soft skill point.
-              </h6>
-              <router-link to="/view-book-list" class="btn" style="color:black">participate</router-link>
+              <h6>Our library is organizing an event to write a storybook competition, and writers can get a soft skill point.</h6>
+              <router-link to="/view-book-list" class="btn green" style="color:white">participate</router-link>
               <span class="icon-point amount">
                 <img src="images/amount.png" alt />
               </span>
@@ -392,7 +404,16 @@ Our library is organizing an event to write a storybook competition, and writers
 <script>
 export default {
   name: "home",
-  components: {}
+  components: {},
+  created() {
+    this.$store.commit("startLoading");
+    this.$store.commit("changePage", [
+      { text: "Home", disabled: false, to: "/" }
+    ]);
+  },
+  mounted() {
+    this.$store.commit("stopLoading");
+  }
 };
 </script>
 

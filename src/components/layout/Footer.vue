@@ -1,14 +1,11 @@
 <template>
-<v-footer padless>
   <footer style="padding-top:10px">
-    <div class="container">
+    <div class="container" style="max-width: 1264px;width: 100%;padding-bottom: 0;">
       <div class="row">
-        <div class="col-md-4">
+        <div class="col-md-4" style="padding-bottom: 0;">
           <div class="address">
             <h4>Our Address</h4>
-            <h6>
-Library, TARUC, 53100 Kuala Lumpur, Federal Territory of Kuala Lumpur 
-            </h6>
+            <h6>Library, TARUC, 53100 Kuala Lumpur, Federal Territory of Kuala Lumpur</h6>
             <h6>Call : 03-4145 0123</h6>
             <h6>Email : library@tarc.edu.my</h6>
           </div>
@@ -19,7 +16,7 @@ Library, TARUC, 53100 Kuala Lumpur, Federal Territory of Kuala Lumpur
             <h6>​Sunday: Closed</h6>
           </div>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-3" style="padding-bottom: 0;">
           <div class="navigation">
             <h4>Navigation</h4>
             <ul>
@@ -55,12 +52,12 @@ Library, TARUC, 53100 Kuala Lumpur, Federal Territory of Kuala Lumpur
             </ul>
           </div>
         </div>
-        <div class="col-md-5">
+        <div class="col-md-5" style="padding-bottom: 0;">
           <div class="form">
             <h3>Quick Contact us</h3>
             <h6>
               <!-- We are now offering some good discount
-              on selected books go and shop them -->
+              on selected books go and shop them-->
             </h6>
             <form>
               <div class="row">
@@ -74,7 +71,7 @@ Library, TARUC, 53100 Kuala Lumpur, Federal Territory of Kuala Lumpur
                   <textarea class="border" placeholder="Messege"></textarea>
                 </div>
                 <div class="col-md-12">
-                  <button class="btn black">Alright, Submit</button>
+                  <button class="btn green" style="color:white">Alright, Submit</button>
                 </div>
               </div>
             </form>
@@ -82,8 +79,11 @@ Library, TARUC, 53100 Kuala Lumpur, Federal Territory of Kuala Lumpur
         </div>
       </div>
     </div>
-    <div class="copy-right" style="margin-top:0;padding:0">
-      <div class="container">
+    <div class="copy-right" style="margin-top:0;padding:0;background:#4CAF50;">
+      <div
+        class="container"
+        style="max-width: 1264px;width: 100%;padding-top: 3px;padding-bottom: 0;"
+      >
         <div class="row">
           <div class="col-md-6">
             <h5>(C) 2019. All Rights Reserved. Taruc Library</h5>
@@ -111,7 +111,6 @@ Library, TARUC, 53100 Kuala Lumpur, Federal Territory of Kuala Lumpur
       </div>
     </div>
   </footer>
-  </v-footer>
 </template>
 
 <script>
@@ -119,8 +118,7 @@ export default {};
 </script>
 
 <style scoped>
-.border{
-      border: 1px solid black!important;
+.border {
+  border: 1px solid black !important;
 }
-
 </style>

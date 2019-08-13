@@ -1,8 +1,12 @@
 <template>
   <div wid>
-    <v-btn outlined @click.native="selectFile" v-if="!uploadEnd && !uploading" style="width:100%;text-transform: none; min-height: 50px;">
-      <v-icon left size="18" class="mr-5" aria-hidden="true">add_a_photo</v-icon>
-      Upload Book Cover Image (Optional)
+    <v-btn
+      outlined
+      @click.native="selectFile"
+      v-if="!uploadEnd && !uploading"
+      style="width:100%;text-transform: none; min-height: 50px;"
+    >
+      <v-icon left size="18" class="mr-5" aria-hidden="true">add_a_photo</v-icon>Upload Book Cover Image (Optional)
     </v-btn>
     <input
       id="files"
@@ -21,7 +25,7 @@
       :value="progressUpload"
       color="success"
     >{{ progressUpload }}%</v-progress-circular>
-    <img v-if="uploadEnd" :src="downloadURL" width="20%" style="padding-bottom: 10px"/>
+    <img v-if="uploadEnd" :src="downloadURL" width="20%" style="padding-bottom: 10px" />
     <div v-if="uploadEnd">
       <v-btn class="ma-0" dark small color="error" @click="deleteImage()">Delete</v-btn>
     </div>
@@ -60,10 +64,12 @@ export default {
       });
     },
     upload(file) {
-      this.fileName = this.generateID() + '.' +file.name.split('.')[1];
+      this.fileName = this.generateID() + "." + file.name.split(".")[1];
       this.uploading = true;
-      this.$emit('uploaded', this.fileName)
-      this.uploadTask = firebaseStorage.ref("books/" + this.generateID() + '.' +file.name.split('.')[1]).put(file);
+      this.$emit("uploaded", this.fileName);
+      this.uploadTask = firebaseStorage
+        .ref("books/" + this.generateID() + "." + file.name.split(".")[1])
+        .put(file);
     },
     deleteImage() {
       if (this.oldImgUrl === "") {

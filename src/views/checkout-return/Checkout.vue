@@ -1,16 +1,9 @@
 <template>
   <div class="checkout">
-    <v-snackbar v-model="snackbar" :color="color" :timeout="timeout" :top="true">
+    <v-snackbar v-model="snackbar" :color="color" :timeout="timeout" :top="true" right>
       {{ message }}
       <v-btn dark text @click="snackbar = false" style="text-transform: none">Close</v-btn>
     </v-snackbar>
-
-    <div class="breadcrumb" style="margin-bottom: 20px">
-      <div class="container" style="padding: 10px 20px;">
-        <router-link class="breadcrumb-item" to="/">Home</router-link>
-        <span class="breadcrumb-item active">Checkout</span>
-      </div>
-    </div>
 
     <div class="centre">
       <!-- <v-alert
@@ -106,7 +99,7 @@
 
       <br />
       <div class="text-center">
-        <v-btn large color="primary" style="text-transform: none"  @click="checkout">Checkout</v-btn>
+        <v-btn large color="primary" style="text-transform: none" @click="checkout">Checkout</v-btn>
       </div>
 
       <!--         :custom-label="nameWithLang"          :preselect-first="true"         :preserve-search="true"-->
@@ -159,11 +152,18 @@ export default {
     // get all students from firebase
     students: db.collection("students")
   },
-
+  updated() {
+    this.$store.commit("stopLoading");
+  },
   created() {
     // calculate due date
     const due_date = new Date();
     this.due_date = new Date(due_date.setDate(due_date.getDate() + 14));
+
+    this.$store.commit("startLoading");
+    this.$store.commit("changePage", [
+      { text: "Checkout", disabled: false, to: "/checkout" }
+    ]);
 
     //// OLD METHOD
 

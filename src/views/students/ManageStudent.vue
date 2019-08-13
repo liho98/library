@@ -1,17 +1,9 @@
 <template>
   <div id="delete-student">
-    <v-snackbar v-model="snackbar" :color="color" :timeout="timeout" :top="true">
+    <v-snackbar v-model="snackbar" :color="color" :timeout="timeout" :top="true" right>
       {{ message }}
       <v-btn dark text @click="snackbar = false" style="text-transform: none">Close</v-btn>
     </v-snackbar>
-
-    <div class="breadcrumb" style="margin-bottom: 0px">
-      <div class="container" style="padding: 10px 20px;">
-        <router-link class="breadcrumb-item" to="/">Home</router-link>
-        <!-- <a class="breadcrumb-item" href="index.html">Book</a> -->
-        <span class="breadcrumb-item active">Manage Student</span>
-      </div>
-    </div>
 
     <div class="container">
       <v-card>
@@ -46,7 +38,7 @@
             prevIcon: 'fa fa-angle-left',
             nextIcon: 'fa fa-angle-right'
           }"
-          :height="530"          
+          :height="530"
         >
           <!-- <template v-slot:items="props">
           <tr>
@@ -115,7 +107,7 @@
           </v-container>
           <small style="float:right;display:block;margin-right:15px">* indicates required field</small>
         </v-card-text>
-        <br/>
+        <br />
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn
@@ -167,7 +159,7 @@
           </v-container>
           <small style="float:right;display:block;margin-right:15px">* indicates required field</small>
         </v-card-text>
-        <br/>
+        <br />
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn
@@ -301,6 +293,13 @@ import secondaryFirebase from "./../../components/firebaseSecondary";
 
 export default {
   name: "manage-student",
+  created() {
+    this.$store.commit("startLoading");
+    this.$store.commit("changePage", [
+      { text: "Manage Student", disabled: false, to: "/manage-student" }
+    ]);
+  },
+
   data() {
     return {
       snackbar: false,
@@ -385,6 +384,7 @@ export default {
   },
   updated() {
     this.loading = false;
+    this.$store.commit("stopLoading");
   },
   mounted() {
     // Set the initial number of items
@@ -404,13 +404,21 @@ export default {
         .doc(this.id)
         .delete()
         .then(() => {
-secondaryFirebase.auth().deleteUser(this.id)
-  .then(function() {
-    console.log('Successfully deleted user');
-  })
-  .catch(function(error) {
-    console.log('Error deleting user:', error);
-  });
+          console.log(this.id);
+          admin
+            .auth()
+            .getUserByEmail("liho_98@hotmail.com")
+            .then(function(userRecord) {
+              // See the UserRecord reference doc for the contents of userRecord.
+              console.log(
+                "Successfully fetched user data:",
+                userRecord.toJSON()
+              );
+            })
+            .catch(function(error) {
+              console.log("Error fetching user data:", error);
+            });
+          console.log(firebase.auth().currentUser.refreshToken);
         })
         .catch(error => {
           console.error("Error deleting user: ", error);
@@ -468,7 +476,6 @@ secondaryFirebase.auth().deleteUser(this.id)
         });
     },
     signUp() {
-
       if (this.name && this.email && this.student_id && this.password) {
         secondaryFirebase
           .auth()

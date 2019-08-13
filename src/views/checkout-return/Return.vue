@@ -1,16 +1,10 @@
 <template>
   <div class="return">
-    <v-snackbar v-model="snackbar" :color="color" :timeout="timeout" :top="true">
+    <v-snackbar v-model="snackbar" :color="color" :timeout="timeout" :top="true" right>
       {{ message }}
       <v-btn dark text @click="snackbar = false" style="text-transform: none">Close</v-btn>
     </v-snackbar>
 
-    <div class="breadcrumb" style="margin-bottom: 20px">
-      <div class="container" style="padding: 10px 20px;">
-        <router-link class="breadcrumb-item" to="/">Home</router-link>
-        <span class="breadcrumb-item active">Return</span>
-      </div>
-    </div>
     <div class="centre">
       <!-- <v-alert
         type="success"
@@ -202,10 +196,15 @@ export default {
     // get all students from firebase
     students: db.collection("students")
   },
-
+  updated() {
+    this.$store.commit("stopLoading");
+  },
   created() {
     this.return_date = new Date();
-
+    this.$store.commit("startLoading");
+    this.$store.commit("changePage", [
+      { text: "Return", disabled: false, to: "/return" }
+    ]);
     // calculate due date
     // const due_date = new Date();
     // this.due_date = new Date(due_date.setDate(due_date.getDate()));

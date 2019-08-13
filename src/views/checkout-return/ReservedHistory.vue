@@ -1,11 +1,5 @@
 <template>
   <div class="checkout">
-    <div class="breadcrumb" style="margin-bottom: 0px">
-      <div class="container" style="padding: 10px 20px;">
-        <router-link class="breadcrumb-item" to="/">Home</router-link>
-        <span class="breadcrumb-item active">Reserved Book</span>
-      </div>
-    </div>
     <div class="container">
       <v-card>
         <v-card-title>
@@ -107,7 +101,7 @@ export default {
           align: "left",
           sortable: true
         },
-                {
+        {
           text: "Collected At",
           value: "borrowed_date_str",
           align: "left",
@@ -116,7 +110,7 @@ export default {
         {
           text: "Status",
           value: "status",
-          align: "left",
+          align: "left"
         }
       ]
     };
@@ -127,6 +121,11 @@ export default {
   },
 
   created() {
+    this.$store.commit("startLoading");
+    this.$store.commit("changePage", [
+      { text: "Reserved Book", disabled: false, to: "/reserved-history" }
+    ]);
+
     db.collection("reserve")
       .where("student_did", "==", String(localStorage.userId))
       .get()
@@ -151,10 +150,8 @@ export default {
             borrowed_date: null,
             borrowed_date_str: null,
             book_title: null // very important
-
-            
           };
-        
+
           // // get days late
           // const diffTime = Math.abs(
           //   this.return_date.getTime() - this.due_date.getTime()
@@ -164,7 +161,6 @@ export default {
           // this.fine = this.fine.toFixed(2);
 
           this.reserve.push(data); // books will now equal to data
-          
         });
 
         this.loading = false;
@@ -212,17 +208,17 @@ export default {
               });
           }
 
-        //   if (this.checkout[key].returned_date == null) {
-        //     let today = new Date();
-        //     const diffTime = Math.abs(
-        //       this.checkout[key].due_date.getTime() - today.getTime()
-        //     );
+          //   if (this.checkout[key].returned_date == null) {
+          //     let today = new Date();
+          //     const diffTime = Math.abs(
+          //       this.checkout[key].due_date.getTime() - today.getTime()
+          //     );
 
-        //     this.checkout[key].days_late =
-        //       Math.ceil(diffTime / (1000 * 60 * 60 * 24)) -
-        //       1 +
-        //       " days remaining";
-        //   }
+          //     this.checkout[key].days_late =
+          //       Math.ceil(diffTime / (1000 * 60 * 60 * 24)) -
+          //       1 +
+          //       " days remaining";
+          //   }
         });
       });
 
@@ -413,9 +409,10 @@ export default {
     //   // });
     // }
   },
-  updated(){
-      this.loading = false;
-  },
+  updated() {
+    this.loading = false;
+    this.$store.commit("stopLoading");
+  }
   // computed: {
   //   getColor(item) {
   //     console.log(item.due_date);
