@@ -1,5 +1,5 @@
 import Vue from "vue";
-import firebase from './components/firebaseInit';
+import firebase from './firebase/firebaseInit';
 import App from "./App.vue";
 import router from "./router";
 import vuetify from './plugins/vuetify' // path to vuetify export

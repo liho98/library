@@ -354,9 +354,9 @@
 </template>
 
 <script>
-import db from "./../../components/firestoreInit";
+import db from "./../../firebase/firestoreInit";
 import FileUploader from "./../../components/FileUploader";
-import secondaryFirebase from "./../../components/firebaseSecondary";
+import secondaryFirebase from "./../../firebase/firebaseSecondary";
 
 export default {
   name: "manage-book",

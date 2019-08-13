@@ -13,7 +13,7 @@
               <img src="images/slide1.jpg" alt="slide1" />
               <div class="content">
                 <div class="title">
-                  <h3>welcome to library system</h3>
+                  <h3>welcome to TARUC Library Management System</h3>
                   <h5>Discover the best books online with us</h5>
                   <router-link
                     to="/view-book-list"

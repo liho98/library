@@ -109,7 +109,7 @@
 
 <script>
 // import BookList from "../../components/books/BookList.vue";
-import db from "../../components/firestoreInit";
+import db from "../../firebase/firestoreInit";
 // import ProgressCircular from "../../components/ProgressCircular.vue";
 // import { VListItem, VListItemTitle } from "vuetify/lib";
 // import VListItem from 'vuetify/lib/components/VList/VListItem'

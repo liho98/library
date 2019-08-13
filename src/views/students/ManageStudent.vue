@@ -286,10 +286,10 @@
 </template>
 
 <script>
-import db from "./../../components/firestoreInit";
+import db from "./../../firebase/firestoreInit";
 import firebase from "firebase";
-import firebaseConfig from "./../../components/firebaseConfig";
-import secondaryFirebase from "./../../components/firebaseSecondary";
+import firebaseConfig from "./../../firebase/firebaseConfig";
+import secondaryFirebase from "./../../firebase/firebaseSecondary";
 
 export default {
   name: "manage-student",
@@ -404,21 +404,10 @@ export default {
         .doc(this.id)
         .delete()
         .then(() => {
+          //
           console.log(this.id);
-          admin
-            .auth()
-            .getUserByEmail("liho_98@hotmail.com")
-            .then(function(userRecord) {
-              // See the UserRecord reference doc for the contents of userRecord.
-              console.log(
-                "Successfully fetched user data:",
-                userRecord.toJSON()
-              );
-            })
-            .catch(function(error) {
-              console.log("Error fetching user data:", error);
-            });
           console.log(firebase.auth().currentUser.refreshToken);
+          //
         })
         .catch(error => {
           console.error("Error deleting user: ", error);

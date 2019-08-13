@@ -132,7 +132,7 @@
 </template>
 
 <script>
-import db from "./../../components/firestoreInit";
+import db from "./../../firebase/firestoreInit";
 import Vue from "vue";
 import VeeValidate from "vee-validate";
 import FileUploader from "./../../components/FileUploader";

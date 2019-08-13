@@ -284,10 +284,10 @@
 </template>
 
 <script>
-import db from "./../../components/firestoreInit";
+import db from "./../../firebase/firestoreInit";
 import firebase from "firebase";
-import firebaseConfig from "./../../components/firebaseConfig";
-import secondaryFirebase from "./../../components/firebaseSecondary";
+import firebaseConfig from "./../../firebase/firebaseConfig";
+import secondaryFirebase from "./../../firebase/firebaseSecondary";
 
 export default {
   created() {

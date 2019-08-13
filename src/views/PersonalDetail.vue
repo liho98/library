@@ -128,7 +128,7 @@
 </template>
 
 <script>
-import db from "./../components/firestoreInit";
+import db from "./../firebase/firestoreInit";
 import firebase from "firebase";
 
 export default {

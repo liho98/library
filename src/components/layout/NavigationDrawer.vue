@@ -16,7 +16,7 @@
           <span class="ml-2">Welcome, {{name}}</span>
         </v-list-item-subtitle>
         <v-list-item-subtitle v-else>
-          <span class="ml-2">Hello, there</span>
+          <span class="ml-2">Hello, there.</span>
         </v-list-item-subtitle>
       </v-list-item-content>
     </v-list-item>

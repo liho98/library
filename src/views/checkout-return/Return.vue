@@ -152,7 +152,7 @@
 
 <script>
 import Multiselect from "vue-multiselect";
-import db from "../../components/firestoreInit";
+import db from "../../firebase/firestoreInit";
 import Vue from "vue";
 import { firestorePlugin } from "vuefire";
 

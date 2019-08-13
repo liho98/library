@@ -21,11 +21,11 @@
           :items="reserve"
           :search="search"
           :loading="loading"
-          footer-props="{
+          :footer-props="{
             prevIcon: 'fa fa-angle-left',
             nextIcon: 'fa fa-angle-right'
           }"
-          height="530"
+          :height="530"
         >
           <!-- :sort-by="borrowed_date"
           :sort-desc=true-->
@@ -61,7 +61,7 @@
 </template>
 
 <script>
-import db from "../../components/firestoreInit";
+import db from "../../firebase/firestoreInit";
 import Vue from "vue";
 import { firestorePlugin } from "vuefire";
 

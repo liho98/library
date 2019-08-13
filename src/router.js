@@ -1,4 +1,4 @@
-import firebase from './components/firebaseInit';
+import firebase from './firebase/firebaseInit';
 import Vue from "vue";
 import Router from "vue-router";
 
@@ -11,7 +11,7 @@ import Login from "./views/Login.vue";
 // import Register from "./views/Register.vue";
 
 // Admin
-import Dashboard from "./views/admin/dashboard";
+import Dashboard from "./views/admin/Dashboard";
 
 // Book
 import AddBook from "./views/books/AddBook";

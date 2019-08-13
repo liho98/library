@@ -36,7 +36,7 @@
 // Thanks Marcelo Forclaz(https://github.com/CristalT) https://gist.github.com/CristalT/2651023cfa2f36cddd119fd979581893
 // Thanks Matteo Leoni(https://github.com/signalkuppe) https://github.com/signalkuppe/vuetify-cloudinary-upload/blob/master/src/components/v-cloudinary-upload.vue
 // import { firestorage } from '@/firebase/firestorage'
-import firebaseStorage from "./firebaseStorage";
+import firebaseStorage from "./../firebase/firebaseStorage";
 
 export default {
   props: ["oldImgUrl"],

@@ -48,7 +48,7 @@
 <script>
 import Header from "./components/layout/Header.vue";
 import Footer from "./components/layout/Footer.vue";
-import NavigationDrawer from "./views/admin/navigationDrawer.vue";
+import NavigationDrawer from "./components/layout/NavigationDrawer.vue";
 
 export default {
   name: "app",

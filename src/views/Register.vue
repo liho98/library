@@ -136,7 +136,7 @@
 
 <script>
 import firebase from "firebase";
-import db from "./../components/firestoreInit";
+import db from "./../firebase/firestoreInit";
 import Vue from "vue";
 import VeeValidate from "vee-validate";
 

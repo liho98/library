@@ -67,7 +67,7 @@
 </template>
 
 <script>
-import db from "../../components/firestoreInit";
+import db from "../../firebase/firestoreInit";
 // import ProgressCircular from "../../components/ProgressCircular";
 
 export default {
