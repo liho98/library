@@ -8,6 +8,7 @@ export default new Vuex.Store({
     loading: false,
     breadcrumbs:[{text: 'Home',disabled: false,to: '/',},],
     drawer:true,
+    messages: 0,
   },
   mutations: {
     startLoading: state => (state.loading = true),
@@ -19,8 +20,10 @@ export default new Vuex.Store({
     toggle(state, toggle) {
       Vue.set(state, 'drawer', toggle);
       // this.state.breadcrumbs.set(page);
+    },
+    updateMessages(state, message){
+      Vue.set(state, 'messages', message);
     }
-
   },
   actions: {
 
@@ -28,5 +31,6 @@ export default new Vuex.Store({
   getters: {
     breadcrumbs: state => state.breadcrumbs,
     drawer: state => state.drawer,
+    messages: state => state.messages,
   }
 })

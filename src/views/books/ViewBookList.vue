@@ -11,7 +11,7 @@
 
     <v-container fluid grid-list-md>
       <v-data-iterator
-        light
+        dark
         :items="books"
         :items-per-page.sync="itemsPerPage"
         :page="page"
@@ -22,8 +22,19 @@
         hide-default-footer
       >
         <template v-slot:header>
-          <v-toolbar light class="mb-1">
-            <v-text-field
+          <v-row>
+            <v-col cols="12">
+              <v-sheet dark style="border-radius:5px" elevation="10" class="py-2 px-6">
+                <v-chip-group show-arrows next-icon="fa fa-angle-right" prev-icon="fa fa-angle-left" dark multiple active-class="primary--text">
+                  <v-chip dark v-for="tag in tags" :key="tag">{{ tag }}</v-chip>
+                </v-chip-group>
+              </v-sheet>
+            </v-col>
+          </v-row>
+
+          <v-toolbar style="border-radius:5px" dark class="mb-1 py-2 px-2">
+            <v-toolbar-title color="white" ><v-icon>fa-fw fa-search</v-icon></v-toolbar-title>
+            <!-- <v-text-field
               v-model="search"
               clearable
               flat
@@ -31,7 +42,23 @@
               hide-details
               prepend-inner-icon="search"
               label="Search"
-            ></v-text-field>
+            ></v-text-field> -->
+
+
+    <v-autocomplete
+      v-model="select"
+      :loading="loading"
+      :items="titles"
+      :search-input.sync="search"
+      cache-items
+      class="mx-4"
+      flat
+      hide-no-data
+      hide-details
+      label="Book name"
+      solo-inverted
+    ></v-autocomplete>
+
           </v-toolbar>
         </template>
 
@@ -54,8 +81,8 @@
             <v-flex v-for="book in props.items" :key="book.title" xs12 sm4 md3 lg2>
               <v-card height="100%" v-bind:to="{name: 'view-book', params: {book_id: book.id}}">
                 <v-img
-                  contain
-                  height="70%"
+                  
+                  height="75%"
                   style="box-shadow: 0px 2px 10px 0px #555555;"
                   v-bind:src="book.download_url"
                   align="center"
@@ -78,6 +105,7 @@
               </template>
               <v-list>
                 <v-list-item
+                
                   v-for="(number, index) in itemsPerPageArray"
                   :key="index"
                   @click="updateItemsPerPage(number)"
@@ -90,10 +118,10 @@
             <v-spacer></v-spacer>
 
             <span class="mr-4 grey--text">Page {{ page }} of {{ numberOfPages }}</span>
-            <v-btn fab light class="mr-1" @click="formerPage">
+            <v-btn dark fab light class="mr-1" @click="formerPage">
               <v-icon>keyboard_arrow_left</v-icon>
             </v-btn>
-            <v-btn fab light class="ml-1" @click="nextPage">
+            <v-btn dark fab light class="ml-1" @click="nextPage">
               <v-icon>keyboard_arrow_right</v-icon>
             </v-btn>
           </v-layout>
@@ -127,9 +155,24 @@ export default {
       filter: {},
       sortDesc: false,
       page: 1,
+        loading: false,
+        search: null,
+        select: null,
       itemsPerPage: 18,
       sortBy: "title",
-      no_data_text: "Loading Books Details ..."
+      no_data_text: "Loading Books Details ...",
+      titles:[],
+      tags: [
+        "Information technology",
+        "Biology",
+        "Academic",
+        "Food",
+        "Programming",
+        "Financial",
+        "Hospitality & Management",
+        "Chemistry",
+        "Mathematics"
+      ]
     };
   },
   computed: {
@@ -179,6 +222,7 @@ export default {
               data.download_url = doc.data().download_url;
             }
             vm.books.push(data); // books will now equal to data
+            this.titles.push(doc.data().title);
           });
         });
     },
@@ -199,9 +243,20 @@ export default {
               data.download_url = doc.data().download_url;
             }
             this.books.push(data); // books will now equal to data
+            
           });
         });
-    }
+    },
+     querySelections (v) {
+        this.loading = true
+        // Simulated ajax query
+        setTimeout(() => {
+          this.items = this.titles.filter(e => {
+            return (e || '').toLowerCase().indexOf((v || '').toLowerCase()) > -1
+          })
+          this.loading = false
+        }, 500)
+      },
   },
   beforeRouteEnter(to, from, next) {
     next(vm => {
@@ -210,7 +265,12 @@ export default {
     // console.log(to.params.book_id);
   },
   watch: {
-    $route: "fetchData"
+     $route: "fetchData",
+      search (val) {
+        val && val !== this.select && this.querySelections(val)
+      },
+
+
   }
   // components: {
   //   "app-book-list": BookList,

@@ -1,6 +1,6 @@
 
 <template>
-  <v-card height="100%" width="256" class="mx-auto">
+  <v-card flat width="256" class="mx-auto">
     <v-list-item>
       <v-list-item-content>
         <v-list-item-title class="title">
@@ -53,17 +53,20 @@
       </v-list>
     </div>
 
-    <v-layout v-if="isLoggedIn" align-end style="position: absolute;bottom: 0">
+
+    <!-- <v-layout v-if="isLoggedIn" align-end style="position: absolute;bottom: 0">
       <div class="pa-2">
         <v-btn v-on:click="logout" color="primary" style="padding: 0 89.5px;" block>Logout</v-btn>
       </div>
-    </v-layout>
+    </v-layout> -->
 
-    <v-layout v-else align-end style="position: absolute;bottom: 0">
+    <!-- <v-layout v-else align-end style="position: absolute;bottom: 0">
       <div class="pa-2">
         <v-btn v-on:click="login" color="primary" style="padding: 0 89.5px;" block>Login</v-btn>
       </div>
-    </v-layout>
+    </v-layout> -->
+
+
   </v-card>
 </template>
 
@@ -258,18 +261,18 @@ export default {
     }
   },
   methods: {
-    logout: function() {
-      firebase
-        .auth()
-        .signOut()
-        .then(() => {
-          // alert("Logout successfully.");
-          this.$router.go({ path: "/" });
-        });
-    },
-    login: function() {
-      this.$router.push({ path: "login" });
-    }
+    // logout: function() {
+    //   firebase
+    //     .auth()
+    //     .signOut()
+    //     .then(() => {
+    //       // alert("Logout successfully.");
+    //       this.$router.go({ path: "/" });
+    //     });
+    // },
+    // login: function() {
+    //   this.$router.push({ path: "login" });
+    // }
   }
 };
 </script>

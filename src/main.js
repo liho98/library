@@ -9,8 +9,6 @@ Vue.config.productionTip = false;
 
 let app = '';
 
-
-
 // Your web app's Firebase configuration
 // firebase.initializeApp({
 //   apiKey: "AIzaSyCmCkNeF7UYDgHCTJO-qmt8hjQxftuUd9I",
@@ -31,6 +29,5 @@ firebase.auth().onAuthStateChanged(() => {
       store,
       render: h => h(App)
     }).$mount("#app");    
-    
   }
 });
