@@ -59,6 +59,10 @@
           </tr>
           </template>-->
           <template v-slot:item.action="{ item }">
+            <router-link :to="{name: 'view-book', params: {book_id: item.id}}" style="text-decoration: none;">
+              <v-icon small>fas fa-eye</v-icon>
+            </router-link>&nbsp;
+            <!-- <v-icon small v-bind:to="{name: 'view-book', params: {book_id: item.id}}">fas fa-eye</v-icon>&nbsp; -->
             <v-icon small @click="rowSelected(item); edit_dialog = true">edit</v-icon>&nbsp;
             <v-icon small @click="rowSelected(item); delete_dialog = true">delete</v-icon>
           </template>
