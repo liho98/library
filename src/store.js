@@ -9,6 +9,7 @@ export default new Vuex.Store({
     breadcrumbs:[{text: 'Home',disabled: false,to: '/',},],
     drawer:true,
     messages: 0,
+    books: []
   },
   mutations: {
     startLoading: state => (state.loading = true),
@@ -23,6 +24,9 @@ export default new Vuex.Store({
     },
     updateMessages(state, message){
       Vue.set(state, 'messages', message);
+    },
+    updatebook(state, books){
+      Vue.set(state, 'books', books);
     }
   },
   actions: {
@@ -32,5 +36,6 @@ export default new Vuex.Store({
     breadcrumbs: state => state.breadcrumbs,
     drawer: state => state.drawer,
     messages: state => state.messages,
+    books: state => state.books,
   }
 })

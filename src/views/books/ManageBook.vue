@@ -746,5 +746,6 @@ tr:hover {
 <style>
 .v-dialog--scrollable {
   overflow-x: hidden !important;
+  overflow-y: hidden !important;
 }
 </style>
