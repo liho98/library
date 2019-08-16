@@ -16,6 +16,14 @@
           >
             <v-icon>add</v-icon>Book
           </v-btn>
+          <v-btn
+            @click="add_category_dialog = true"
+            color="primary"
+            style="margin: 0 15px; margin-left: 0px; text-transform: none"
+          >
+            <v-icon>add</v-icon>Category
+          </v-btn>
+
           <v-spacer></v-spacer>
           <v-text-field
             v-model="search"
@@ -273,6 +281,43 @@
       </v-card>
     </v-dialog>
 
+    <v-dialog scrollable v-model="add_category_dialog" persistent max-width="600px">
+      <v-card>
+        <v-card-title>
+          <span class="headline">Add Book Category</span>
+        </v-card-title>
+        <v-card-text>
+          <v-container grid-list-md>
+            <v-layout wrap>
+              <v-flex xs12>
+                <v-text-field
+                  v-model="category"
+                  label="Category name *"
+                  type="text"
+                  :rules="[v => (v && v.length) >= 1 || 'Required']"
+                  required
+                ></v-text-field>
+              </v-flex>
+            </v-layout>
+          </v-container>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn
+            color="blue darken-1"
+            style="text-transform: none; margin: 0px"
+            text
+            @click="add_category_dialog = false"
+          >Close</v-btn>
+          <v-btn
+            color="primary"
+            style="text-transform: none; margin: 0px; margin-right: 16px"
+            @click="addCategory(); add_category_dialog = false"
+          >Add</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+
     <!-- <b-container> -->
     <!-- User Interface controls -->
     <!-- <b-row>
@@ -371,6 +416,9 @@ export default {
   },
   data() {
     return {
+      add_category_dialog: false,
+      category: "",
+
       snackbar: false,
       color: "",
       timeout: 5000, // 5 seconds
@@ -493,6 +541,24 @@ export default {
   //   });
   // },
   methods: {
+    addCategory() {
+      const createdAt = new Date();
+      if (this.category) {
+        db.collection("categories")
+          .doc(this.category)
+          .set({
+            total_book: 0
+          })
+          .then(docRef => {
+            this.snackbar = true;
+            this.message = "Add book category successfully";
+            this.color = "primary";
+          })
+          .catch(error => {
+            console.error("Error adding book category: ", error);
+          });
+      }
+    },
     addBook() {
       const createdAt = new Date();
       if (
