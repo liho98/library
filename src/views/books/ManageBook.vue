@@ -10,7 +10,7 @@
         <v-card-title>
           Manage Book
           <v-btn
-            @click="add_dialog = true"
+            @click="getCategories(); add_dialog = true"
             color="primary"
             style="margin: 0 15px; text-transform: none"
           >
@@ -59,11 +59,14 @@
           </tr>
           </template>-->
           <template v-slot:item.action="{ item }">
-            <router-link :to="{name: 'view-book', params: {book_id: item.id}}" style="text-decoration: none;">
+            <router-link
+              :to="{name: 'view-book', params: {book_id: item.id}}"
+              style="text-decoration: none;"
+            >
               <v-icon small>fas fa-eye</v-icon>
             </router-link>&nbsp;
             <!-- <v-icon small v-bind:to="{name: 'view-book', params: {book_id: item.id}}">fas fa-eye</v-icon>&nbsp; -->
-            <v-icon small @click="rowSelected(item); edit_dialog = true">edit</v-icon>&nbsp;
+            <v-icon small @click="getCategories(); rowSelected(item); edit_dialog = true">edit</v-icon>&nbsp;
             <v-icon small @click="rowSelected(item); delete_dialog = true">delete</v-icon>
           </template>
         </v-data-table>
@@ -128,6 +131,14 @@
                   label="Quantity *"
                   type="number"
                 ></v-text-field>
+              </v-flex>
+              <v-flex xs12>
+                <v-autocomplete
+                  :rules="[v => (v && v.length) >= 1 || 'Required']"
+                  label="Categories *"
+                  :items="categories"
+                  v-model="category"
+                ></v-autocomplete>
               </v-flex>
               <v-flex xs12>
                 <v-textarea
@@ -221,6 +232,14 @@
                   label="Quantity *"
                   type="number"
                 ></v-text-field>
+              </v-flex>
+              <v-flex xs12>
+                <v-autocomplete
+                  :rules="[v => (v && v.length) >= 1 || 'Required']"
+                  label="Categories *"
+                  :items="categories"
+                  v-model="book_selected.category"
+                ></v-autocomplete>
               </v-flex>
               <v-flex xs12>
                 <v-textarea
@@ -422,6 +441,7 @@ export default {
     return {
       add_category_dialog: false,
       category: "",
+      categories: [],
 
       snackbar: false,
       color: "",
@@ -545,6 +565,15 @@ export default {
   //   });
   // },
   methods: {
+    getCategories() {
+      db.collection("categories")
+        .get()
+        .then(querySnapshot => {
+          querySnapshot.forEach(doc => {
+            this.categories.push(doc.id); // books will now equal to data
+          });
+        });
+    },
     addCategory() {
       const createdAt = new Date();
       if (this.category) {
@@ -571,7 +600,8 @@ export default {
         this.author &&
         this.publisher &&
         this.year &&
-        this.quantity
+        this.quantity &&
+        this.category
       ) {
         db.collection("books")
           .add({
@@ -585,7 +615,8 @@ export default {
             current_quantity: Number(this.quantity),
             cover_image: this.fileName,
             download_url: this.download_url,
-            description: this.description
+            description: this.description,
+            category: this.category
           })
           .then(docRef => {
             // add copies based on book quantity
@@ -662,7 +693,8 @@ export default {
           quantity: Number(this.book_selected.quantity),
           cover_image: this.book_selected.fileName,
           download_url: this.book_selected.download_url,
-          description: this.book_selected.description
+          description: this.book_selected.description,
+          category: this.book_selected.category
         });
 
       this.snackbar = true;
@@ -682,62 +714,6 @@ export default {
       //   } else {
       //   }
     },
-    addUser(uid, librarian_id, name, email, contact) {
-      const createdAt = new Date();
-
-      db.collection("librarians")
-        .doc(uid)
-        .set({
-          name,
-          librarian_id: librarian_id,
-          email,
-          contact,
-          created_at: createdAt
-        })
-        .then(() => {
-          this.snackbar = true;
-          this.message = "Add librarian successfully";
-          this.color = "primary";
-
-          // console.log("User added: ");
-          // alert("Your account has been created!");
-          // this.$router.go({ path: "/" });
-        })
-        .catch(error => {
-          console.error("Error adding user: ", error);
-        });
-    },
-    signUp() {
-      if (this.name && this.email && this.librarian_id && this.password) {
-        secondaryFirebase
-          .auth()
-          .createUserWithEmailAndPassword(this.email, this.password)
-          .then(
-            () => {
-              var currentUser = secondaryFirebase.auth().currentUser;
-              var uid = currentUser.uid;
-              console.log("name: " + this.name);
-              // update user profile
-              currentUser.updateProfile({
-                displayName: this.name,
-                photoURL: "librarians"
-              });
-              secondaryFirebase.auth().signOut();
-              secondaryFirebase.delete();
-              this.addUser(
-                uid,
-                this.librarian_id,
-                this.name,
-                this.email,
-                this.contact
-              );
-            },
-            err => {
-              alert("Oops. " + err.message);
-            }
-          );
-      }
-    }
   }
 };
 </script>
