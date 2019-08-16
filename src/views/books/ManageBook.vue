@@ -592,7 +592,7 @@ export default {
           quantity: Number(this.book_selected.quantity),
           cover_image: this.book_selected.fileName,
           download_url: this.book_selected.download_url,
-          description: this.description
+          description: this.book_selected.description
         });
 
       this.snackbar = true;
