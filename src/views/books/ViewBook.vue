@@ -42,6 +42,10 @@
                 <td class="col-10">{{this.publisher}}</td>
               </tr>
               <tr class="d-flex">
+                <th class="col-2 text-right">Category</th>
+                <td class="col-10" style="text-transform: capitalize">{{this.category}}</td>
+              </tr>
+              <tr class="d-flex">
                 <th class="col-2 text-right">Description</th>
                 <td class="col-10" style="text-align: justify">{{this.description}}</td>
               </tr>
@@ -159,6 +163,7 @@ export default {
       quantity: null,
       current_quantity: null,
       description: "",
+      category: "",
       copies: [],
       dialog: false,
       due_date: null,
@@ -191,6 +196,7 @@ export default {
           vm.quantity = doc.data().quantity;
           vm.current_quantity = doc.data().current_quantity;
           vm.description = doc.data().description;
+          vm.category = doc.data().category;
 
           if (
             doc.data().download_url === undefined ||
@@ -296,6 +302,7 @@ export default {
           this.quantity = doc.data().quantity;
           this.current_quantity = doc.data().current_quantity;
           this.description = doc.data().description;
+          this.category = doc.data().category;
 
           if (
             doc.data().download_url === undefined ||
