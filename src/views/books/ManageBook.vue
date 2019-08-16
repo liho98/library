@@ -138,7 +138,14 @@
                   label="Categories *"
                   :items="categories"
                   v-model="category"
-                ></v-autocomplete>
+                >
+                  <template v-slot:selection="data">
+                    <span style="text-transform: capitalize">{{ data.item }}</span>
+                  </template>
+                  <template v-slot:item="data">
+                    <v-list-item-content v-text="data.item" style="text-transform: capitalize"></v-list-item-content>
+                  </template>
+                </v-autocomplete>
               </v-flex>
               <v-flex xs12>
                 <v-textarea
@@ -239,7 +246,14 @@
                   label="Categories *"
                   :items="categories"
                   v-model="book_selected.category"
-                ></v-autocomplete>
+                >
+                  <template v-slot:selection="data">
+                    <span style="text-transform: capitalize">{{ data.item }}</span>
+                  </template>
+                  <template v-slot:item="data">
+                    <v-list-item-content v-text="data.item" style="text-transform: capitalize"></v-list-item-content>
+                  </template>
+                </v-autocomplete>
               </v-flex>
               <v-flex xs12>
                 <v-textarea
@@ -713,7 +727,7 @@ export default {
 
       //   } else {
       //   }
-    },
+    }
   }
 };
 </script>
