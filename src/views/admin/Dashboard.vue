@@ -51,7 +51,7 @@
                   <v-list-item-subtitle v-text="item.number"></v-list-item-subtitle>
                 </v-card-text>
                 <v-card-actions>
-                  <v-btn text>View Now</v-btn>
+                  <v-btn text>View Now  {{books}}</v-btn>
                 </v-card-actions>
               </v-list-item-content>
 
@@ -67,7 +67,8 @@
 </template>
 
 <script>
-var admin = require("firebase-admin");
+// var admin = require("firebase-admin");
+import db from "../../firebase/firestoreInit";
 
 export default {
   name: "dashboard",
@@ -76,15 +77,33 @@ export default {
     this.$store.commit("changePage", [
       { text: "Dashboard", disabled: false, to: "/dashboard" }
     ]);
+
+    db.collection("books").onSnapshot(function(querySnapshot) {
+      var book = [];
+      querySnapshot.forEach(function(doc) {
+        book.push(doc.data().title);
+      });
+      this.books = book;
+      this.$store.commit("updatebook", book);
+      console.log("Book's title: ", this.books.join(", "));
+      console.log(this.books.length);
+     
+    });
+
+      console.log("Book's title: ", this.books.join(", "));
+      console.log(this.books.length);
+
+
   },
+  methods: {},
   updated() {
     this.$store.commit("stopLoading");
   },
   data: () => ({
     labels: ["8am", "10am", "12pm", "2pm", "4pm", "6pm", "8pm", "10pm", "12pm"],
     value: [200, 675, 410, 390, 310, 460, 250, 240, 240],
-
-    graphs:[
+    books: [],
+    graphs: [
       {
         color: "#1F7087",
         src: "https://cdn.vuetifyjs.com/images/cards/foster.jpg",
@@ -96,7 +115,7 @@ export default {
         src: "https://cdn.vuetifyjs.com/images/cards/halcyon.png",
         title: "Registration",
         number: 33
-      }, 
+      },
       {
         color: "#952175",
         src: "https://cdn.vuetifyjs.com/images/cards/halcyon.png",
