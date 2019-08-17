@@ -6,8 +6,8 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     loading: false,
-    breadcrumbs:[{text: 'Home',disabled: false,to: '/',},],
-    drawer:true,
+    breadcrumbs: [{ text: 'Home', disabled: false, to: '/', },],
+    drawer: true,
     messages: 0,
     books: []
   },
@@ -18,15 +18,12 @@ export default new Vuex.Store({
       Vue.set(state, 'breadcrumbs', page);
       // this.state.breadcrumbs.set(page);
     },
-    toggle(state, toggle) {
-      Vue.set(state, 'drawer', toggle);
-      // this.state.breadcrumbs.set(page);
-    },
-    updateMessages(state, message){
+    toggle: state => (state.drawer = !state.drawer),
+    updateMessages(state, message) {
       Vue.set(state, 'messages', message);
     },
-    updatebook(state, book){
-      state.books=book;
+    updatebook(state, book) {
+      state.books = book;
     }
   },
   actions: {

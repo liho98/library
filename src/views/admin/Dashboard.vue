@@ -351,7 +351,7 @@ export default {
       // console.log(values);
       // console.log(timestamp[0].toDate().getMonth());
       return values;
-    },
+    }
   },
   data() {
     return {
@@ -374,8 +374,8 @@ export default {
       graphs: [
         {
           color: "primary",
-          value: [0,1,1,5],
-          moment: moment(today).fromNow(),
+          value: [0, 1, 1, 5],
+          moment: values,
           title: "Student",
           number: students,
           to: "/",
@@ -468,7 +468,11 @@ export default {
       ]
     };
   },
-
+  watch: {
+    graphs: function(val) {
+      this.graphs[0]["value"] = values;
+    }
+  }
 };
 </script>
 

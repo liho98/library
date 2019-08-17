@@ -7,67 +7,75 @@
     </v-content>
     <Footer />
   </v-app>-->
-  <v-app>
-    <v-navigation-drawer app v-model="drawer">
-      <NavigationDrawer />
-
+  <v-app :key="$route.fullPath">
+    <!-- <v-navigation-drawer app v-model="drawer" :key="$route.fullPath"> -->
+    <NavigationDrawer />
+    <!-- 
       <template v-if="isLoggedIn" v-slot:append>
-      <div class="pa-2">
+      <div class="pa-2" :key="$route.fullPath">
         <v-btn v-on:click="logout" color="primary" block>Logout</v-btn>
       </div>
       </template>
       <template v-else v-slot:append>
-      <div class="pa-2">
+      <div class="pa-2" :key="$route.fullPath">
         <v-btn v-on:click="login" color="primary" block>Login</v-btn>
       </div>
       </template>
+      
 
-    </v-navigation-drawer>
+    </v-navigation-drawer>-->
 
     <v-app-bar app>
+      <v-btn class @click="toggle()" color="primary" icon>
+        <v-icon dense small>fa-fw fa-bars</v-icon>
+      </v-btn>
 
-        <v-btn class @click.stop="drawer = !drawer" color="primary" icon>
-          <v-icon dense small>fa-fw fa-bars</v-icon>
-        </v-btn>
+      <v-breadcrumbs :items="$store.getters.breadcrumbs"></v-breadcrumbs>
+      <v-spacer></v-spacer>
 
-        <v-breadcrumbs :items="$store.getters.breadcrumbs"></v-breadcrumbs>
-        <v-spacer></v-spacer>
+      <v-btn color="primary" icon>
+        <v-icon dense small>fa-fw fa-search</v-icon>
+      </v-btn>
 
-        <v-btn color="primary" icon>
-          <v-icon dense small>fa-fw fa-search</v-icon>
-        </v-btn>
-
-
-    <v-badge overlap>
+      <v-badge overlap>
         <template v-slot:badge>
           <span v-if="$store.getters.messages > 0">{{ $store.getters.messages }}</span>
         </template>
-         <v-btn color="primary" icon>
+        <v-btn color="primary" icon>
           <v-icon dense small>fa-fw fa-bell</v-icon>
         </v-btn>
-    </v-badge>
+      </v-badge>
 
-        <v-btn v-show="!isLoggedIn" color="primary" icon router to="/login">
-          <v-icon dense small>fa-fw fa-user-circle</v-icon>
-        </v-btn>
-        <v-menu
-          nudge-width="100"
-          nudge-right="10"
-          nudge-bottom="28"
-          offset-overflow
-          offset-y
-          offset-x
-        >
-          <template v-slot:activator="{ on }">
-            <v-chip style="text-decoration:none!important" class="mx-4" v-show="isLoggedIn" pill v-on="on" router to="/personal-detail">
-              <v-avatar left>
-                <v-icon color="primary" dense small>fa-fw fa-user-circle</v-icon>
-                <!-- <v-img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQd5-DBF4bZYqH5Viu6GQbQ_zUMfvxRhBvafyV4ULA1IDMkrStr"></v-img> -->
-              </v-avatar>{{displayName}}
-            </v-chip>
-          </template>
- </v-menu>
-        <!-- <Header /> -->
+      <v-btn v-show="!isLoggedIn" color="primary" icon router to="/login">
+        <v-icon dense small>fa-fw fa-user-circle</v-icon>
+      </v-btn>
+      <v-menu
+        nudge-width="100"
+        nudge-right="10"
+        nudge-bottom="28"
+        offset-overflow
+        offset-y
+        offset-x
+      >
+        <template v-slot:activator="{ on }">
+          <v-chip
+            style="text-decoration:none!important"
+            class="mx-4"
+            v-show="isLoggedIn"
+            pill
+            v-on="on"
+            router
+            to="/personal-detail"
+          >
+            <v-avatar left>
+              <v-icon color="primary" dense small>fa-fw fa-user-circle</v-icon>
+              <!-- <v-img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQd5-DBF4bZYqH5Viu6GQbQ_zUMfvxRhBvafyV4ULA1IDMkrStr"></v-img> -->
+            </v-avatar>
+            {{displayName}}
+          </v-chip>
+        </template>
+      </v-menu>
+      <!-- <Header /> -->
     </v-app-bar>
 
     <!-- Sizes your content based upon application components -->
@@ -77,7 +85,7 @@
       <!-- Provides the application the proper gutter -->
       <v-container fluid>
         <!-- If using vue-router -->
-        <router-view></router-view>
+        <router-view :key="$route.fullPath"></router-view>
       </v-container>
     </v-content>
     <v-footer padless>
@@ -101,7 +109,7 @@ export default {
       drawer: true,
       isLoggedIn: false,
       messages: 1,
-      displayName:"",
+      displayName: ""
     };
   },
   created() {
@@ -133,18 +141,23 @@ export default {
     },
     login: function() {
       this.$router.push({ path: "login" });
+    },
+    toggle: function() {
+      var temp = this.$store.getters.drawer;
+      this.$store.commit("toggle", temp);
     }
   }
 };
 </script>
 
 <style>
-.v-badge__badge{
-  top:0px!important;right:0px!important;
-    font-size: 10px!important;
-    height: 15px!important;
-    width: 10px!important;
-    min-width: 20px!important;
-    border-radius: 20px!important;
+.v-badge__badge {
+  top: 0px !important;
+  right: 0px !important;
+  font-size: 10px !important;
+  height: 15px !important;
+  width: 10px !important;
+  min-width: 20px !important;
+  border-radius: 20px !important;
 }
 </style>

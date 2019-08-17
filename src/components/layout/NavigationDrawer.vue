@@ -1,73 +1,92 @@
 
 <template>
-  <v-card flat width="256" class="mx-auto">
-    <v-list-item>
-      <v-list-item-content>
-        <v-list-item-title class="title">
-          <router-link to="/" class="navbar-brand" style="margin-right: 0px">
-            <img src="../../assets/logo.png" alt="logo" style="width: 50px" />
+  <v-navigation-drawer app v-model="$store.state.drawer" :key="$route.fullPath">
+    <v-card flat width="256" class="mx-auto">
+      <v-list-item>
+        <v-list-item-content>
+          <v-list-item-title class="title">
+            <router-link to="/" class="navbar-brand" style="margin-right: 0px">
+              <img src="../../assets/logo.png" alt="logo" style="width: 50px" />
 
-            <!-- <img src="images/logo.png" alt="logo" style="width: 150px" /> -->
+              <!-- <img src="images/logo.png" alt="logo" style="width: 150px" /> -->
 
-            <span class="logoname">Taruc Library</span>
+              <span class="logoname">Taruc Library</span>
+            </router-link>
+          </v-list-item-title>
+          <v-list-item-subtitle v-if="isLoggedIn">
+            <span class="ml-2">Welcome, {{name}}</span>
+          </v-list-item-subtitle>
+          <v-list-item-subtitle v-else>
+            <span class="ml-2">Hello, there.</span>
+          </v-list-item-subtitle>
+        </v-list-item-content>
+      </v-list-item>
+
+      <v-divider></v-divider>
+
+      <div v-for="item in items" :key="item.id">
+        <v-list v-show="item.role == role" dense nav>
+          <router-link :to="item.to">
+            <v-list-item link>
+              <v-list-item-icon>
+                <v-icon size="20" class style="margin-top:3px;" small right dense>{{ item.icon }}</v-icon>
+              </v-list-item-icon>
+
+              <v-list-item-content>
+                <v-list-item-title>{{ item.title }}</v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
           </router-link>
-        </v-list-item-title>
-        <v-list-item-subtitle v-if="isLoggedIn">
-          <span class="ml-2">Welcome, {{name}}</span>
-        </v-list-item-subtitle>
-        <v-list-item-subtitle v-else>
-          <span class="ml-2">Hello, there.</span>
-        </v-list-item-subtitle>
-      </v-list-item-content>
-    </v-list-item>
+        </v-list>
 
-    <v-divider></v-divider>
+        <v-list v-show="item.role == 'all'" dense nav>
+          <router-link :to="item.to">
+            <v-list-item link>
+              <v-list-item-icon>
+                <v-icon size="20" class style="margin-top:3px" small right dense>{{ item.icon }}</v-icon>
+              </v-list-item-icon>
 
-    <div v-for="item in items" :key="item.id">
-      <v-list v-show="item.role == role" dense nav>
-        <router-link :to="item.to">
-          <v-list-item link>
-            <v-list-item-icon>
-              <v-icon size="20" class style="margin-top:3px;" small right dense>{{ item.icon }}</v-icon>
-            </v-list-item-icon>
+              <v-list-item-content>
+                <v-list-item-title>{{ item.title }}</v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+          </router-link>
+        </v-list>
+      </div>
 
-            <v-list-item-content>
-              <v-list-item-title>{{ item.title }}</v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
-        </router-link>
-      </v-list>
-
-      <v-list v-show="item.role == 'all'" dense nav>
-        <router-link :to="item.to">
-          <v-list-item link>
-            <v-list-item-icon>
-              <v-icon size="20" class style="margin-top:3px" small right dense>{{ item.icon }}</v-icon>
-            </v-list-item-icon>
-
-            <v-list-item-content>
-              <v-list-item-title>{{ item.title }}</v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
-        </router-link>
-      </v-list>
-    </div>
-
-
-    <!-- <v-layout v-if="isLoggedIn" align-end style="position: absolute;bottom: 0">
+      <!-- <template v-if="isLoggedIn" v-slot:append>
+      <div class="pa-2">
+        <v-btn v-on:click="logout" color="primary" block>Logout</v-btn>
+      </div>
+      </template>
+      <template v-else v-slot:append>
+      <div class="pa-2">
+        <v-btn v-on:click="login" color="primary" block>Login</v-btn>
+      </div>
+      </template>-->
+      <!-- <v-layout v-if="isLoggedIn" align-end style="position: absolute;bottom: 0">
       <div class="pa-2">
         <v-btn v-on:click="logout" color="primary" style="padding: 0 89.5px;" block>Logout</v-btn>
       </div>
-    </v-layout> -->
+    </v-layout>
 
-    <!-- <v-layout v-else align-end style="position: absolute;bottom: 0">
+    <v-layout v-else align-end style="position: absolute;bottom: 0">
       <div class="pa-2">
         <v-btn v-on:click="login" color="primary" style="padding: 0 89.5px;" block>Login</v-btn>
       </div>
-    </v-layout> -->
-
-
-  </v-card>
+      </v-layout>-->
+    </v-card>
+    <template v-if="isLoggedIn" v-slot:append>
+      <div class="pa-2" :key="$route.fullPath">
+        <v-btn v-on:click="logout" color="primary" block>Logout</v-btn>
+      </div>
+    </template>
+    <template v-else v-slot:append>
+      <div class="pa-2" :key="$route.fullPath">
+        <v-btn v-on:click="login" color="primary" block>Login</v-btn>
+      </div>
+    </template>
+  </v-navigation-drawer>
 </template>
 
 <script>
@@ -76,6 +95,7 @@ export default {
   data() {
     return {
       isLoggedIn: false,
+      drawer: true,
       name: "",
       role: "",
       items: [
@@ -261,18 +281,18 @@ export default {
     }
   },
   methods: {
-    // logout: function() {
-    //   firebase
-    //     .auth()
-    //     .signOut()
-    //     .then(() => {
-    //       // alert("Logout successfully.");
-    //       this.$router.go({ path: "/" });
-    //     });
-    // },
-    // login: function() {
-    //   this.$router.push({ path: "login" });
-    // }
+    logout: function() {
+      firebase
+        .auth()
+        .signOut()
+        .then(() => {
+          // alert("Logout successfully.");
+          this.$router.push({ path: "/" });
+        });
+    },
+    login: function() {
+      this.$router.push({ path: "dashboard" });
+    }
   }
 };
 </script>
