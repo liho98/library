@@ -24,7 +24,7 @@
     <v-divider></v-divider>
 
     <div v-for="item in items" :key="item.id">
-      <v-list v-if="item.role == role" dense nav>
+      <v-list v-show="item.role == role" dense nav>
         <router-link :to="item.to">
           <v-list-item link>
             <v-list-item-icon>
@@ -38,7 +38,7 @@
         </router-link>
       </v-list>
 
-      <v-list v-if="item.role == 'all'" dense nav>
+      <v-list v-show="item.role == 'all'" dense nav>
         <router-link :to="item.to">
           <v-list-item link>
             <v-list-item-icon>
@@ -252,7 +252,7 @@ export default {
       right: null
     };
   },
-  created() {
+  mounted() {
     if (firebase.auth().currentUser) {
       var currentUser = firebase.auth().currentUser;
       this.isLoggedIn = true;

@@ -53,7 +53,7 @@
         color="primary"
         large
         style="background-color: #ff9700; text-transform: none;"
-        @click="login"
+        @click="login" :key="this.$route.fullPath"
       >Login</v-btn>
 
       <!-- <input type="submit" class="btn" @click="login" value="Login" /> -->
@@ -178,7 +178,8 @@ export default {
         .then(
           () => {
             // alert("Login successfully!");
-            this.$router.go("/");
+            // :key="$route.fullPath";
+            this.$router.go("/dashboard");
           },
           err => {
             this.$store.commit("stopLoading");

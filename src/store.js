@@ -25,8 +25,8 @@ export default new Vuex.Store({
     updateMessages(state, message){
       Vue.set(state, 'messages', message);
     },
-    updatebook(state, books){
-      Vue.set(state, 'books', books);
+    updatebook(state, book){
+      state.books=book;
     }
   },
   actions: {
