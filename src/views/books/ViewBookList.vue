@@ -12,6 +12,7 @@
     <v-container fluid grid-list-md>
       <v-data-iterator
         dark
+        color="primary"
         :items="filteredBooks"
         :items-per-page.sync="itemsPerPage"
         :page="page"
@@ -32,8 +33,8 @@
             </v-col>
           </v-row>-->
 
-          <v-toolbar style="border-radius:5px" dark class="mb-1 py-2 px-2">
-            <v-toolbar-title color="white">
+          <v-toolbar color="primary" style="border-radius:5px" dark class="mb-1 py-2 px-2">
+            <v-toolbar-title >
               <v-icon>fa-fw fa-search</v-icon>
             </v-toolbar-title>
             <!-- <v-text-field
@@ -104,7 +105,7 @@
 
           <v-layout wrap>
             <v-flex v-for="book in props.items" :key="book.title" xs12 sm4 md3 lg2>
-              <v-card height="100%" v-bind:to="{name: 'view-book', params: {book_id: book.id}}">
+              <v-card color="primary" height="100%" v-bind:to="{name: 'view-book', params: {book_id: book.id}}">
                 <v-img
                   height="75%"
                   style="box-shadow: 0px 2px 10px 0px #555555;"

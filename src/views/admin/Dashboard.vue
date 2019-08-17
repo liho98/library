@@ -23,7 +23,7 @@
           v-show="graph.role.includes(role) || graph.role === 'all'"
         >
           <v-card class="pt-5 px-5">
-            <v-sheet class="v-sheet--offset mx-auto py-1" color="cyan" elevation="5">
+            <v-sheet class="v-sheet--offset mx-auto py-1" color="primary" elevation="5">
               <v-sparkline
                 auto-draw
                 :labels="labels2"
@@ -53,7 +53,7 @@
           :key="i"
           v-show="item.role.includes(role) || item.role === 'all'"
         >
-          <v-card :color="item.color" dark>
+          <v-card color="primary" dark>
             <v-list-item three-line>
               <v-list-item-content class="align-self-start">
                 <v-card-text>
@@ -373,7 +373,7 @@ export default {
       // bookCount: 0,
       graphs: [
         {
-          color: "#1F7087",
+          color: "primary",
           value: [0,1,1,5],
           moment: moment(today).fromNow(),
           title: "Student",
