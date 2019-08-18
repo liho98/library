@@ -287,6 +287,7 @@ export default {
         .signOut()
         .then(() => {
           // alert("Logout successfully.");
+          this.$store.commit("updateDisplayName", "");
           this.$router.push({ path: "/" });
         });
     },

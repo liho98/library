@@ -107,16 +107,15 @@ export default {
   data() {
     return {
       drawer: true,
-      isLoggedIn: false,
-      messages: 1,
-      displayName: ""
+      messages: 1
     };
   },
   created() {
     if (firebase.auth().currentUser) {
       var currentUser = firebase.auth().currentUser;
-      this.isLoggedIn = true;
-      this.displayName = currentUser.displayName;
+      this.$store.commit("updateIsLoggedIn", true);
+      this.$store.commit("updateDisplayName", currentUser.displayName);
+      // this.displayName = currentUser.displayName;
     }
   },
   components: {
@@ -127,6 +126,12 @@ export default {
   computed: {
     isLoading() {
       return this.$store.state.loading;
+    },
+    displayName() {
+      return this.$store.state.displayName;
+    },
+    isLoggedIn() {
+      return this.$store.state.isLoggedIn;
     }
   },
   methods: {
@@ -145,6 +150,16 @@ export default {
     toggle: function() {
       var temp = this.$store.getters.drawer;
       this.$store.commit("toggle", temp);
+    }
+  },
+  watch: {
+    displayName(newCount, oldCount) {
+      // Our fancy notification (2).
+      console.log(`We have ${newCount} displayName now, yaay!`);
+    },
+    isLoggedIn(newCount, oldCount) {
+      // Our fancy notification (2).
+      console.log(`We have ${newCount} isLoggedIn now, yaay!`);
     }
   }
 };

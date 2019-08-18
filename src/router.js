@@ -1,6 +1,7 @@
 import firebase from './firebase/firebaseInit';
 import Vue from "vue";
 import Router from "vue-router";
+import store from './store.js';
 
 import Home from "./views/Home.vue";
 import About from "./views/About.vue";
@@ -253,7 +254,7 @@ const router = new Router({
         studentAuth: true,
         adminAuth: false
       }
-    },    {
+    }, {
       path: '/reserved-history',
       name: 'reserved-history',
       component: ReservedHistory,
@@ -287,7 +288,7 @@ const router = new Router({
         adminAuth: true
       }
     },
-    
+
     {
       path: '/delete-librarian',
       name: 'delete-librarian',
@@ -311,7 +312,7 @@ const router = new Router({
       }
     },
     {
-     path: '/personal-detail',
+      path: '/personal-detail',
       name: 'personal-detail',
       component: PersonalDetail,
       meta: {
@@ -320,20 +321,20 @@ const router = new Router({
         studentAuth: true,
         adminAuth: true
       }
-   },
-   {
-    path: '/dashboard',
-     name: 'dashboard',
-     component: Dashboard,
-     meta: {
-       requiresAuth: true,
-       librarianAuth: true,
-       studentAuth: true,
-       adminAuth: true
-     }
-  },
+    },
+    {
+      path: '/dashboard',
+      name: 'dashboard',
+      component: Dashboard,
+      meta: {
+        requiresAuth: true,
+        librarianAuth: true,
+        studentAuth: true,
+        adminAuth: true
+      }
+    },
 
- ]
+  ]
 });
 
 // If the route we navigate to requires authentication and there is no current user logged in, we redirect to the Login view.
@@ -346,13 +347,15 @@ router.beforeEach((to, from, next) => {
 
   // if not logged in
   if (!currentUser) {
+    store.commit("updateIsLoggedIn", false);
+
     if (to.meta.requiresAuth || to.meta.librarianAuth || to.meta.studentAuth || to.meta.adminAuth) {
       next('login');
     } else {
       next();
     }
   } else {
-
+    store.commit("updateIsLoggedIn", true);
 
     // get user role
     // I used photoURL attribute to store user role, because no other choice alr

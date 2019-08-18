@@ -180,6 +180,9 @@ export default {
           () => {
             // alert("Login successfully!");
             // :key="$route.fullPath";
+            var currentUser = firebase.auth().currentUser;
+            this.$store.commit("updateDisplayName", currentUser.displayName);
+
             this.$router.push("/dashboard");
           },
           err => {

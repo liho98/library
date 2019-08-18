@@ -6,10 +6,12 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     loading: false,
+    displayName: "",
     breadcrumbs: [{ text: 'Home', disabled: false, to: '/', },],
     drawer: true,
     messages: 0,
-    books: []
+    books: [],
+    isLoggedIn: false,
   },
   mutations: {
     startLoading: state => (state.loading = true),
@@ -24,6 +26,12 @@ export default new Vuex.Store({
     },
     updatebook(state, book) {
       state.books = book;
+    },
+    updateDisplayName(state, displayName) {
+      state.displayName = displayName;
+    },
+    updateIsLoggedIn(state, isLoggedIn) {
+      state.isLoggedIn = isLoggedIn;
     }
   },
   actions: {
@@ -34,5 +42,7 @@ export default new Vuex.Store({
     drawer: state => state.drawer,
     messages: state => state.messages,
     books: state => state.books,
+    displayName: state => state.displayName,
+    isLoggedIn: state => state.isLoggedIn,
   }
 })
