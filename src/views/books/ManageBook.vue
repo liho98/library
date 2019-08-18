@@ -243,7 +243,7 @@
               <v-flex xs12>
                 <v-autocomplete
                   :rules="[v => (v && v.length) >= 1 || 'Required']"
-                  label="Categories *"
+                  label="Category *"
                   :items="categories"
                   v-model="book_selected.category"
                 >

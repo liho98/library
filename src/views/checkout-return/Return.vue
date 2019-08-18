@@ -5,16 +5,140 @@
       <v-btn dark text @click="snackbar = false" style="text-transform: none">Close</v-btn>
     </v-snackbar>
 
-    <div class="centre">
+    <div class="container">
       <!-- <v-alert
         type="success"
         dark
         :value="success"
         transition="scale-transition"
       >Return Successfully</v-alert>-->
-      <br />
 
-      <label for="books">Select book:</label>
+      <div class="form-row justify-content-center">
+        <div class="col-sm-6">
+          <label for="books">Select book:</label>
+
+          <multiselect
+            id="books"
+            v-model="books_return"
+            :options="books"
+            :close-on-select="true"
+            :clear-on-select="false"
+            :preserve-search="true"
+            :preselect-first="true"
+            placeholder="Type here to search"
+            label="title"
+            track-by="title"
+            :custom-label="titleAuthor"
+            @input="onSelect()"
+          />
+        </div>
+      </div>
+      <div class="form-row justify-content-center">
+        <div class="col-sm-6">
+          <label for="copies">Select book copies:</label>
+          <multiselect
+            id="copies"
+            v-model="copies_return"
+            :options="copies"
+            :close-on-select="true"
+            :clear-on-select="false"
+            :preserve-search="true"
+            :preselect-first="true"
+            placeholder="Type here to search"
+            label="id"
+            track-by="id"
+            @input="onSelectCopies()"
+          />
+        </div>
+      </div>
+      <div class="form-row justify-content-center">
+        <div class="col-sm-6">
+          <label for="student">Due date:</label>
+
+          <input
+            :value="due_date && due_date.toISOString().split('T')[0]"
+            @input="myDate = $event.target.valueAsDate"
+            type="date"
+            class="form-control"
+            name="due-date"
+            id="due-date"
+            aria-describedby="helpId"
+            placeholder="Due date"
+            disabled
+          />
+        </div>
+      </div>
+      <div class="form-row justify-content-center">
+        <div class="col-sm-6">
+          <label for="student">Return date:</label>
+
+          <input
+            :value="return_date && return_date.toISOString().split('T')[0]"
+            @input="return_date = $event.target.valueAsDate"
+            type="date"
+            class="form-control"
+            name="return-date"
+            id="return-date"
+            aria-describedby="helpId"
+            placeholder="Return date"
+            disabled
+          />
+        </div>
+      </div>
+
+      <div id="div-fine" style="display: none;">
+        <div class="form-row justify-content-center">
+          <div class="col-sm-6">
+            <label for="student">Days of late return:</label>
+
+            <input
+              v-model="days_late"
+              type="number"
+              class="form-control"
+              name="days_late"
+              id="days_late"
+              aria-describedby="helpId"
+              placeholder="Days late"
+              disabled
+              style="width: 100%"
+            />
+          </div>
+        </div>
+
+        <div class="form-row justify-content-center">
+          <div class="col-sm-6">
+            <label for="student">
+              Late return fine (RM): &nbsp;
+              <span v-tooltip="msg">
+                <i class="far fa-question-circle" style="color: #008CBA"></i>
+              </span>
+            </label>
+            <input
+              v-model="fine"
+              type="number"
+              class="form-control"
+              name="fine"
+              id="fine"
+              aria-describedby="helpId"
+              placeholder="Fine"
+              disabled
+              style="width: 100%"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="form-row justify-content-center">
+        <div class="col-sm-6">
+          <div class="text-center">
+            <v-btn large color="primary" style="text-transform: none" @click="returnBook">Return</v-btn>
+          </div>
+        </div>
+      </div>
+      <!--       
+      <div class="form-row justify-content-center">
+        <div class="col-sm-6"></div>
+      </div>-->
+
       <!-- <multiselect
         id="books"
         v-model="books"
@@ -26,20 +150,6 @@
         track-by="title"
       ></multiselect>-->
 
-      <multiselect
-        id="books"
-        v-model="books_return"
-        :options="books"
-        :close-on-select="true"
-        :clear-on-select="false"
-        :preserve-search="true"
-        :preselect-first="true"
-        placeholder="Type here to search"
-        label="title"
-        track-by="title"
-        :custom-label="titleAuthor"
-        @input="onSelect()"
-      />
       <!-- 
         :preserve-search="true"
         :preselect-first="true"
@@ -52,95 +162,6 @@
             v-if="values.length &amp;&amp; !isOpen"
           >{{ values.length }} book(s) selected</span>
       </template>-->
-
-      <br />
-      <label for="copies">Select book copies:</label>
-      <multiselect
-        id="copies"
-        v-model="copies_return"
-        :options="copies"
-        :close-on-select="true"
-        :clear-on-select="false"
-        :preserve-search="true"
-        :preselect-first="true"
-        placeholder="Type here to search"
-        label="id"
-        track-by="id"
-        @input="onSelectCopies()"
-      />
-
-      <br />
-      <label for="student">Due date:</label>
-
-      <input
-        :value="due_date && due_date.toISOString().split('T')[0]"
-        @input="myDate = $event.target.valueAsDate"
-        type="date"
-        class="form-control"
-        name="due-date"
-        id="due-date"
-        aria-describedby="helpId"
-        placeholder="Due date"
-        disabled
-      />
-
-      <br />
-      <label for="student">Return date:</label>
-
-      <input
-        :value="return_date && return_date.toISOString().split('T')[0]"
-        @input="return_date = $event.target.valueAsDate"
-        type="date"
-        class="form-control"
-        name="return-date"
-        id="return-date"
-        aria-describedby="helpId"
-        placeholder="Return date"
-        disabled
-      />
-
-      <div id="div-fine" style="display: none;">
-        <br />
-
-        <label for="student">Days of late return:</label>
-
-        <input
-          v-model="days_late"
-          type="number"
-          class="form-control"
-          name="days_late"
-          id="days_late"
-          aria-describedby="helpId"
-          placeholder="Days late"
-          disabled
-          style="width: 100%"
-        />
-
-        <br />
-
-        <label for="student">
-          Late return fine (RM): &nbsp;
-          <span v-tooltip="msg">
-            <i class="far fa-question-circle" style="color: #008CBA"></i>
-          </span>
-        </label>
-        <input
-          v-model="fine"
-          type="number"
-          class="form-control"
-          name="fine"
-          id="fine"
-          aria-describedby="helpId"
-          placeholder="Fine"
-          disabled
-          style="width: 100%"
-        />
-      </div>
-
-      <br />
-      <div class="text-center">
-        <v-btn large color="primary" style="text-transform: none" @click="returnBook">Return</v-btn>
-      </div>
 
       <!--         :custom-label="nameWithLang"          :preselect-first="true"         :preserve-search="true"-->
       <!-- <pre class="language-json"><code>{{ borrower  }}</code></pre>
