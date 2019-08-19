@@ -287,7 +287,6 @@
 import db from "./../../firebase/firestoreInit";
 import firebase from "firebase";
 import firebaseConfig from "./../../firebase/firebaseConfig";
-import secondaryFirebase from "./../../firebase/firebaseSecondary";
 
 export default {
   created() {
@@ -474,6 +473,11 @@ export default {
         });
     },
     signUp() {
+      var secondaryFirebase = firebase.initializeApp(
+        firebaseConfig,
+        "Secondary"
+      );
+
       if (this.name && this.email && this.librarian_id && this.password) {
         secondaryFirebase
           .auth()
