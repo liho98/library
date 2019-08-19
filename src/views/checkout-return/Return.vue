@@ -272,10 +272,10 @@ export default {
     },
     returnBook() {
       // decrease book quantity
-      const new_quantity = this.books_return.quantity + 1;
+      const new_quantity = this.books_return.current_quantity + 1;
       db.collection("books")
         .doc(this.books_return.id)
-        .update({ quantity: new_quantity });
+        .update({ current_quantity: new_quantity });
 
       const createdAt = new Date();
 
