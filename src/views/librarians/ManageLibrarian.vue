@@ -126,7 +126,7 @@
     <v-dialog v-model="edit_dialog" persistent max-width="600px">
       <v-card>
         <v-card-title>
-          <span class="headline">Edit Student</span>
+          <span class="headline">Edit Librarian</span>
         </v-card-title>
         <v-card-text>
           <v-container grid-list-md>

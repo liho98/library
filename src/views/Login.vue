@@ -60,10 +60,6 @@
       <!-- <input type="submit" class="btn" @click="login" value="Login" /> -->
       <!-- <button type="submit" class="btn" @click="login" >Login</button> -->
       <p>
-        You don't have an account ? You can
-        <router-link to="/register">create one</router-link>
-
-        <br />
         <br />Forget your password?
         <a @click="dialog = true" class="clickhere">Click here</a>
       </p>
