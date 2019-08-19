@@ -10,7 +10,7 @@
         <v-card-title>
           Manage Student
           <v-btn
-            @click="add_dialog = true"
+            @click="resetInput(); add_dialog = true"
             color="primary"
             style="margin: 0 15px; text-transform: none"
           >
@@ -498,6 +498,13 @@ export default {
             }
           );
       }
+    },
+    resetInput() {
+      this.student_id = null;
+      this.name = null;
+      this.email = null;
+      this.password = null;
+      this.contact = null;
     }
   }
 };

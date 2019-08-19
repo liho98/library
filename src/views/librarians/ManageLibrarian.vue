@@ -10,7 +10,7 @@
         <v-card-title>
           Manage Librarian
           <v-btn
-            @click="add_dialog = true"
+            @click="resetInput(); add_dialog = true"
             color="primary"
             style="margin: 0 15px; text-transform: none"
           >
@@ -507,6 +507,13 @@ export default {
             }
           );
       }
+    },
+    resetInput() {
+      this.librarian_id = '';
+      this.name = '';
+      this.email = '';
+      this.password = '';
+      this.contact = '';
     }
   }
 };
