@@ -9,7 +9,8 @@ export default new Vuex.Store({
     breadcrumbs: [{ text: 'Home', disabled: false, to: '/', },],
     drawer: true,
     messages: 0,
-    books: []
+    books: [],
+    graph: [0,0,0,0]
   },
   mutations: {
     startLoading: state => (state.loading = true),
@@ -24,6 +25,10 @@ export default new Vuex.Store({
     },
     updatebook(state, book) {
       state.books = book;
+    },
+    updateGraph(state,graph){
+
+      state.graph[0] = graph[0];state.graph[1] = graph[1];state.graph[2] = graph[2];state.graph[3] = graph[3];
     }
   },
   actions: {
@@ -34,5 +39,6 @@ export default new Vuex.Store({
     drawer: state => state.drawer,
     messages: state => state.messages,
     books: state => state.books,
+    graph: state => state.graph,
   }
 })

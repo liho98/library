@@ -81,6 +81,7 @@
 // var admin = require("firebase-admin");
 import db from "../../firebase/firestoreInit";
 import firebase from "firebase";
+
 var moment = require("moment");
 moment().format();
 
@@ -173,10 +174,12 @@ export default {
       querySnapshot.forEach(function(doc) {
         x.push(doc.data());
       });
+      
       students.splice(0, students.length, ...x);
       // console.log("Students : ", students.join(", "));
       // console.log(students.length);
     });
+    
   },
   updated() {
     this.$store.commit("stopLoading");
@@ -192,6 +195,11 @@ export default {
     } else {
       this.graphs[2]["number"] = checkout.length;
     }
+
+    this.graphs[0]["value"][0] = 1;
+    this.graphs[0]["value"][1] = 2;
+    this.graphs[0]["value"][2] = 3;
+    this.graphs[0]["value"][3] = 4;
 
     // this.graphs[0]["value"][0] = this.borrowFrequency()[0];
     // this.graphs[0]["value"][1] = this.borrowFrequency()[1];
@@ -233,8 +241,10 @@ export default {
 
     // this.value[0] = 0;
     // console.log(this.graphs[0]["value"]);
-    // values = this.borrowFrequency();
+    this.borrowFrequency();
+    console.log(this.$store.getters.graph);
   },
+
   methods: {
     countAuthor: function() {
       let author = [];
@@ -304,7 +314,7 @@ export default {
       });
       return count;
     },
-    borrowFrequency: function() {
+    borrowFrequency: async function() {
       // console.log((new Date()).getMonth());(new Date()).getFullYear, (new Date()).getMonth(),
       let x = new Date();
       var i;
@@ -347,10 +357,11 @@ export default {
           values[3] = values[3] + days[i - 1]["value"];
         }
       }
-
-      // console.log(values);
-      // console.log(timestamp[0].toDate().getMonth());
+      this.updateGraph(values);
       return values;
+    },
+    updateGraph: function() {
+      this.$store.commit("updateGraph", values);
     }
   },
   data() {
@@ -374,8 +385,8 @@ export default {
       graphs: [
         {
           color: "primary",
-          value: [0, 1, 1, 5],
-          moment: values,
+          value: values,
+          moment: moment(today).fromNow(),
           title: "Student",
           number: students,
           to: "/",
@@ -383,7 +394,7 @@ export default {
         },
         {
           color: "#952175",
-          value: [0, 2, 1, 1],
+          value: [0, 0, 0, 0],
           moment: moment(today).fromNow(),
           title: "Librarian",
           number: 0,
@@ -392,7 +403,7 @@ export default {
         },
         {
           color: "#952175",
-          value: this.borrowFrequency(),
+          value: [0, 0, 0, 0],
           moment: moment(today).fromNow(),
           title: "Book Viewed Frequency",
           number: 0,
@@ -469,9 +480,22 @@ export default {
     };
   },
   watch: {
-    graphs: function(val) {
-      this.graphs[0]["value"] = values;
+    graphs:{
+    handler: function(val) {
+
+    // this.graphs[0]["value"][0] = this.borrowFrequency()[0];
+    // this.graphs[0]["value"][1] = this.borrowFrequency()[1];
+    // this.graphs[0]["value"][2] = this.borrowFrequency()[3];
+    // this.graphs[0]["value"][3] = 3;
+      // this.graphs[0]["value"] = [10,1,0,1];
+      // console.log(val);
+    },
+    deep: true,
+    immediate: true
+      
     }
+
+    
   }
 };
 </script>
