@@ -5,15 +5,91 @@
       <v-btn dark text @click="snackbar = false" style="text-transform: none">Close</v-btn>
     </v-snackbar>
 
-    <div class="centre">
+    <div class="container">
+      <div class="form-row justify-content-center">
+        <div class="col-sm-6">
+          <label for="books">Select book:</label>
+          <multiselect
+            id="books"
+            v-model="books_checkout"
+            :options="books"
+            :close-on-select="true"
+            :clear-on-select="false"
+            :preserve-search="true"
+            :preselect-first="true"
+            placeholder="Type here to search"
+            label="title"
+            track-by="title"
+            :custom-label="titleAuthor"
+            @input="onSelect()"
+          />
+        </div>
+      </div>
+      <div class="form-row justify-content-center">
+        <div class="col-sm-6">
+          <label for="copies">Select book copies:</label>
+          <multiselect
+            id="copies"
+            v-model="copies_checkout"
+            :options="copies"
+            :close-on-select="true"
+            :clear-on-select="false"
+            :preserve-search="true"
+            :preselect-first="true"
+            placeholder="Type here to search"
+            label="id"
+            track-by="id"
+          />
+        </div>
+      </div>
+      <div class="form-row justify-content-center">
+        <div class="col-sm-6">
+          <label for="student">Select student:</label>
+          <multiselect
+            id="student"
+            v-model="student_checkout"
+            :options="students"
+            :clear-on-select="false"
+            placeholder="Type here to search"
+            label="name"
+            track-by="name"
+            :preserve-search="true"
+            :preselect-first="true"
+            :custom-label="nameStudentID"
+          ></multiselect>
+        </div>
+      </div>
+      <div class="form-row justify-content-center">
+        <div class="col-sm-6">
+          <label for="student">Due date:</label>
+
+          <input
+            :value="due_date && due_date.toISOString().split('T')[0]"
+            @input="myDate = $event.target.valueAsDate"
+            type="date"
+            class="form-control"
+            name="due-date"
+            id="due-date"
+            aria-describedby="helpId"
+            placeholder="Due date"
+            disabled
+          />
+        </div>
+      </div>
+      <div class="form-row justify-content-center">
+        <div class="col-sm-6">
+          <div class="text-center">
+            <v-btn large color="primary" style="text-transform: none" @click="checkout">Checkout</v-btn>
+          </div>
+        </div>
+      </div>
+      
       <!-- <v-alert
         type="success"
         dark
         :value="success"
         transition="scale-transition"
       >Checkout Successfully</v-alert>-->
-      <br />
-      <label for="books">Select book:</label>
       <!-- <multiselect
         id="books"
         v-model="books"
@@ -25,20 +101,6 @@
         track-by="title"
       ></multiselect>-->
 
-      <multiselect
-        id="books"
-        v-model="books_checkout"
-        :options="books"
-        :close-on-select="true"
-        :clear-on-select="false"
-        :preserve-search="true"
-        :preselect-first="true"
-        placeholder="Type here to search"
-        label="title"
-        track-by="title"
-        :custom-label="titleAuthor"
-        @input="onSelect()"
-      />
       <!-- 
         :preserve-search="true"
         :preselect-first="true"
@@ -51,57 +113,6 @@
             v-if="values.length &amp;&amp; !isOpen"
           >{{ values.length }} book(s) selected</span>
       </template>-->
-
-      <br />
-      <label for="copies">Select book copies:</label>
-      <multiselect
-        id="copies"
-        v-model="copies_checkout"
-        :options="copies"
-        :close-on-select="true"
-        :clear-on-select="false"
-        :preserve-search="true"
-        :preselect-first="true"
-        placeholder="Type here to search"
-        label="id"
-        track-by="id"
-      />
-
-      <br />
-      <label for="student">Select student:</label>
-      <multiselect
-        id="student"
-        v-model="student_checkout"
-        :options="students"
-        :clear-on-select="false"
-        placeholder="Type here to search"
-        label="name"
-        track-by="name"
-        :preserve-search="true"
-        :preselect-first="true"
-        :custom-label="nameStudentID"
-      ></multiselect>
-
-      <br />
-      <label for="student">Due date:</label>
-
-      <input
-        :value="due_date && due_date.toISOString().split('T')[0]"
-        @input="myDate = $event.target.valueAsDate"
-        type="date"
-        class="form-control"
-        name="due-date"
-        id="due-date"
-        aria-describedby="helpId"
-        placeholder="Due date"
-        disabled
-      />
-
-      <br />
-      <div class="text-center">
-        <v-btn large color="primary" style="text-transform: none" @click="checkout">Checkout</v-btn>
-      </div>
-
       <!--         :custom-label="nameWithLang"          :preselect-first="true"         :preserve-search="true"-->
       <!-- <pre class="language-json"><code>{{ borrower  }}</code></pre>
 

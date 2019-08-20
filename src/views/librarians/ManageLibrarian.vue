@@ -10,7 +10,7 @@
         <v-card-title>
           Manage Librarian
           <v-btn
-            @click="add_dialog = true"
+            @click="resetInput(); add_dialog = true"
             color="primary"
             style="margin: 0 15px; text-transform: none"
           >
@@ -126,7 +126,7 @@
     <v-dialog v-model="edit_dialog" persistent max-width="600px">
       <v-card>
         <v-card-title>
-          <span class="headline">Edit Student</span>
+          <span class="headline">Edit Librarian</span>
         </v-card-title>
         <v-card-text>
           <v-container grid-list-md>
@@ -287,7 +287,6 @@
 import db from "./../../firebase/firestoreInit";
 import firebase from "firebase";
 import firebaseConfig from "./../../firebase/firebaseConfig";
-import secondaryFirebase from "./../../firebase/firebaseSecondary";
 
 export default {
   created() {
@@ -474,6 +473,11 @@ export default {
         });
     },
     signUp() {
+      var secondaryFirebase = firebase.initializeApp(
+        firebaseConfig,
+        "Secondary"
+      );
+
       if (this.name && this.email && this.librarian_id && this.password) {
         secondaryFirebase
           .auth()
@@ -503,6 +507,13 @@ export default {
             }
           );
       }
+    },
+    resetInput() {
+      this.librarian_id = '';
+      this.name = '';
+      this.email = '';
+      this.password = '';
+      this.contact = '';
     }
   }
 };

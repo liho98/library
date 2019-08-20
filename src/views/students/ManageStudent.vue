@@ -10,7 +10,7 @@
         <v-card-title>
           Manage Student
           <v-btn
-            @click="add_dialog = true"
+            @click="resetInput(); add_dialog = true"
             color="primary"
             style="margin: 0 15px; text-transform: none"
           >
@@ -289,7 +289,6 @@
 import db from "./../../firebase/firestoreInit";
 import firebase from "firebase";
 import firebaseConfig from "./../../firebase/firebaseConfig";
-import secondaryFirebase from "./../../firebase/firebaseSecondary";
 
 export default {
   name: "manage-student",
@@ -465,6 +464,11 @@ export default {
         });
     },
     signUp() {
+      var secondaryFirebase = firebase.initializeApp(
+        firebaseConfig,
+        "Secondary"
+      );
+
       if (this.name && this.email && this.student_id && this.password) {
         secondaryFirebase
           .auth()
@@ -494,6 +498,13 @@ export default {
             }
           );
       }
+    },
+    resetInput() {
+      this.student_id = null;
+      this.name = null;
+      this.email = null;
+      this.password = null;
+      this.contact = null;
     }
   }
 };

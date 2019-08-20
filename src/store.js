@@ -6,11 +6,13 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     loading: false,
+    displayName: "",
     breadcrumbs: [{ text: 'Home', disabled: false, to: '/', },],
     drawer: true,
     messages: 0,
     books: [],
-    graph: [0,0,0,0]
+    graph: [0, 0, 0, 0],
+    isLoggedIn: false,
   },
   mutations: {
     startLoading: state => (state.loading = true),
@@ -26,9 +28,15 @@ export default new Vuex.Store({
     updatebook(state, book) {
       state.books = book;
     },
-    updateGraph(state,graph){
+    updateGraph(state, graph) {
 
-      state.graph[0] = graph[0];state.graph[1] = graph[1];state.graph[2] = graph[2];state.graph[3] = graph[3];
+      state.graph[0] = graph[0]; state.graph[1] = graph[1]; state.graph[2] = graph[2]; state.graph[3] = graph[3];
+    },
+    updateDisplayName(state, displayName) {
+      state.displayName = displayName;
+    },
+    updateIsLoggedIn(state, isLoggedIn) {
+      state.isLoggedIn = isLoggedIn;
     }
   },
   actions: {
@@ -40,5 +48,7 @@ export default new Vuex.Store({
     messages: state => state.messages,
     books: state => state.books,
     graph: state => state.graph,
+    displayName: state => state.displayName,
+    isLoggedIn: state => state.isLoggedIn,
   }
 })

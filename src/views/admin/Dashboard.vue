@@ -385,7 +385,7 @@ export default {
       graphs: [
         {
           color: "primary",
-          value: values,
+          value: [2,1,3,4],
           moment: moment(today).fromNow(),
           title: "Student",
           number: students,
@@ -394,7 +394,7 @@ export default {
         },
         {
           color: "#952175",
-          value: [0, 0, 0, 0],
+          value: [1, 0, 4, 0],
           moment: moment(today).fromNow(),
           title: "Librarian",
           number: 0,
@@ -403,7 +403,7 @@ export default {
         },
         {
           color: "#952175",
-          value: [0, 0, 0, 0],
+          value: [2, 3, 2, 0],
           moment: moment(today).fromNow(),
           title: "Book Viewed Frequency",
           number: 0,
